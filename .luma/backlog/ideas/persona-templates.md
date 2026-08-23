@@ -1,5 +1,5 @@
 ---
-type: idea
+type: luma/idea
 title: Templates for organization personas
 created: { by: human:benlinton, at: 2026-08-19T00:00:00Z }
 contributors: [human:benlinton]

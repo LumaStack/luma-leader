@@ -1,5 +1,5 @@
 ---
-type: idea
+type: luma/idea
 title: A mandate is a record, not a value — who mandated it, since when, and when it applies
 created: { by: human:benlinton, at: 2026-08-22T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
