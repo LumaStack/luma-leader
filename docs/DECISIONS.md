@@ -2,6 +2,63 @@
 
 Settled positions and the reasoning that settled them. Recorded so they are not re-argued from scratch. A path not taken is recorded as deferred with a re-open trigger, never as rejected.
 
+## A luma tool writes into `.luma/`, and anywhere else is opted into
+
+**Settled 2026-08-23.**
+
+**`.luma/backlog/` always.** A tool may write somewhere else only when a
+committed configuration file asks it to, and `.backlog/` is the name reserved
+for that case in `luma-backlog`.
+
+**The question was raised by a real conflict.** `luma-layout` reserves
+`backlog/` as one of four `.luma/` tiers — *what we intend, churns* — while
+`luma-backlog`'s specification puts the backlog at `.backlog/` in the repository
+root. Four repositories already hold `.luma/backlog/ideas/`, so running
+`luma-backlog init` in any of them produces a second backlog: two directories,
+one lifecycle, and no reader able to tell which is authoritative.
+
+**One default with an explicit override, never an inferred one.** The rejected
+shape was *`.luma/backlog/` when `.luma/` exists, `.backlog/` otherwise* — which
+makes the layout depend on repository state nobody was thinking about. Two
+repositories, the same tool, different answers, and the rule invisible unless
+you already know it. **A default that varies by environment is a default nobody
+can predict.**
+
+**This is the third time the same shape has been chosen**, which is why it is
+recorded as a general position rather than a fact about the backlog. A catalog
+declares a namespace and an adopter may override it in committed config. A
+preclusion fails by default and is overridden in committed config. Now this.
+*One default, one written override, and the override is reviewable because it is
+in the repository.*
+
+**Why not `.backlog/`, given the tool is pitched standalone.** It is the only
+real argument on that side: `luma-backlog` is presented as a product rather than
+an estate component, and `.backlog/` is guessable to somebody who has never
+heard of luma. It loses on three counts. **A generic root is precisely what
+`.luma/` was chosen over** — the layout's own argument is that a generic name
+claims a universality nothing has earned, while `.luma/` is collision-proof by
+construction. **`rm -rf .luma/` was named as a clean uninstall**, and two
+dotdirs break it. And **the vendor name is already in what they typed**: you do
+not install `luma-backlog` and find `.luma/` surprising.
+
+**Ideas and tracked work share the tier, and that follows from the tier rule.**
+Both are *what we intend*; `luma/idea` and a backlog record differ in
+commitment, not in lifecycle. Splitting them across two roots would be topic
+deciding location, which the layout forbids in the same paragraph that defines
+the tiers.
+
+**The cost, accepted:** a standalone adopter gets a vendor-named directory for a
+tool they think of as a backlog, and changing it costs them one line of config.
+
+**Standing consequence — this binds any tool writing durable project content.**
+`luma-backlog` is the first to face it because it is the first to write records
+rather than read them. The next one does not get to re-argue it.
+
+**Re-open trigger:** if a tool ever has a reason to write outside `.luma/` that
+is not a user preference — a format another ecosystem reads at a fixed path, for
+instance — then this is a rule about *our* content and needs narrowing rather
+than an exception.
+
 ## Tools are named for the verb they perform
 
 **Settled 2026-08-23.**
