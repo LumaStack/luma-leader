@@ -1,6 +1,7 @@
 # luma-leader
 
-**Your organization, as code. With governance you can prove.**
+> **Your organization, as code.**<br>
+> With governance you can prove.
 
 A thinking partner, a standardization engine, and everything your organization knows — all turning decisions into reality in days, not quarters.
 
