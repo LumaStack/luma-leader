@@ -2,6 +2,30 @@
 
 Settled positions and the reasoning that settled them. Recorded so they are not re-argued from scratch. A path not taken is recorded as deferred with a re-open trigger, never as rejected.
 
+## Tools are named for the verb they perform
+
+**Settled 2026-08-23.**
+
+**Name a tool for the job it does, in a word somebody can guess.** `cataloger` catalogs. The form is a verb plus `-er` — the `compiler`/`linker` shape, naming the actor rather than the artifact.
+
+**The test:** could somebody who has never read the docs guess what it does from the name? `cataloger` passes. `leader` and `foreman` do not, and that is the cost being accepted below.
+
+**And the corollary is the useful half: if the job cannot be stated as one verb, that is a signal about the tool rather than about the name.** A name that has to be a metaphor usually means more than one job is hiding behind it. Run it on what exists — `cataloger` catalogs; `foreman` inspects, bootstraps, outfits and refits, which is four verbs and exactly why it needed a metaphor. **That makes the naming rule double as a junk-drawer detector**, which is the thing it is actually worth having.
+
+**Why it matters:** the previous register was role metaphors — a leader decides what good looks like, a foreman makes it true on each site. That pairing teaches the architecture *once you already know it*, and is hard to recall before that. It also stopped scaling at three: adding a `quartermaster` to `leader` and `foreman` means three people-who-manage and no way to remember which does what. **Thematic naming families carry no information** — the Ruby failure, where knowing one name tells you nothing about the next.
+
+**Apply it:** new tools take plain verb names. **Existing names are unaffected**, deliberately — `luma-leader` was renamed on 2026-08-21 after weighing sixty candidates, and a convention whose adoption requires renaming everything is one nobody adopts. The set is now mixed on purpose.
+
+**Standing consequence — do not name a tool after the artifact it operates on.** That is the defect that forced the `luma-hq` rename: *"named after the thing it operates on, not after what it is. Git is not called repository; Terraform is not called state."* An agent noun escapes it because it names the actor, which is why `cataloger` is admissible where `catalog` would not be.
+
+**Standing consequence — `<org>-catalog` is a catalog; `cataloger` is an engine.** The same reservation as the `-hq` suffix, and for the same reason: two sibling checkouts three letters apart is a glob away from the mistake that has already been made once here.
+
+**Deferred alternative:** `curator`, which has the better argument on the merits — *the catalog is a catalog, not a registry* states outright that *"curation is the actual semantics"*, and `bundle-dependencies.md` calls judging a narrow constraint *"a catalog-editor job"*. It also avoids the `-catalog` collision entirely. It loses on guessability: `cataloger` names its object and `curator` does not. *Re-open before anything installs a binary, since renaming is free until then.*
+
+**Deferred alternative:** `packager`, with `luma-catalog` renamed to `luma-warehouse`. Rejected on two counts — **nothing is packaged**, so the verb is wrong rather than merely absent; and **a warehouse holds whatever you put in it**, which is the permissive-storage reading that *the catalog is a catalog, not a registry* was written to keep out. *Re-open only if the mechanism changes to match, which is that decision's own trigger.*
+
+**Re-open trigger:** if a plain verb name ever collides with a widely-used tool in the same space, or if the mixed register — two metaphors and the rest plain — causes real confusion rather than mild untidiness.
+
 ## Repository boundaries do not control agent context
 
 **Settled 2026-08-09.**
@@ -36,6 +60,8 @@ Roughly sixty candidates were considered across several registers before these t
 **Known costs, accepted at the time:** `luma-hq` used initials, against the house rule that terminology is spelled out. `foreman` is a single-site role for a multi-project job, and is shared with an existing infrastructure tool of the same name.
 
 **Re-open trigger:** if the initials rule is ever extended to repository names, or if the `foreman` collision causes real confusion in practice.
+
+> *Note added 2026-08-23.* **The register this established no longer applies to new tools** — see *Tools are named for the verb they perform*. Role metaphors stopped scaling at three, so `leader` and `foreman` keep their names and nothing after them takes one. This record is unchanged otherwise; the rename it describes still stands and its reasoning is untouched.
 
 ### The rename, and the defect that forced it
 
@@ -179,7 +205,11 @@ Catalog and governance each exist twice — a public one and an organization's i
 - **Not governance (`luma-leader`).** It is the layer organizations are invited to replace wholesale. Content that should survive a fork of the governance layer cannot live inside it — and the applier reading it at any point turns an optional repository into a required one, breaking the standing consequence recorded above.
 - **Not the format.** The moment the specification ships a `person` type it is making domain claims, and "do not redefine the built-ins" goes fuzzy: `person` is not built in, but it arrived in the same box, so it will be treated as though it were. A fixed set of built-ins is what keeps a specification a specification instead of a starter kit.
 
-**Apply it:** nothing is extracted yet. Put each type in the bundle that uses it and let the duplication happen. Extraction is a file move, cheap once the shape is known and a guess before then.
+**Apply it:** put each type in the bundle that uses it and let the duplication happen. Extraction is a file move, cheap once the shape is known and a guess before then.
+
+> *Corrected 2026-08-23 — the facts moved, the position did not.* This said *"nothing is extracted yet"*, and something is now: `luma/catalog` and `luma/project` live in the `luma/luma-types` bundle. That is **this decision being applied rather than reversed** — the foundation bundle it names, published by the catalog as it says. Both extraction triggers below have been met: two universal bundles exist that are not the applier's own, and more than one bundle needs the same type identically. The reasoning is untouched, and all three rejected homes were re-derived independently before anybody reread this record.
+>
+> `luma/catalog` was promoted on the *built explicitly to be shared* exemption rather than on a count. Waiting for a first outside user before centralising the type that **defines a catalog** would have produced copies to reconcile, not evidence.
 
 **Extraction triggers — the foundation bundle:** a second bundle genuinely needs a type the first already defines, and the two copies must stay identical. One bundle wanting a type is not a shared type.
 
