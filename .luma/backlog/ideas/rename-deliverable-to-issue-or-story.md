@@ -1,6 +1,6 @@
 ---
 type: luma/idea
-title: Rename deliverable to issue or story
+title: deliverable is probably wrong — reopen the naming
 created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: next
@@ -8,7 +8,7 @@ scope: organization
 lifecycle_status: draft
 ---
 
-# Rename `deliverable` to `issue` or `story`
+# `deliverable` is probably wrong — reopen the naming
 
 ## The idea, as raised
 
@@ -21,6 +21,9 @@ multiple stories (or deliverables).
 
 *This may be partially recorded in `luma-backlog` already.*
 
+**`deliverable` was a good try and it is probably not going to work — so back to
+the drawing board, probably.**
+
 ---
 
 ## Commentary — `agent:claude-opus-5`, not part of the idea
@@ -28,46 +31,60 @@ multiple stories (or deliverables).
 *Below the idea and separate from it. Evaluation is welcome here — it just does
 not get to edit what was raised.*
 
-### It is partially recorded, and the recorded rejection is the one this answers
+### Why it broke, precisely
 
-`luma-backlog/docs/OPEN-QUESTIONS.md` §16 rejects both candidates in a line:
+**The property that won `deliverable` is the property that fails.**
+`luma-backlog` §16 chose it over `project` partly because *"it teaches
+nothing"* was `project`'s flaw, and `deliverable` **"obliges every backlog entry
+to answer *what gets handed over*."** That obligation is the whole case for the
+word.
 
-> **issue, ticket** — Both imply something is wrong. Too negative for work that
-> is usually ordinary.
+**A bug has nothing handed over.** *The retry queue drops messages under load* is
+a backlog item, and the thing that happens to it is that something stops being
+wrong — no artefact is produced, nothing is delivered. Forced to answer *what
+gets handed over*, it either invents a fake artefact or does not get filed, which
+is the exact failure §16 used to rule out `feature`.
 
-**The idea meets that head-on rather than going around it.** The rejection treats
-the negative connotation as a flaw; the idea says the negative case is *real and
-currently unrepresented* — a bug or a problem is a thing that lands on a backlog,
-and the vocabulary has no word for it.
+### The test set is what was incomplete, not the reasoning
 
-### There are two different claims here and they want different fixes
+Every candidate was checked against four cases:
 
-**A naming claim.** The unit is misnamed for what it usually holds. **Fixable by
-renaming**, and §16 already grants half of it: relabeling is supported, and
-*stories* is named explicitly as a display alternative. So if the complaint is
-about what people read, it is already solved by configuration and the argument is
-only about the canonical name.
+> *ship payments v2* · *lower resting heart rate to 55* · *establish a daily
+> writing habit* · *publish the Q3 strategy document*
 
-**A structural claim, which is the stronger one.** *An issue is broken down into
-a deliverable, and breaking one down costs several.* That describes **a unit
-above the current one** — a problem that yields multiple deliverables. Renaming
-does not create that level; it relabels the level below it and leaves the gap.
+**All four are things you produce.** Not one is something that is wrong. That is
+why `issue` and `ticket` read as *too negative for work that is usually ordinary*
+— against that set they are, and against a fifth case they are not.
 
-**§16 says the slot above is occupied:** *"an epic groups several of them and
-belongs among the dimensions."* So the level exists as a **dimension** rather than
-a record. Whether a dimension can carry a bug report — with its own body,
-history, and outcomes — is the question the structural claim actually asks, and
-it is not a naming question.
+**So a fresh pass needs a fifth case**, and it should be a plain defect:
 
-### What would settle it
+> *the retry queue drops messages under load*
 
-**Which claim is being made.** If it is tone, relabeling already answers it and
-the canonical name is a smaller argument than it looks. If it is that one problem
-produces several deliverables and nothing holds the problem, **that is a modelling
-gap and a rename would hide it behind a better word** — which is the worse
-outcome of the two.
+Any candidate that cannot hold all five is out, and `deliverable` is now the one
+that cannot.
 
-**Worth checking against real records first.** One deliverable exists today
-(`deliverables/first-usable-build/`), and §16's own note says the type
-*"describes one record… a description, not a prediction."* A second and third
-record that are plainly bugs would settle this faster than any argument.
+### What a fresh pass inherits
+
+- **The four cases stay** — the unit is not necessarily software, and health,
+  habits and documents were load-bearing in the original pass.
+- **Several rejections stay valid on their own terms.** `feature` fails the
+  non-software cases; `epic` names the level above and is assigned to dimensions;
+  `project` collides with the repository and with external trackers.
+- **Relabeling already exists.** §16 supports displaying the unit as anything a
+  team prefers, with the canonical name on disk. That solves presentation and not
+  this — the argument is about the canonical name.
+- **`deliverable`'s accepted costs are now worth revisiting too** — eleven
+  characters, no usable short form (*del* reads as delete), and consultant tone.
+  Each was accepted as a price for the *what gets handed over* obligation. If
+  that obligation is the defect, its price stops being worth paying.
+
+### The structural question is separate and should not be smuggled in
+
+*An issue is broken down into a deliverable, and breaking one down costs
+several* describes **a unit above the current one**, which §16 says is an epic
+and assigns to dimensions. **Renaming does not create that level.** Whether a
+dimension can carry a bug report — with a body, history and outcomes of its own —
+is a modelling question, and answering it with a nicer word would hide it.
+
+**Settle the naming and the level separately**, in that order, since the naming
+is answerable now and the level needs real records to argue from.
