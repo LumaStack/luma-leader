@@ -283,6 +283,8 @@ claim is a promise nobody verifies.
 
 ## If this were built
 
+*The whole of this section assumes per-bundle constraint resolution. A proposal below — **resolve at a catalog snapshot** — would replace most of it with a lookup, and is worth reading before building any of this.*
+
 - Resolution order: collect requirements transitively; fail if constraints cannot
   be satisfied jointly, naming every requirer and what each asked for; otherwise
   take the current version satisfying all of them. In the ordinary case every
@@ -297,6 +299,87 @@ claim is a promise nobody verifies.
 - Record in the manifest, per entry: version, and asked-for versus required-by.
 - `lifecycle_status` already carries readiness. Experimental is not a version
   question and must not become one.
+
+## Proposal for consideration: resolve at a catalog snapshot
+
+**Raised 2026-08-23. Not well thought out yet, and recorded so it can be argued
+with rather than re-derived.** It is an alternative to the whole resolution
+scheme above, not an adjustment to it.
+
+### The proposal, as raised
+
+**There is nothing that says you need the entire catalog.** You could say *I want
+`git-secrets`*, and it pulls everything in the catalog **at version 1.2.0** that
+is referenced by `git-secrets`.
+
+So a catalog version becomes a **coordinate for resolution** rather than a unit
+of adoption. You still take only what you need; the version says *as of when*.
+
+**The weakness, as raised:** *"you might get unintended changes that you didn't
+want because you're at a new catalog version. But I think that could happen with
+bundles as well. It's just that the chaining could be more aggressive. I don't
+know — maybe I'm overthinking this."*
+
+### What it would solve
+
+- **The solver disappears.** Resolution becomes a lookup rather than a
+  constraint problem. No candidate selection, no joint-satisfiability check, no
+  backtracking — the publisher already made the snapshot consistent, so **any
+  subset of one snapshot is consistent by construction.**
+- **Most of the constraint machinery becomes unnecessary.** Version expressions,
+  the required reason on a narrow constraint, the catalog doctor reporting
+  tightness — much of that exists to reconstruct at adoption time a guarantee the
+  catalog could have made once, at publication.
+- **The publication check gains a unit.** *This snapshot was verified* is a
+  clearer claim than *these entries were pairwise satisfiable when each was
+  published.*
+- **Reproducibility is one coordinate**, not a set of version numbers to compare.
+- **Vendored copies inside the catalog** — a bundle carrying a type whose
+  canonical form lives in another bundle — are checked once per snapshot rather
+  than trusted at every adoption.
+
+### What it would introduce
+
+- **Unintended changes, which is the weakness raised above.** Moving to a newer
+  snapshot to get one thing brings everything else forward with it. **The same
+  hazard exists with per-bundle versions and the degree is different**: there you
+  move one thing deliberately, here the blast radius is whatever the closure
+  contains.
+- **More aggressive chaining.** A transitive closure resolved at a snapshot may
+  pull in more than a per-bundle resolution would, and all of it moves together.
+- **Upgrades stop being local.** If two closures share a bundle, upgrading either
+  means re-resolving both at one newer snapshot — otherwise the project holds two
+  versions of one bundle, which flat resolution forbids. That is ordinary for a
+  lockfile and it is still a cost.
+- **No answer across catalogs, and a misleading appearance of one.** Two catalogs
+  means two snapshots and no joint guarantee. Unsolved either way, but a
+  coordinate makes it *look* solved.
+- **It needs snapshots to exist.** Somebody has to publish them deliberately, and
+  today nothing does — see [cataloger.md](cataloger.md), where publication is not
+  yet an event at all.
+- **It is coarse.** There is no way to say *this bundle at 2.1, everything else
+  current*, which a per-bundle scheme gives for free.
+- **It edges toward the thing the naming decision warned about.** Resolving
+  against a coordinate starts to resemble a resolver, and *the catalog is a
+  catalog, not a registry* tracks the mechanism rather than the word.
+
+### It may already exist, and be called a tag
+
+*Catalog at 1.2.0* and *catalog at commit `abc123`* are the same coordinate; a
+version is the human-readable alias. **The settled decision already endorses
+this** — *"tag it — a tag labels a snapshot without implying compatibility, which
+is the weaker and more honest claim"* — and the section below adds that under a
+publication check **a tag does imply mutual satisfiability**.
+
+So this may need no version scheme at all: an `adopt --at <tag>` and a commit
+recorded in the project's manifest, which records nothing of the kind today.
+
+### What would settle it
+
+**Whether bundles gain dependencies at all.** Today nothing references anything,
+so the closure of `git-secrets` is `{git-secrets}` and the coordinate carries no
+information. **This is worth nothing until that draft is adopted, and worth
+comparing carefully against the resolution above if it ever is.**
 
 ## Alternatives considered
 
