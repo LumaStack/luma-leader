@@ -378,6 +378,30 @@ begins, with the projection written to match. It answers UC37 and gives up on
 mid-flight conditions, which nothing can deliver anyway. See the closing section
 of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
 
+> *Corrected 2026-08-23, later the same day.* **The claim above is true about
+> unloading and the inference drawn from it is too broad.** Nothing can *drop*
+> what is loaded, which is what the sentence says. But a `PreToolUse` hook can
+> put text in front of an agent **at the moment it acts** — verified rather than
+> assumed, since `luma-foreman`'s permission gate already returns a
+> `permissionDecisionReason` that reaches the model.
+>
+> **You cannot unload, but you can load late, and loading late is most of what
+> conditional loading wanted.** The verdict on this axis is unchanged — the
+> adopter's bundle-level default is still what to build first — but *conditional
+> loading is unbuildable* was wrong, and it was load-bearing for the paragraph
+> above. Session modes remain worth having; they are no longer the only option.
+>
+> **And unloading is not impossible either — it is just not a hook.**
+> `/compact` and `/clear` drop what is loaded. What survives a compaction is
+> defined: the project-root `CLAUDE.md` is re-read from disk and re-injected,
+> and path-scoped rules reload when a matching file is next read. So the
+> question was never *how do I unload*; it is **what do I make survive**, which
+> is answerable today by choosing where content lives.
+>
+> Hooks are harness-specific with no standard, which is a real cost and not a
+> reason to decline. The design that follows from this is recorded internally
+> while its supporting research is.
+
 ---
 
 ## The winning stack, and where it leaves each failure
