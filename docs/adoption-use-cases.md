@@ -129,6 +129,89 @@ finding rather than an opinion.
 So the plan for silent presence is not a mechanism. It is: keep the records,
 watch the rate, and move individual rules up the ladder as they earn it.
 
+### The rate is a curve, not a number
+
+**A violation rate means nothing without saying how deep into a session it was
+measured.** Content loaded a moment ago is applied more reliably than content
+sitting in the middle of a very large window, and a rule that holds firmly at
+turn five may be effectively gone by turn eighty. *"This policy is violated 8% of
+the time"* is not a finding; *"it holds until roughly turn N and then does not"*
+is.
+
+**At least four variables move it**, and none is under a bundle author's control:
+
+| | |
+| --- | --- |
+| **depth** | how many turns since the rule was last in front of the model |
+| **position** | where it sits in the window — the middle is the weak place |
+| **window size** | a larger window is not a longer memory; it is more middle |
+| **model** | each has its own profile, and it changes with every release |
+
+**Everything here is tracked per model, and that is not a refinement.** A blended
+figure across models is not a weaker measurement, it is a **misleading** one:
+without partitioning, **a model change is indistinguishable from a policy
+change**. Compliance shifts after an upgrade, somebody attributes it to the
+rewording that shipped the same week, and the conclusion is confidently wrong.
+That is the same attribution failure everything else in this document is trying
+to avoid, arriving through the measurement rather than through the mechanism.
+
+So the model is not one variable among the four. **It is the partition key**, and
+a number recorded without it is not worth recording.
+
+**The useful unit is something like a half-life** — the depth at which a rule
+stops being reliably applied. That is a property of a rule *and* a model
+together, which has two consequences worth stating plainly.
+
+**It makes the enforcement ladder depth-dependent rather than only
+importance-dependent.** *Which rung does this rule deserve* gains a second
+question: **how deep into a session does it still have to hold?** A rule that
+only matters in the first few exchanges is safe as prose. One that must hold at
+turn two hundred is not, however unimportant it looks.
+
+**And it argues for re-statement over louder up-front loading, for the third
+time.** If the failure is decay, then loading harder at the start does not
+address it — being re-encountered near the point of use does. The index pattern
+wins again, now for an attention reason rather than a budget one: an index that
+is re-read is refreshed, and a document loaded once at turn one is not.
+
+### The measurement problem, which is worse than the measurement
+
+**Git history records the action and not the context that produced it.** A
+commit does not say what turn it was made at, how much was loaded, which model
+was running, or where in the window the rule sat. **The rate is recoverable from
+the records that already exist; the curve is not.**
+
+That has an unwelcome implication: **if the curve is ever wanted, something has
+to start writing it down now.** Depth, model, and what was loaded are cheap to
+record at the time and impossible to reconstruct later. `session_note` already
+carries `pinned` — the state a note assumed — which is the nearest existing
+thing and was built for a different purpose.
+
+**And the confounds are severe.** Work done deep in a session is not the same
+work as work done at the start: it is more tangled, more likely to be the hard
+part, and long sessions are selected for difficult problems. A naive comparison
+would attribute to attention what belongs to task difficulty.
+
+**The curve is also perishable.** Measured against one model, it does not
+transfer to the next, and models change faster than a corpus of evidence
+accumulates. Chasing a precise decay constant means re-running the measurement
+forever.
+
+### So do the cheap version
+
+**Two buckets per model, not a curve. Early and late.** Does compliance with a
+given rule differ between the first part of a session and the rest, holding the
+model fixed? That is robust to most of the confounds, needs one recorded number
+rather than a model of attention, and it is enough to decide a rung — which is
+the only decision the measurement feeds.
+
+**Per model even here**, because the partition is what makes the comparison mean
+anything, and because a rule that needed a hook on one model may not on the
+next. That is the good case and it is invisible without the key.
+
+The curve is a research project. The bucket is a column — and the model is the
+column next to it.
+
 ## The use cases
 
 Numbered so the tables below can point at them. One line each; the argument
@@ -513,6 +596,11 @@ of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
   append-only records, archived decisions with dates, everything committed — and
   nothing reads it that way. It is a retrospective audit rather than a check,
   which makes it `audit-records` territory rather than `inspect`.
+- **Whether to start recording the model and the depth now.** Both are cheap at
+  the time and unrecoverable afterwards, and without the model nothing measured
+  later can be partitioned — which makes it not merely coarser but wrong. The
+  cost is that it is telemetry, in a system where everything is committed, and
+  *what a session did* is closer to personal than anything `.luma/` holds today.
 - **Whether an enforcement rung should also be declarable.** Measured is better
   than declared and slower to arrive. A bundle stating that a policy warrants a
   hook would give a new adopter the benefit before they have accumulated any
