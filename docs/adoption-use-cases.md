@@ -20,7 +20,7 @@ to do.** This one enumerates that first and scores the mechanisms against it, so
 an option wins or loses on cases rather than on argument. Where a verdict is
 reached it is stated, with what the winner still costs.
 
-## Three failures, and only one of them is about getting content
+## Four failures, and only one of them is about getting content
 
 Every design below is trading between these. Naming them separately matters
 because they are usually all called *context problems* and they have almost
@@ -31,15 +31,73 @@ nothing in common.
 | **Contradiction** | two loaded documents say opposite things | **nobody** — both are plausible, the agent picks one | an agent confidently follows a rule the project abandoned |
 | **Saturation** | more is loaded than fits, so something is dropped | **nobody** — dropping is silent | a rule that was in force was never read |
 | **Silent absence** | a document that should have loaded did not | **nobody** — no rule was consulted, so none was missed | a decision made without the rule that governed it |
+| **Silent presence** | it loaded, and was not applied when it mattered | **nobody, and every check says green** | the same cost as absence, from the opposite cause |
 
-**All three are silent, which is the whole difficulty.** Nothing errors, nothing
+**All four are silent, which is the whole difficulty.** Nothing errors, nothing
 crashes, and the output looks like a normal answer.
 
-**And here is the structural point this document exists to make.** Contradiction
-and saturation happen entirely **after** content arrives. Only silent absence is
-even partly a question of what you acquired. Roughly seven hundred lines of
-design in `docs/` — dependencies and versioning — address acquisition. Nothing
-addresses the other two.
+**And here is the structural point this document exists to make.** Contradiction,
+saturation and silent presence happen entirely **after** content arrives. Only
+silent absence is even partly a question of what you acquired. Roughly seven
+hundred lines of design in `docs/` — dependencies and versioning — address
+acquisition. Nothing addresses the other three.
+
+### Silent presence is the one no loading discipline fixes
+
+**A document can be in the window and still not be used.** Attention is finite
+and position matters; something read at the start of a session is not reliably
+applied sixty turns later, and a rule that never becomes salient at the moment
+it applies may as well not have been there.
+
+**It is named to pair with silent absence, because the two are indistinguishable
+from outside.** One never loaded, one loaded and did nothing, and **the output
+is identical** — an action taken without the rule that governed it. The causes
+are opposite and so are the fixes, which is exactly why one name for both would
+be useless.
+
+**It is the worst of the four to detect, and the reason is uncomfortable.** The
+other three leave evidence: a checksum, a missing file, a budget, a projection
+that never ran. This one leaves none, because **every mechanical check passes.**
+The bundle is adopted, the copy is clean, the projection is current, the document
+is present, and the rule was ignored anyway. `inspect` reports green and is
+right to.
+
+**It puts a ceiling on `preload: mandatory`, and on the obligation ladder above
+it.** Both assume that presence produces compliance. Presence is what they can
+buy; compliance is what they are for. If that implication is weak, then marking
+something mandatory is a weaker act than it reads as — which is the same doubt
+`preload-levels-collapse-into-emphasis` reaches from the projection side.
+
+**It argues *for* the index pattern rather than against it**, which is worth
+noticing because the index was chosen for budget reasons. If presence does not
+guarantee attention, then a short index re-encountered at the moment of need can
+outperform a large blob loaded once at the start. **Just-in-time beats up-front
+for attention reasons as well as for cost** — the same decision, now supported
+twice.
+
+### The enforcement ladder this implies
+
+**For a rule that genuinely must not be missed, presence in context is the
+weakest available enforcement.** Ranked, weakest first:
+
+| | |
+| --- | --- |
+| **prose loaded at session start** | present, and hoping |
+| **prose re-stated at the point of use** | the skill adapter naming the standing context its workflow assumes |
+| **a mechanical check** | `inspect` finding the violation after the fact |
+| **a hook that blocks the action** | the rule executes rather than being read |
+
+**Two of these already exist and one was built by accident.** The adapters
+`outfit` writes re-state each bundle's standing context inside the skill that
+fires — done for thin-adapter reasons, and it happens to be the second rung.
+`agent-permissions` is the fourth rung outright: it does not put a rule in
+context, it runs at the tool call.
+
+**The useful move is to notice which rung a rule deserves.** Most knowledge
+belongs on the first two and is fine there. Anything whose violation is
+expensive and irreversible — a published credential, a force push, a deleted
+record — belongs on the fourth, and putting it in a policy document is a
+decision to accept silent presence as a risk.
 
 ## The use cases
 
@@ -113,6 +171,7 @@ comes later.
 | **UC34** | Is there a newer version of anything I hold? |
 | **UC35** | Which rules are actually in force in this repository? |
 | **UC36** | What did I adopt that nothing reads? |
+| **UC39** | **Is this rule actually being followed**, rather than merely present? |
 
 **Most of these behave identically under every design on the table.** UC1, UC2,
 UC5, UC7, UC28–UC30, UC33 and UC36 are already answered and do not discriminate.
@@ -386,6 +445,7 @@ of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
 | **Silent absence** | **best covered.** The index pattern is built and running |
 | **Saturation** | **answerable and unanswered.** Cost reporting and `preload_default` are both specified and neither exists |
 | **Contradiction** | **open.** Partly prevented by structure, undrafted for UC13 and UC14 |
+| **Silent presence** | **outside the stack entirely.** No axis here touches it, and every check passes while it happens |
 
 ## What this suggests, in order
 
@@ -400,6 +460,10 @@ of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
 5. **Decide whether ad-hoc adoption is marked as such** in `adopted.toml`.
 6. **Take UC13 and UC14 seriously as a design problem**, or record deliberately
    that holding two catalogs that speak to one subject is unsupported.
+7. **Decide, per rule, which rung of the enforcement ladder it deserves.**
+   Nothing currently expresses that a rule is too expensive to leave as prose,
+   and the one rule already on the top rung got there by being built as a hook
+   rather than by anybody classifying it.
 
 ## Open
 
@@ -415,6 +479,14 @@ of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
 - **UC31 — un-adoption.** No command removes a bundle, and under dependencies it
   would need the asked-for versus required-by flag that `adopted.toml` does not
   carry.
+- **Whether an enforcement rung is a declaration or a judgement.** A bundle
+  could state that a policy warrants a hook, which makes the classification
+  reviewable — and also makes it a thing every author must now answer.
+- **Whether silent presence is measurable at all.** Everything else here is
+  checkable; this one needs evidence that a loaded rule went unapplied, which
+  means comparing what an agent did against what it held. Nothing produces that
+  today, and without it the fourth failure stays an argument.
 - **Whether the use-case list is complete.** It was written in one sitting from
   a conversation, and the D section grew fastest, which usually means it is the
-  one still missing entries.
+  one still missing entries. Silent presence was found after the list was
+  called done, which is evidence for that.
