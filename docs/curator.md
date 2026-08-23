@@ -1,13 +1,13 @@
 ---
 type: document
-title: The cataloger
+title: The curator
 description: What a tool that tends a catalog would do — the checks only a catalog can run, why it is not foreman, and the fact that nothing currently publishes anything.
 lifecycle_status: draft
 created: { by: human:benlinton, at: 2026-08-22T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-22T00:00:00Z }
 ---
 
-# The cataloger
+# The curator
 
 **Draft. Nothing here is settled.** Companion to
 [bundle-dependencies.md](bundle-dependencies.md) and
@@ -16,7 +16,7 @@ substantial amount of work that has to happen *where a catalog is written*. This
 names the thing that would do it. Kept out of [DECISIONS.md](DECISIONS.md) on
 purpose: its claims would otherwise read as positions the organization has taken.
 
-**A cataloger tends a catalog.** It validates what a catalog holds, refuses what
+**A curator tends a catalog.** It validates what a catalog holds, refuses what
 it cannot hold consistently, and reports what the catalog is becoming.
 
 **Anyone runs one.** It is not a luma maintainers' script. An organization with
@@ -24,9 +24,11 @@ its own catalog needs exactly the same checks over exactly the same shapes, and 
 tool that only worked on the universal catalog would be a private convenience
 published as though it were a product.
 
-***Cataloger* is the working name and is not settled** — `curator` currently has
-the better argument. See *On the name* at the end; the title of this document is
-a placeholder, not a decision.
+**The name is settled: `curator`.** Decided 2026-08-23 by firing the re-open
+trigger on *Tools are named for the verb they perform* — *before anything
+installs a binary, since renaming is free until then*. Nothing installs one, so
+it cost a document rename and nothing else. *On the name* at the end records
+what it beat and why.
 
 ## Why it is not foreman
 
@@ -36,7 +38,7 @@ separate from `luma-leader`, and it applies again here.
 
 | | runs in | on behalf of |
 |---|---|---|
-| **cataloger** | a repository that **publishes** bundles | the author, who can still fix it |
+| **curator** | a repository that **publishes** bundles | the author, who can still fix it |
 | **foreman** | a repository that **adopts** them | the project, which owns neither bundle |
 | **leader** | nothing. It is a place you visit | the organization |
 
@@ -67,7 +69,7 @@ must_not_own:
 inside the universal catalog would mean an organization has to clone *our
 content* in order to create *their own catalog* — content and tool in one
 artifact, where only one of them is wanted. `luma-leader` is out for a different
-reason: it is never installed anywhere, and a cataloger must be installed
+reason: it is never installed anywhere, and a curator must be installed
 wherever a catalog is written.
 
 **So: its own repository, or a command inside foreman.** The one-verb test
@@ -108,7 +110,7 @@ This is already the stated position in `luma-catalog`'s `bundle-migrations` idea
 than from catalogs. **It is checkable rather than a judgement call:** `adopt`
 copies and hashes and has no execution path at all.
 
-## The line: foreman checks a bundle, the cataloger checks a catalog
+## The line: foreman checks a bundle, the curator checks a catalog
 
 **One is about an artifact's internal health. The other is about a set's mutual
 consistency.** That distinction should decide every check's home.
@@ -118,7 +120,7 @@ defects the knowledge format tolerates — a dangling link, an unquoted frontmat
 wikilink, a template carrying live frontmatter. **Those are properties of one
 bundle and need no catalog to find.**
 
-A cataloger's checks are the ones that are *meaningless* about a bundle alone:
+A curator's checks are the ones that are *meaningless* about a bundle alone:
 whether two bundles' constraints can be satisfied together, whether a release's
 version tier is honest about what it removed, whether the catalog as a whole is
 drifting toward tightness.
@@ -197,7 +199,7 @@ what nobody sees.
 
 ### Possibly: create one
 
-`cataloger init` scaffolding a new catalog — `catalog.md`, the directory, the
+`curator init` scaffolding a new catalog — `catalog.md`, the directory, the
 conventions. **Weakest item here.** A catalog is a file and a directory, so this
 saves a copy-paste and earns its place only if the conventions turn out to be
 easy to get subtly wrong.
@@ -211,11 +213,11 @@ arrive by adoption. **A tool that compiled them in would be deciding standards
 rather than checking them**, and it would be useless to the second organization
 that ran it.
 
-**Adopt anything.** That is foreman's, and a cataloger that also adopted would
+**Adopt anything.** That is foreman's, and a curator that also adopted would
 have collapsed the split it exists to express.
 
 **Decide obligations.** Whether a bundle is mandatory is the catalog author's
-declaration in `catalog.md`. The cataloger checks that the declarations are
+declaration in `catalog.md`. The curator checks that the declarations are
 mutually satisfiable; it has no view on what they should say.
 
 **Publish to a registry.** There is no registry. A catalog is a git repository
@@ -238,7 +240,7 @@ to attach to, and the design has been written as though one exists.
 | **a tag** | at a deliberate moment somebody chose | bundles are adopted from `main`, so a tag gates nothing today |
 | **on demand** | whenever somebody remembers | **an unenforced check is decoration** — the failure mode the estate rejects everywhere else |
 
-**This is the first thing to settle**, because it decides whether the cataloger
+**This is the first thing to settle**, because it decides whether the curator
 is a gate or a report, and those are different tools. Everything above is written
 assuming a gate.
 
@@ -258,7 +260,7 @@ genuinely different checks, which would mean this was always local policy.*
 **Fold it into foreman.** One tool, one install, no new name. It puts a
 project-side tool in a publishing repository and gives foreman a fifth verb
 belonging to a different audience — and by the one-verb test, a tool whose jobs
-cannot be named together is more than one tool. *Revisit if the cataloger stays
+cannot be named together is more than one tool. *Revisit if the curator stays
 too small to justify its own release process.*
 
 **Let adopters catch everything.** Installation-time checks are already required
@@ -275,12 +277,12 @@ catalog, not a registry* is settled, and nothing here reopens it.
 - **What publication is.** The largest item, above.
 - **Overlap with `foreman inspect --rule bundles`.** A catalog should not publish
   a structurally broken bundle, but those checks already exist elsewhere. Either
-  the cataloger calls foreman, duplicates it, or the shared part becomes a third
+  the curator calls foreman, duplicates it, or the shared part becomes a third
   thing — and *no shared package until two real consumers exist* says to let the
   duplication happen first and extract when the shape is known.
 - **Cross-catalog conflict.** Curation makes one catalog internally consistent; a
   project adopting from two can still reach a combination neither publisher saw.
-  A cataloger cannot see the other catalog, so this is structurally beyond it.
+  A curator cannot see the other catalog, so this is structurally beyond it.
 - **What a check was validated against.** The rules will change, and nothing
   records which rules a given catalog was ever held to. Recorded in
   [bundle-dependencies.md](bundle-dependencies.md) as a conformance version rather
@@ -289,11 +291,9 @@ catalog, not a registry* is settled, and nothing here reopens it.
   bundle depends on another today, so the resolution checks have nothing to
   check. The version-tier and contradiction checks are useful immediately; the
   dependency half is a design for a situation that does not yet exist.
-- **The name.** `curator` has the stronger argument and `cataloger` is the more
-  guessable word. Cheap to settle now and expensive after anything installs it.
 - **Whether a catalog should be checked for inertness at all.** *Nothing executes
   as a side effect of adoption* is enforced on the `adopt` side by having no
-  execution path. Whether the cataloger should additionally refuse a bundle that
+  execution path. Whether the curator should additionally refuse a bundle that
   *looks* executable — a `setup.py`, a hook, a binary — is unsettled. It would be
   defence in depth against an `adopt` that later grows a convenience nobody
   intended, and it is also exactly the kind of judgement call about file contents
@@ -318,7 +318,7 @@ before it can be adopted is one nobody adopts.
 
 | | verb it claims | does the tool do that? | collides with |
 |---|---|---|---|
-| **cataloger** | catalogs | yes | `<org>-catalog`, weakly |
+| ~~**cataloger**~~ | catalogs | yes | **`<org>-catalog` — and this is what sank it** |
 | **curator** | curates | **yes, and it is the word the design already uses** | nothing |
 | **publisher** | publishes | not yet — nothing publishes | nothing |
 | **packager** | packages | **no. Nothing is ever packaged** | — |
@@ -334,10 +334,11 @@ job — deciding whether a narrow constraint is justified is *"a catalog-editor 
 rather than a mechanism."* **A tool named for the semantics the design already
 declared is not a new metaphor; it is the existing vocabulary.**
 
-**`cataloger` is more guessable and carries the collision.** It names its object,
-which `curator` does not — somebody meeting the word cold learns more from it.
-Against that, `luma-catalog` and `luma-cataloger` are three letters apart, and the
-same decision already established that avoidable near-collisions get avoided:
+**`cataloger` was more guessable and carried the collision, and the collision
+won.** It names its object, which `curator` does not — somebody meeting the word
+cold learns more from it, and that was never refuted. It was outweighed:
+`luma-catalog` and `luma-cataloger` are three letters apart, and the same
+decision already established that avoidable near-collisions get avoided:
 *"A local collision, small but free to avoid. `luma-foreman` already has
 `inspect/registry.py`… Two registries meaning different things in one codebase is
 a permanent tax."* That reasoning applies here with the same force.

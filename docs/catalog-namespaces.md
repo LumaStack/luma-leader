@@ -12,7 +12,7 @@ modified: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 **Draft. Nothing here is settled.** Sixth companion to
 [bundle-dependencies.md](bundle-dependencies.md),
 [bundle-versioning.md](bundle-versioning.md),
-[shared-types.md](shared-types.md), [cataloger.md](cataloger.md) and
+[shared-types.md](shared-types.md), [curator.md](curator.md) and
 [adoption-use-cases.md](adoption-use-cases.md), which scores this against the
 cases it has to handle. Kept out of [DECISIONS.md](DECISIONS.md) on purpose.
 

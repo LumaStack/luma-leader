@@ -17,7 +17,7 @@ and it grew large enough to stop being a section.
 
 Seventh companion to [bundle-dependencies.md](bundle-dependencies.md),
 [bundle-versioning.md](bundle-versioning.md),
-[shared-types.md](shared-types.md), [cataloger.md](cataloger.md),
+[shared-types.md](shared-types.md), [curator.md](curator.md),
 [catalog-namespaces.md](catalog-namespaces.md) and the use cases. Kept out of
 [DECISIONS.md](DECISIONS.md) on purpose.
 
