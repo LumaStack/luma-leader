@@ -6,21 +6,29 @@ Settled positions and the reasoning that settled them. Recorded so they are not 
 
 **Settled 2026-08-23.**
 
-**Name a tool for the job it does, in a word somebody can guess.** `cataloger` catalogs. The form is a verb plus `-er` — the `compiler`/`linker` shape, naming the actor rather than the artifact.
+**Name a tool for the job it does, in a word somebody can guess.** `curator` curates. The form is a verb plus `-er`/`-or` — the `compiler`/`linker` shape, naming the actor rather than the artifact.
 
-**The test:** could somebody who has never read the docs guess what it does from the name? `cataloger` passes. `leader` and `foreman` do not, and that is the cost being accepted below.
+**The test:** could somebody who has never read the docs guess what it does from the name? `curator` passes. `leader` and `foreman` do not, and that is the cost being accepted below.
 
-**And the corollary is the useful half: if the job cannot be stated as one verb, that is a signal about the tool rather than about the name.** A name that has to be a metaphor usually means more than one job is hiding behind it. Run it on what exists — `cataloger` catalogs; `foreman` inspects, bootstraps, outfits and refits, which is four verbs and exactly why it needed a metaphor. **That makes the naming rule double as a junk-drawer detector**, which is the thing it is actually worth having.
+**And the corollary is the useful half: if the job cannot be stated as one verb, that is a signal about the tool rather than about the name.** A name that has to be a metaphor usually means more than one job is hiding behind it. Run it on what exists — `curator` curates; `foreman` inspects, bootstraps, outfits and refits, which is four verbs and exactly why it needed a metaphor. **That makes the naming rule double as a junk-drawer detector**, which is the thing it is actually worth having.
 
 **Why it matters:** the previous register was role metaphors — a leader decides what good looks like, a foreman makes it true on each site. That pairing teaches the architecture *once you already know it*, and is hard to recall before that. It also stopped scaling at three: adding a `quartermaster` to `leader` and `foreman` means three people-who-manage and no way to remember which does what. **Thematic naming families carry no information** — the Ruby failure, where knowing one name tells you nothing about the next.
 
 **Apply it:** new tools take plain verb names. **Existing names are unaffected**, deliberately — `luma-leader` was renamed on 2026-08-21 after weighing sixty candidates, and a convention whose adoption requires renaming everything is one nobody adopts. The set is now mixed on purpose.
 
-**Standing consequence — do not name a tool after the artifact it operates on.** That is the defect that forced the `luma-hq` rename: *"named after the thing it operates on, not after what it is. Git is not called repository; Terraform is not called state."* An agent noun escapes it because it names the actor, which is why `cataloger` is admissible where `catalog` would not be.
+**Standing consequence — do not name a tool after the artifact it operates on.** That is the defect that forced the `luma-hq` rename: *"named after the thing it operates on, not after what it is. Git is not called repository; Terraform is not called state."* An agent noun escapes it because it names the actor, which is why `curator` is admissible where `catalog` would not be.
 
-**Standing consequence — `<org>-catalog` is a catalog; `cataloger` is an engine.** The same reservation as the `-hq` suffix, and for the same reason: two sibling checkouts three letters apart is a glob away from the mistake that has already been made once here.
+**Standing consequence — `<org>-catalog` is a catalog, and no engine takes a name near it.** The same reservation as the `-hq` suffix, and for the same reason: two sibling checkouts three letters apart is a glob away from the mistake that has already been made once here. This is what retired `cataloger`; see the correction below.
 
-**Deferred alternative:** `curator`, which has the better argument on the merits — *the catalog is a catalog, not a registry* states outright that *"curation is the actual semantics"*, and `bundle-dependencies.md` calls judging a narrow constraint *"a catalog-editor job"*. It also avoids the `-catalog` collision entirely. It loses on guessability: `cataloger` names its object and `curator` does not. *Re-open before anything installs a binary, since renaming is free until then.*
+> *Corrected 2026-08-23 — the deferred alternative won and its trigger fired.* **The tool is `curator`, not `cataloger`.** The rule above is unchanged and `curator` complies with it; what changed is which candidate satisfies it for this tool, which is the deferred-alternative mechanism working rather than a reversal. Nobody who followed the old text is now in breach.
+>
+> **The trigger was *re-open before anything installs a binary, since renaming is free until then*, and nothing installs one.** It was the only open trigger in this document that got more expensive with time rather than staying flat, which is why it was fired deliberately rather than left.
+>
+> **It won on the argument it always had.** *The catalog is a catalog, not a registry* states outright that *"curation is the actual semantics"*, and `bundle-dependencies.md` independently calls judging a narrow constraint *"a catalog-editor job"* — so this is the vocabulary the design already used rather than a new metaphor.
+>
+> **And the guessability objection was outweighed rather than refuted.** `cataloger` does name its object where `curator` does not, and that remains true. It loses to the collision: `luma-catalog` and `luma-cataloger` are three letters apart, both would be siblings in the same checkout layout, and **a fresh agent has already been misled once by exactly this shape** — that is what reserved `-hq`. A cost paid every time somebody reads a name lost to a cost paid once by whoever reads the docs. In practice the tool runs inside a catalog, so the working directory supplies the object the name does not.
+>
+> **Nothing was renamed on disk** because nothing existed: no repository, no binary, no import. This is the whole cost of firing the trigger on time.
 
 **Deferred alternative:** `packager`, with `luma-catalog` renamed to `luma-warehouse`. Rejected on two counts — **nothing is packaged**, so the verb is wrong rather than merely absent; and **a warehouse holds whatever you put in it**, which is the permissive-storage reading that *the catalog is a catalog, not a registry* was written to keep out. *Re-open only if the mechanism changes to match, which is that decision's own trigger.*
 

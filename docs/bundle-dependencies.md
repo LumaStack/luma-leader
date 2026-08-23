@@ -355,7 +355,7 @@ know — maybe I'm overthinking this."*
   means two snapshots and no joint guarantee. Unsolved either way, but a
   coordinate makes it *look* solved.
 - **It needs snapshots to exist.** Somebody has to publish them deliberately, and
-  today nothing does — see [cataloger.md](cataloger.md), where publication is not
+  today nothing does — see [curator.md](curator.md), where publication is not
   yet an event at all.
 - **It is coarse.** There is no way to say *this bundle at 2.1, everything else
   current*, which a per-bundle scheme gives for free.

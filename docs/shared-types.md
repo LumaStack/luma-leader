@@ -11,7 +11,7 @@ modified: { by: agent:claude-opus-5, at: 2026-08-22T00:00:00Z }
 
 **Draft. Nothing here is settled.** Fourth companion to
 [bundle-dependencies.md](bundle-dependencies.md),
-[bundle-versioning.md](bundle-versioning.md) and [cataloger.md](cataloger.md).
+[bundle-versioning.md](bundle-versioning.md) and [curator.md](curator.md).
 Kept out of [DECISIONS.md](DECISIONS.md) on purpose.
 
 **This is the reasoning. The operating instructions are in the `luma/luma-types`
@@ -152,6 +152,6 @@ however load-bearing it is there.
 - **Whether a bare type name should ever be legal for a shared type.** Today
   namespacing is `SHOULD`. If a project declares `type: project` meaning ours,
   nothing objects and nothing resolves.
-- **What a cataloger does about mixed versions**, given the check is *report
+- **What a curator does about mixed versions**, given the check is *report
   always, fail only for the out-of-bundle set* — narrower than a blanket conflict
   rule, and unimplemented.

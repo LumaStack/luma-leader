@@ -12,7 +12,7 @@ modified: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 **Draft. Nothing here is settled.** Fifth companion to
 [bundle-dependencies.md](bundle-dependencies.md),
 [bundle-versioning.md](bundle-versioning.md),
-[shared-types.md](shared-types.md), [cataloger.md](cataloger.md) and
+[shared-types.md](shared-types.md), [curator.md](curator.md) and
 [catalog-namespaces.md](catalog-namespaces.md). Kept out of
 [DECISIONS.md](DECISIONS.md) on purpose.
 
