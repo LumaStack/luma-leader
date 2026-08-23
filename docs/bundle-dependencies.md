@@ -36,11 +36,25 @@ for prose, so nesting is not merely undesirable — it has no meaning.
 So: **one version of any bundle in a project, ever.** Dependencies sit side by
 side. Nothing contains anything.
 
-**Type definitions make this sharper rather than softer.** If two bundles want
-different field sets for the same type, records have already been written to disk
-against one of them. Prose read under the wrong version can at least be reasoned
-about; a record written against a schema that no longer exists is silently wrong
-and cannot be failed out of after the fact.
+**Type definitions make this sharper rather than softer** — *for records, and
+only within one bundle.* If two bundles want different field sets for the same
+type, records have already been written to disk against one of them. Prose read
+under the wrong version can at least be reasoned about; a record written against
+a schema that no longer exists is silently wrong and cannot be failed out of
+after the fact.
+
+> *Corrected 2026-08-23.* This originally read as an argument that **types make
+> the one-version rule apply more strongly than prose does**, and that is wrong.
+> **The bundle is the resolution scope**: a contract is found in *this* bundle's
+> `_types/`, so two bundles may hold different versions of one type and each
+> one's documents are checked against the copy that travelled with them — which
+> is the `require` scope prose does not have. Bundle B moving to a new version
+> does not invalidate records inside bundle A. The danger above is real and it is
+> scoped to the same place the resolution is.
+>
+> **The exception is a document that lives outside every bundle** — it has no
+> scope, so nothing decides between two contracts claiming it. See
+> [shared-types.md](shared-types.md).
 
 ## A dependency is transitive adoption, and nothing more
 

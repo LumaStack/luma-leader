@@ -301,6 +301,9 @@ catalog, not a registry* is settled, and nothing here reopens it.
 
 ## On the name
 
+*The general rule is now settled — see [DECISIONS.md](DECISIONS.md), **Tools are named for the verb they perform**. What follows is how it applies here, and the candidates weighed for this tool specifically.*
+
+
 **The register deliberately changes here.** `leader` and `foreman` are role
 metaphors, which teach the architecture once you already know it and are hard to
 recall before that. From here the rule is *name the tool for the verb it
