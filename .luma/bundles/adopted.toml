@@ -1,0 +1,17 @@
+# Written by luma-foreman. Do not edit by hand.
+#
+# checksum covers every file in the vendored copy: sha256 over each file's own
+# sha256, in sorted path order. Editing this value makes the drift check start
+# passing silently, which is the one failure it exists to prevent.
+
+["luma/luma-maintainers"]
+version  = "0.4.0"
+source   = "https://github.com/LumaStack/luma-catalog"
+commit   = "25f46c507972369a15fb787897a4f45dc65e16b0"
+checksum = "sha256:d582a640d091c93fcb466a73f960c51710cf7871ebcf737b626dd73e99c41f6a"
+
+["luma/luma-tools"]
+version  = "0.3.1"
+source   = "https://github.com/LumaStack/luma-catalog"
+commit   = "25f46c507972369a15fb787897a4f45dc65e16b0"
+checksum = "sha256:69de9958cc9b9b77165c6b874391e02855144ea7593be6832d8e22cdab6458b4"

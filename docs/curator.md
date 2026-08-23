@@ -1,10 +1,10 @@
 ---
 type: document
 title: The curator
-description: What a tool that tends a catalog would do — the checks only a catalog can run, why it is not foreman, and the fact that nothing currently publishes anything.
+description: What a tool that tends a catalog does — the checks only a catalog can run, why it is not foreman, and what publication turned out to be.
 lifecycle_status: draft
 created: { by: human:benlinton, at: 2026-08-22T00:00:00Z }
-modified: { by: agent:claude-opus-5, at: 2026-08-22T00:00:00Z }
+modified: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 ---
 
 # The curator
@@ -223,31 +223,44 @@ mutually satisfiable; it has no view on what they should say.
 **Publish to a registry.** There is no registry. A catalog is a git repository
 and a bundle is available by being in it.
 
-## The problem underneath: nothing publishes
+## The problem underneath, settled: merging is publishing
 
-**Every check above is described as running "at publication", and publication is
-not currently an event.**
+**This section used to say that publication was not an event.** It is one now,
+settled 2026-08-23: **merging to a catalog's `main` is publication, and the
+checks run before the merge.** Everything above is written assuming a gate, and
+a gate is what it became.
 
-`luma-catalog` has no CI, no tags, and no release step. A bundle becomes
-available by being committed to `main`. So *reject at publication* has no moment
-to attach to, and the design has been written as though one exists.
+**Three candidates were on the table:**
 
-**Three candidates, none chosen:**
-
-| | catches it | costs |
+| | catches it | why it went the way it did |
 |---|---|---|
-| **merge to `main`** | before anything can adopt it | needs CI, which no repository here has |
-| **a tag** | at a deliberate moment somebody chose | bundles are adopted from `main`, so a tag gates nothing today |
-| **on demand** | whenever somebody remembers | **an unenforced check is decoration** — the failure mode the estate rejects everywhere else |
+| **merge to `main`** | before anything can adopt it | **chosen.** It needed CI, which no repository here had. Now one does |
+| **a tag** | at a deliberate moment somebody chose | rejected: bundles are adopted from `main`, so a tag gates nothing |
+| **on demand** | whenever somebody remembers | rejected: **an unenforced check is decoration** — the failure mode the estate rejects everywhere else |
 
-**This is the first thing to settle**, because it decides whether the curator
-is a gate or a report, and those are different tools. Everything above is written
-assuming a gate.
+**The related question answered itself.** If adoption takes whatever is on
+`main`, then `main` *is* the published artifact and there is no unpublished
+state in which to catch anything. So either publication becomes a real step, or
+the checks run pre-merge and the catalog's `main` is its own guarantee. The
+second is cheaper and it is what `main` already meant.
 
-**A related question it forces:** if adoption takes whatever is on `main`, then
-`main` is the published artifact and there is no unpublished state in which to
-catch anything. Either publication becomes a real step, or the checks run
-pre-merge and the catalog's `main` is its own guarantee.
+**What that cost, concretely, in `luma-catalog`:** a pull-request job running
+`luma-catalog-curator check`, the same tool with `--against origin/main`, and
+`luma-foreman inspect`; branch protection making a red run block the merge; and
+the tools pinned to commit SHAs so a check's behaviour cannot move without
+somebody editing a diff. No tag, no release, no registry.
+
+**Two things it deliberately did not buy.** There is still **no notification** —
+an adopter finds a newer version by running `adopt` again, and nothing tells
+them to. And **only this catalog is gated**: the tool is the same everywhere,
+the enforcement is one repository's configuration, and any other organization's
+catalog is unwired until they copy the job. That is the price of *anyone runs
+one*, and it is the right price — a tool that gated a catalog it was merely
+pointed at would be deciding somebody else's process.
+
+**The version tier is the part that stayed human.** `--against` refuses a bundle
+whose files moved while its version stood still, which is mechanical. Whether
+the move should have been major, minor or patch is not, and nothing decides it.
 
 ## Alternatives considered
 
@@ -274,7 +287,6 @@ catalog, not a registry* is settled, and nothing here reopens it.
 
 ## Open, and unresolved here
 
-- **What publication is.** The largest item, above.
 - **Overlap with `foreman inspect --rule bundles`.** A catalog should not publish
   a structurally broken bundle, but those checks already exist elsewhere. Either
   the curator calls foreman, duplicates it, or the shared part becomes a third
@@ -320,7 +332,7 @@ before it can be adopted is one nobody adopts.
 |---|---|---|---|
 | ~~**cataloger**~~ | catalogs | yes | **`<org>-catalog` — and this is what sank it** |
 | **curator** | curates | **yes, and it is the word the design already uses** | nothing |
-| **publisher** | publishes | not yet — nothing publishes | nothing |
+| **publisher** | publishes | no. *Merging* publishes; this refuses a merge | nothing |
 | **packager** | packages | **no. Nothing is ever packaged** | — |
 
 **`curator` has the strongest support, and it is not a matter of taste.** *The
@@ -343,10 +355,11 @@ decision already established that avoidable near-collisions get avoided:
 `inspect/registry.py`… Two registries meaning different things in one codebase is
 a permanent tax."* That reasoning applies here with the same force.
 
-**`publisher` is the right name for a job that does not exist.** If publication
-becomes a real event — see *The problem underneath* — this is exactly the verb.
-Naming the tool for it now would be naming it after the thing most likely to
-change.
+**`publisher` was the right name for a job that did not exist — and publication
+arrived without making it right.** Merging to `main` is what publishes; the tool
+is what refuses the merge. *Curate* still describes that and *publish* still does
+not, so the thing most likely to change changed, and the name held. Recorded
+because the reasoning was conditional and the condition fired.
 
 ### `packager`, and the `luma-warehouse` rename it would need
 
