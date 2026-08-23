@@ -212,6 +212,64 @@ next. That is the good case and it is invisible without the key.
 The curve is a research project. The bucket is a column — and the model is the
 column next to it.
 
+### Snapshot on failure, not telemetry always
+
+**This resolves the tension the previous section left open.** Recording depth and
+model continuously is ambient surveillance of every session, in a system where
+everything is committed. **Recording them at the moment a failure is detected is
+an incident record** — which is a discipline the estate already has, and the
+shape everything else here uses: write when something happens, never sample.
+
+Failures are rare, so the cost is small, and what is captured is proportionate to
+what went wrong rather than to how long somebody worked.
+
+**Most of the snapshot does not have to be captured, because it is derivable.**
+Foreman wrote the projection, so *what else was loaded* is reconstructible from
+the repository at that commit — the same trick `adopted.toml` already uses.
+**What actually has to be recorded is the volatile part**: the model and its
+version, how deep the session was, what the agent did, what rule it contradicted,
+and who noticed. Everything else is a commit away.
+
+### Four hypotheses, and they are told apart by different fields
+
+| | what it means | what would show it |
+| --- | --- | --- |
+| **misauthored** | **the rule never did what it intended in the first place** | it reads as background, buries the instruction, or its `description` does not match when it applies |
+| **interference** | something else in context competed or contradicted | a *specific* other document present across incidents |
+| **staleness** | the loaded copy was old, or the rule had been superseded | the loaded version against the current one; `decided` and `archived` dates |
+| **decay** | it was simply too deep | high depth, and nothing else unusual |
+
+**Misauthored is the null hypothesis and should be checked first**, because it is
+by far the cheapest to fix and the most likely to be true early on. A rule that
+was ambiguous, or filed as rationale when it needed to be an instruction, was
+never going to be followed at any depth — and diagnosing that as an attention
+problem means building measurement to discover a wording defect.
+
+**One snapshot distinguishes nothing.** Every hypothesis is consistent with any
+single incident. Decay only appears as a correlation with depth, interference as
+a correlation with one other document being present, staleness as version skew.
+**The value is entirely in accumulating them**, which means the first several
+teach nothing and that is not a failure of the method.
+
+### The one place a violation is already caught, and discarded
+
+**`agent-permissions` denies at the moment of action, and keeps nothing.** The
+gate emits a decision to the harness and writes no record. Every denial is an
+instance of *the rule was in force and the agent attempted it anyway* — detected
+at the only moment when the full session state still exists — and all of it is
+thrown away.
+
+That makes it the natural first snapshot site: **the detection already works and
+only the recording is missing.** It is also the narrowest possible starting
+point, covering the rules that reached the top rung rather than all knowledge,
+which is the right place for a mechanism nobody has tried yet.
+
+**The other three detection points are all worse, in the same direction.** A
+mechanical check finds a violation after the fact with the session gone. A human
+noticing is the most reliable trigger and the least systematic. A retrospective
+audit over history has no session state at all — it can produce the rate, never
+the diagnosis.
+
 ## The use cases
 
 Numbered so the tables below can point at them. One line each; the argument
@@ -596,11 +654,16 @@ of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
   append-only records, archived decisions with dates, everything committed — and
   nothing reads it that way. It is a retrospective audit rather than a check,
   which makes it `audit-records` territory rather than `inspect`.
-- **Whether to start recording the model and the depth now.** Both are cheap at
-  the time and unrecoverable afterwards, and without the model nothing measured
-  later can be partitioned — which makes it not merely coarser but wrong. The
-  cost is that it is telemetry, in a system where everything is committed, and
-  *what a session did* is closer to personal than anything `.luma/` holds today.
+- **Where a failure snapshot lives.** It is a record of something that happened,
+  so `.luma/records/` by the tier definition — but it is written by a hook on a
+  workstation, may contain a command somebody typed, and is the first thing in
+  that tier not authored deliberately by a person.
+- **Whether a denial is a failure at all.** The gate denying something is the
+  system working. It is evidence of *attempted* violation rather than actual, and
+  whether that predicts real silent presence is an assumption, not a finding.
+- **Who decides a snapshot was misauthored rather than decayed.** The
+  classification is a judgement, it is the whole value of the exercise, and
+  nothing says whether it belongs to the rule's author or its adopter.
 - **Whether an enforcement rung should also be declarable.** Measured is better
   than declared and slower to arrive. A bundle stating that a policy warrants a
   hook would give a new adopter the benefit before they have accumulated any
