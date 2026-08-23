@@ -98,11 +98,11 @@ of the decisions around it.
 
 ### The conflict underneath, which is not obvious
 
-**`luma-backlog`'s open questions call `.backlog/` "itself a Bundle."** If the
-directory moves under `.luma/` — see the unresolved `.backlog/` versus
-`.luma/backlog/` question — then there is **a Bundle living in the `backlog/`
-tier rather than in `bundles/`**, and the layout says bundles live in
-`bundles/`.
+**`luma-backlog`'s open questions call `.backlog/` "itself a Bundle."** The
+directory *is* moving under `.luma/` — settled 2026-08-23, *a luma tool writes
+into `.luma/`, and anywhere else is opted into* — so there is now **a Bundle
+living in the `backlog/` tier rather than in `bundles/`**, and the layout says
+bundles live in `bundles/`.
 
 Three ways out, and they are genuinely different:
 
@@ -119,12 +119,14 @@ a bundle or refuse, which makes a standalone tool depend on a catalog.
 
 ### What settles it, in order
 
-1. **`.backlog/` versus `.luma/backlog/`** — still open, and the recommendation
-   on the table is `.luma/backlog/` when `.luma/` exists and `.backlog/`
-   otherwise.
+1. ~~`.backlog/` versus `.luma/backlog/`~~ — **settled 2026-08-23.**
+   `.luma/backlog/` always; `.backlog/` only when committed config asks. See
+   `DECISIONS.md`.
 2. **Whether the backlog is a Bundle** — one sentence in `luma-backlog`'s open
-   questions carries a lot of weight and may not have meant to.
-3. **Then the bundle**, which is mechanical once those two are answered.
+   questions carries a lot of weight and may not have meant to. **Now the
+   blocking question**, because the location is fixed and the conflict above is
+   live rather than hypothetical.
+3. **Then the bundle**, which is mechanical once that is answered.
 
 ### Worth knowing before opening `luma-backlog`
 
