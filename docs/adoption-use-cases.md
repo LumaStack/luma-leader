@@ -99,6 +99,36 @@ expensive and irreversible — a published credential, a force push, a deleted
 record — belongs on the fourth, and putting it in a policy document is a
 decision to accept silent presence as a risk.
 
+### It is last to fix, and the record-keeping is what makes that survivable
+
+**This is the hardest of the four and will be the last one tackled.** There is no
+mechanism to build. The other three each have a thing you could go and write;
+this one is a property of how attention works, and the honest response is not a
+feature.
+
+**But it is observable in aggregate, and that is enough.** Per event it is
+undetectable — nothing distinguishes *ignored the rule* from *the rule did not
+apply here*. Across two hundred commits it becomes a **rate**: how often did work
+land that contradicts a policy that was in force at the time. A rate is a
+measurement, and a measurement is all that is needed to act.
+
+**The apparatus for that already exists, as a side effect of decisions being
+archived rather than deleted.** Reconstructing *what was in force on a given
+date* requires knowing when each rule started and stopped applying — which is
+exactly what `decided` and `archived` carry, and both were added for other
+reasons. Records are append-only, archived decisions keep their reasoning, and
+everything is committed. **Most systems cannot measure this because they do not
+retain what the rules used to be.**
+
+**And the measurement answers the question the ladder leaves open.** *Which rung
+does this rule deserve* is not a declaration an author makes and not a judgement
+somebody argues; it is **evidence**. A policy violated repeatedly while sitting
+in context has demonstrated that context is the wrong rung for it, and that is a
+finding rather than an opinion.
+
+So the plan for silent presence is not a mechanism. It is: keep the records,
+watch the rate, and move individual rules up the ladder as they earn it.
+
 ## The use cases
 
 Numbered so the tables below can point at them. One line each; the argument
@@ -479,13 +509,14 @@ of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
 - **UC31 — un-adoption.** No command removes a bundle, and under dependencies it
   would need the asked-for versus required-by flag that `adopted.toml` does not
   carry.
-- **Whether an enforcement rung is a declaration or a judgement.** A bundle
-  could state that a policy warrants a hook, which makes the classification
-  reviewable — and also makes it a thing every author must now answer.
-- **Whether silent presence is measurable at all.** Everything else here is
-  checkable; this one needs evidence that a loaded rule went unapplied, which
-  means comparing what an agent did against what it held. Nothing produces that
-  today, and without it the fourth failure stays an argument.
+- **What actually computes the violation rate.** The substrate is there —
+  append-only records, archived decisions with dates, everything committed — and
+  nothing reads it that way. It is a retrospective audit rather than a check,
+  which makes it `audit-records` territory rather than `inspect`.
+- **Whether an enforcement rung should also be declarable.** Measured is better
+  than declared and slower to arrive. A bundle stating that a policy warrants a
+  hook would give a new adopter the benefit before they have accumulated any
+  history of their own — at the cost of every author having to answer it.
 - **Whether the use-case list is complete.** It was written in one sitting from
   a conversation, and the D section grew fastest, which usually means it is the
   one still missing entries. Silent presence was found after the list was
