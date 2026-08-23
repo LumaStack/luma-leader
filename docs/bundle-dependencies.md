@@ -363,6 +363,46 @@ know — maybe I'm overthinking this."*
   against a coordinate starts to resemble a resolver, and *the catalog is a
   catalog, not a registry* tracks the mechanism rather than the word.
 
+### The objection this raises first: does the catalog become the real bundle?
+
+**Raised as:** *it feels like in this approach, catalogs are the true bundles,
+and bundles are submodules used for grouping knowledge.*
+
+**Unit of distribution and unit of resolution do not have to be the same
+thing.** That is the whole answer, and it is worth stating before the objection
+gets made a second time.
+
+**What lands on disk is unchanged.** Individual bundle directories in
+`.luma/bundles/`, each self-contained, each moveable, each readable offline with
+nothing fetched. That is precisely what §2 of the knowledge format means by *unit
+of distribution*, and a snapshot coordinate does not touch it. What changes is
+only **how you decided which bundles and which versions** — which is resolution.
+
+The same split exists elsewhere and nobody finds it strange: a package is the
+unit of distribution and a lockfile is the unit of resolution. Packages did not
+become submodules when lockfiles were invented.
+
+**And the version half of the worry is already answered here.** The instinct
+behind *bundles become mere groupings* is that the compatibility guarantee moves
+up to the catalog, leaving bundle versions as labels. But
+[bundle-versioning.md](bundle-versioning.md) already assigns them exactly that
+job: **"the version ladder is how a change is communicated, not how compatibility
+is guaranteed."** Compatibility rests on a recorded verification rather than on
+the number, with or without this proposal. Nothing is demoted.
+
+**Where the objection lands, and it is the honest cost.** Today a catalog is a
+*place you copy from*, and a bundle you have copied has no further relationship
+to it — hand somebody the directory and they are finished. Under this proposal
+the directory still works standalone, but **re-resolving requires the catalog and
+a coordinate into it.** The catalog stops being purely a place and acquires
+states.
+
+That is a real increase in coupling and it is the thing *the catalog is a
+catalog, not a registry* watches for. Its re-open trigger is remote resolution —
+*"an index tools query at apply time"* — and this stays the right side of that
+line, because you resolve once, vendor, and never look again. **But it is closer
+to the line than today**, and that is worth knowing rather than discovering.
+
 ### It may already exist, and be called a tag
 
 *Catalog at 1.2.0* and *catalog at commit `abc123`* are the same coordinate; a
