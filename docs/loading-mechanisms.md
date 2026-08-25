@@ -121,6 +121,82 @@ file is touched, and no description reliably fires *at the moment of commit*.
 `command` plus `path` plus `phase`, and wanting all three is normal rather than
 a modelling failure.
 
+**A type definition needs no trigger declaration.** Its applicability is
+structural: it fires when a document declaring that type is being written. That
+is the most exact trigger in the system, it requires no glob, no configuration
+and no semantics — and it is the one nothing currently uses, since `_types/` is
+skipped from projection entirely.
+
+### Decided: triggers combine with OR, and there is no expression language
+
+**Multiple triggers mean *any one of these*.** Evaluate each independently, fire
+if any matches. A list, not a grammar.
+
+**Why the line is drawn here.** AND looks like one more operator and is not. The
+moment it exists, `(A AND B) OR C` has to either work or be explained away, which
+needs grouping and precedence; then somebody wants NOT for *everywhere except
+tests*, and the result is a boolean algebra with a parser, a specification and
+error messages. **That is the boundary between a closed vocabulary and an
+expression language, and it is a one-way door.**
+
+**The pressure is lower than it looks, because glob syntax already absorbs most
+of it.** `src/**/*.py` is *Python and in src*; `!tests/**` is negation. The path
+trigger's own syntax handles the common compound cases without the trigger layer
+carrying any logic.
+
+**Where OR-only genuinely fails** is combining across *different* trigger kinds —
+*editing Python **and** during a release*. No glob expresses that. The workarounds
+are writing two rules or accepting over-firing, and both are worse than an
+expression would be.
+
+**The evidence for shipping OR anyway:** assigning triggers to all 34 policies in
+the universal catalog produced **no case that needed cross-kind AND**. That was
+one pass by one reader rather than an audit, so it is a data point rather than a
+proof — but it is the relevant data point, and nothing else argues the other way.
+
+**Re-open trigger:** a real rule needs cross-kind AND and the two-rule workaround
+is visibly worse. Adding AND later stays additive **as long as nothing has
+assumed a list means OR by implication** — so the OR semantics should be written
+down where a future reader will find it, rather than left as the obvious reading.
+
+### Deferred: roles, for rules whose location varies by project
+
+**The problem, kept because it will come back.** A published rule saying *prose
+lives in `docs/`* carries the trigger `path: docs/**`. A project using `doc/`,
+`documentation/` or `website/` gets a rule that **silently never fires** — the
+rule is right and the location assumption is wrong.
+
+**The fix, when it is needed.** A *role* is an indirection: the rule names a
+concept, the project names the location.
+
+| | trigger says | project says |
+| --- | --- | --- |
+| **literal glob** | `path: docs/**` | nothing — silent no-op where the layout differs |
+| **role** | `path_role: docs` | `docs = "website/"` |
+
+**Why it is not free.** Role names would be **shared vocabulary** — every bundle
+referencing `docs` has to mean the same thing by it, or the mapping is silently
+wrong for one of them. Shared vocabulary needs an owner, and each candidate costs
+something: the **format** is most stable but would be learning about project
+layout; a **shared vocabulary bundle** is versioned but bundles are meant to
+reference nothing; the **tool** is simplest but puts a list inside an engine.
+Whoever owns it also owns a permanent word-allocation problem, and the list only
+stays bounded if it names conventions that already have names — `docs`, `readme`,
+`changelog`, `source`, `tests`, `config` — rather than accepting anything anybody
+wants a name for.
+
+**Why it is deferred rather than built.** The affected set is small. `.luma/` is
+already fixed by the layout policy, so most rules need no mapping at all, and the
+ones that would want a role concern generic project structure that is near-
+universal anyway. So: **literal globs, plus a per-rule path override for the few
+projects that differ.** That is exception-based configuration — two rules
+overridden, not thirty-four wired up — which inverts the cost that made
+adopter-written triggers unattractive in the first place.
+
+**Re-open trigger:** overrides become common, or **the same override appears in
+several projects**. A name repeated across adopters is a name doing real work and
+is worth allocating; a name used once is a local path with extra ceremony.
+
 ### Degradation is the property to design for
 
 **A harness that cannot honour a trigger must cost more, never guarantee less.**
