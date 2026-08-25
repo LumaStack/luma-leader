@@ -1,7 +1,7 @@
 ---
 type: document
 title: Loading mechanisms
-description: By what mechanism knowledge reaches a reader — the three load classes any design must implement, the six candidates for delivering them, which class each can actually serve, and why five of the six readers are not models.
+description: By what mechanism knowledge reaches a reader — the three fields an author writes and everything derived from them, the six candidates for delivering it, when the routing decision gets made, and why five of the six readers are not models.
 lifecycle_status: draft
 created: { by: human:benlinton, at: 2026-08-24T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-24T00:00:00Z }
@@ -208,10 +208,10 @@ is worth allocating; a name used once is a local path with extra ceremony.
 
 | obligation | trigger honoured | trigger not available |
 | --- | --- | --- |
-| **`enforced`** | intercept at the action | **load at session start** — expensive, and the guarantee weakens from *prevented* to *told*, which is the one place degradation is not purely cost |
-| **`mandatory`** | deliver at the trigger | **load at session start** |
-| **`recommended`** | deliver at the trigger | advertise only |
-| **`optional`** | deliver at the trigger, cheaply | advertise only |
+| **`on_violation: block`** | intercept at the action | **load at session start** — expensive, and the guarantee weakens from *prevented* to *told*. The one place degradation is not purely cost |
+| **`obligation: mandatory`** | deliver at the trigger | **load at session start** |
+| **`obligation: recommended`** | deliver at the trigger | advertise only |
+| **`obligation: optional`** | deliver at the trigger, cheaply | advertise only |
 
 **Read the middle column against the right one: only the cost moves.** That is
 what makes the declaration portable across harnesses — the author states
@@ -320,32 +320,40 @@ objection entirely.
 
 ## What an author writes, and how the words were chosen
 
-**Two things, and everything else is computed from them plus what the harness can
-do** — which class it lands in, which mechanism delivers it, whether it is
-intercepted or merely told.
+**Three things, and everything else is computed from them plus what the harness
+can do** — which class a document lands in, which mechanism delivers it, and when.
 
 ```yaml
-obligation: mandatory
+obligation:   mandatory
+on_violation: block
 applies_to:
   - command: git commit
   - moment: before-push
 ```
 
-**One question inside this is still open** — whether enforcement is a fifth value
-on `obligation` or a second field beside it. Both shapes are documented below.
-Everything in this section holds either way.
+### `obligation` — what we believe
 
-### `obligation`, and what the values mean for a rule
+**It grades one thing: how strongly compliance is expected.**
 
-**The scale grades one thing: what happens when this is not complied with.**
-
-| value | on violation | in prose |
+| value | means | in prose |
 | --- | --- | --- |
-| `optional` | nothing. It obliges nothing and informs instead | *guidance* |
-| `recommended` | noted. Deviation is allowed but should be **deliberate** | *a strong default* |
-| `mandatory` | a defect, reportable | *a rule* |
+| `optional` | obliges nothing; it informs instead | *guidance* |
+| `recommended` | a strong default. Deviation is allowed but should be **deliberate** | *a convention* |
+| `mandatory` | compliance is expected; a violation is a defect | *a rule* |
 | `deprecated` | still in force, on its way out — migrate off it | — |
-| *(enforcement)* | **it cannot happen** — a fifth value or a second field, unsettled | *a guardrail* |
+
+**`optional` grades compliance, never readership**, and that has to be stated
+rather than assumed. A guardrail is precisely the thing nobody needs to read, so
+if the scale is misread as grading *whether to read this*, the whole thing
+inverts.
+
+**`recommended` is a value the earlier three-point scale could not express**, and
+it covers a lot of real ground: the strong default you may depart from provided
+you meant to. Most layout and style conventions live there and currently have to
+misdescribe themselves as either information or law.
+
+**`deprecated` arrives free from the existing scale and turns out to be wanted.**
+Retiring a rule is a real event and nothing else could say it.
 
 **`optional` grades compliance, never readership**, and that has to be stated
 rather than assumed. A guardrail is precisely the thing nobody needs to read — so
@@ -370,7 +378,7 @@ already**, and grading a rule is the obvious third:
 | --- | --- | --- |
 | the format, §5 | how strongly a **field** should be present | `mandatory / recommended / optional / deprecated` |
 | a catalog | how strongly it expects a project to **adopt a bundle** | `mandatory / recommended` |
-| **here** | how strongly a **rule** obliges compliance | the same, plus `enforced` |
+| **here** | how strongly a **rule** obliges compliance | the same four, unchanged |
 
 One word, one meaning — *strength of expectation* — at three scopes with one
 scale. That is the opposite of the two-meanings tax; it is a generalisation the
@@ -385,134 +393,110 @@ intercept — appears in neither, so both needed a legend. `standing`,
 elsewhere in the estate. `compliance` and `adherence` are clean and read
 correctly, and lost only to `obligation` already existing for this.
 
-### A constraint on enforcement, whichever shape wins
+### `on_violation` — what the system does
+
+**A separate field, because it answers a separate question.** `obligation` says
+what we believe; `on_violation` says what actually happens. Six values, ordered
+by how much reaches the actor:
+
+| value | what happens | who learns of it |
+| --- | --- | --- |
+| `allow` | nothing intercepts | nobody |
+| `audit` | detected and recorded, silently | **the log, not the actor** |
+| `warn` | detected, actor told, proceeds | the actor |
+| `require_reason` | proceeds only if a reason is recorded | the actor, and the log |
+| `ask` | stops until a **third party** approves | a person |
+| `block` | stops; no path through | the actor |
+
+**`audit` is where most rules should start.** Detect and record without changing
+behaviour, so the real violation rate is known before anyone decides the rule
+deserves teeth. Given this design already has an evidence loop, *measure first,
+escalate later* is the natural default — and nothing else on the ladder offers
+it. It also makes the ordering clean: `audit` sits below `warn` because nothing
+reaches the actor at all.
+
+**`require_reason` is what makes `recommended` mechanical.** *Deviate
+deliberately* is an honour system, because nothing checks that anyone was being
+deliberate. Demanding a recorded reason turns it into a mechanism and leaves a
+trail.
+
+**Rejected: a bare *acknowledge* step** between `warn` and `require_reason` —
+click-through with no content. Friction that produces no information, where
+`require_reason` costs the actor the same and yields data.
+
+**Worth knowing before anyone builds one: a model-overridable block is barely
+stronger than a warning.** If the agent may override at its own discretion, the
+constraint is the agent's judgement — which is the thing the rule exists to
+constrain. Hence `require_reason` and `ask` rather than a generic *overridable*:
+one produces a record, the other moves the decision to somebody who is not the
+party being constrained.
+
+**`allow` rather than `none`.** Every other value names an action; `none` names
+an absence, and reads as *this field was not filled in* rather than as a
+decision. It also invites null coercion somewhere in a pipeline. `allow` names
+what is actually being declared — violations of this are permitted — and pairs
+with `block` at the far end, matching the vocabulary permission systems already
+use.
+
+### Why the two fields are independent
+
+**The mismatched combinations are not errors. They are the interesting cases**,
+and that is what settles the shape.
+
+| | means |
+| --- | --- |
+| **`mandatory` + `allow`** | **a belief with no teeth** — the honest state of very nearly every prose policy that exists today |
+| **`optional` + `block`** | **a constraint that is not a norm.** Nobody claims this is *wrong*; the tooling stops it regardless. A file-size limit, a platform restriction, a formatter that rewrites your choice |
+
+**`mandatory` + `allow` is the clincher.** It is the normal case, so it has to be
+expressible — which means the two fields cannot be points on one scale.
+
+An earlier pass called `optional` + enforcement incoherent and used that to argue
+for folding enforcement into the obligation scale. **That was wrong.** It reads as
+contradictory only if both fields grade the same thing; once one describes the
+norm and the other the mechanism, a limit nobody has an opinion about is an
+ordinary thing to want to say.
+
+### The shape this replaces, kept so it is not re-argued
+
+Enforcement was very nearly a fifth value on the obligation scale —
+`optional | recommended | mandatory | enforced | deprecated`.
+
+**What that shape had going for it**, honestly, because it is not a weak
+argument. The incoherent state becomes unwritable rather than merely invalid.
+It plugs into machinery the format already has, since §10.3 lets a subtype
+strengthen an inherited field along `optional → recommended → mandatory` and
+appending a value extends that with nothing new. One field to read, validate and
+inherit.
+
+**What defeats it**, in order of weight:
+
+1. **`mandatory` + `allow` becomes inexpressible**, and it is the most common
+   state in the estate.
+2. **The cross product.** With more than two enforcement levels, one scale needs
+   `mandatory-warned`, `recommended-warned`, `mandatory-blocked` — compounds
+   announcing that the value is a pair.
+3. **It changes a core spec enum with three consumers.** Fields and bundles would
+   inherit a value that may mean nothing for them, and §5's conformance guarantee
+   would have to be re-examined. Two fields need no spec change at all.
+
+**What the two-field shape costs, accepted:** invalid combinations are
+expressible and need a validity rule, there are two fields to inherit rather than
+one, and `on_violation` has no inheritance rule yet where `obligation` already
+does.
+
+### A constraint on `on_violation`, whatever it grows into
 
 **§5 guarantees that obligation never affects conformance** — *"nothing about
 obligations changes whether a file is conformant… the sole hard requirement
 remains a non-empty `type`."* That tolerance is deliberate and load-bearing; it
 is what lets a consumer read documents it only partly understands.
 
-So enforcement must mean **what a tool refuses to do**, never whether a document
-is valid. A writer declines to produce it; a file that exists anyway is still
-conformant and still readable. **If that line cannot hold, enforcement is a far
-more expensive idea than it looks** and needs a different shape than either of
-the two below.
+`on_violation` is a separate field, so §5 is untouched by construction. But the
+same discipline applies to it: **it must mean what a tool refuses to do, never
+whether a document is valid.** A writer declines to produce something; a file
+that exists anyway is still conformant and still readable.
 
-### Where enforcement goes: two shapes, both live
-
-**Unsettled.** Both were argued at length and both work. Documented in full so
-whichever loses is a decision rather than an omission.
-
-#### Shape A — one scale
-
-```yaml
-obligation: optional | recommended | mandatory | enforced | deprecated
-```
-
-**What it buys.**
-
-- **The incoherent state becomes unwritable** rather than merely invalid. There
-  is no way to express *optional and also enforced*, so nothing has to catch it.
-- **It plugs into machinery the format already has.** §10.3 lets a subtype
-  strengthen an inherited field along `optional → recommended → mandatory`.
-  Appending `enforced` extends that with nothing new to invent.
-- **The values are monotone on one question** — what happens when you do not
-  comply: nothing, noted, a defect, prevented.
-- One field to read, one to validate, one to inherit.
-
-**What it costs.**
-
-- **It assumes enforcement is all-or-nothing**, which is a choice rather than a
-  fact — see the combination tests below.
-- **It does not grow gracefully.** If warn-don't-block or blocked-but-overridable
-  is ever wanted, the scale cannot absorb it: `mandatory-warned` and
-  `recommended-enforced` are compounds, and the fix is a reshape rather than an
-  addition.
-- **It changes a core spec enum with three consumers.** Every reader of the
-  format acquires a new obligation value, fields and bundles inherit a value that
-  may not mean anything for them yet, and §5's conformance guarantee has to be
-  re-examined.
-
-#### Shape B — two fields
-
-```yaml
-obligation: optional | recommended | mandatory | deprecated
-enforce: true
-```
-
-**What it buys.**
-
-- **It is honest that enforcement is a mechanism, not a degree.** Strength and
-  interception are described separately because they are separately true.
-- **It grows gracefully**, and it is worth being concrete about what growth looks
-  like, because it is what decides between the two shapes:
-
-  | `enforce` | at the moment of action | analogue |
-  | --- | --- | --- |
-  | `none` | nothing intercepts | a style guide |
-  | `warn` | proceeds, violation stated | a linter warning |
-  | `justify` | proceeds **only if a reason is recorded** | an inline disable with a reason |
-  | `ask` | stops until **a person** approves | a permission prompt |
-  | `block` | stops, no path through | squash disabled at the forge |
-
-  Monotone, and an enum change on one field rather than a reshape of a scale. The
-  boolean is just its two endpoints.
-
-- **`justify` is what makes `recommended` mechanical.** *Deviate deliberately* is
-  an honour system today, because nothing checks that anyone was being
-  deliberate. Requiring a recorded reason turns it into a mechanism and leaves an
-  audit trail. That is the `recommended` + enforcement combination made concrete,
-  and it is useful rather than theoretical.
-
-- *Worth knowing before anyone builds one:* **a model-overridable block is barely
-  stronger than a warning.** If the agent may override at its own discretion, the
-  constraint is the agent's judgement — which is the thing the rule exists to
-  constrain. Hence `justify` and `ask` rather than a generic *overridable*: one
-  produces a record, the other moves the decision to someone who is not the party
-  being constrained.
-- **`recommended` plus enforcement is available immediately**, and it has a real
-  meaning: blocked by default, overridable when you mean it. That is arguably the
-  honest implementation of *deviate deliberately*, since it makes deliberateness
-  mechanical rather than a matter of good character.
-- **It needs no change to the format's obligation scale at all.** A new document
-  field is additive; adding a value to §5 is surgery on a shared enum.
-
-**What it costs.**
-
-- **Invalid combinations are expressible** and need a validity rule: `enforce`
-  is meaningful only above some obligation floor.
-- Two fields to read, two to inherit — and `enforce`'s inheritance rule has to be
-  invented, where obligation's already exists.
-- The *guidance / rule / guardrail* reading needs two fields to reconstruct.
-
-#### The combination tests, which decide it
-
-The original argument for Shape A was that the combinations are not freely
-available, and things that cannot be freely combined are not independent axes.
-**That test does not fully survive contact:**
-
-| | coherent? |
-| --- | --- |
-| `optional` + enforced | **no.** Genuinely contradictory — enforce it and compliance is not optional |
-| `recommended` + enforced | **yes** — blocked by default, overridable when you mean it. Common mechanism, and useful |
-| `deprecated` + enforced | **yes, narrowly** — enforcing through a migration window, though better expressed as a date |
-
-So the axes *are* separable in principle, and **Shape A is correct if and only if
-enforcement never needs more than on/off.** With the enum above, obligation and
-enforcement stay genuinely independent — `mandatory + warn` and
-`recommended + warn` both warn, but only one violation is a defect — and folding
-that into one scale requires the cross product: `mandatory-warned`,
-`recommended-warned`, `mandatory-blocked`. That is the cost of the merge stated
-concretely rather than as a worry.
-
-**The evidence, checked the same way as OR-only:** none of the 34 policies in
-the universal catalog wants overridable blocking. `never-commit-credentials` has
-no legitimate override, `merge-commits` is disabled outright at the forge, and
-nothing else is enforced at all.
-
-**Re-open trigger for Shape A: somebody wants blocked-but-overridable, or
-warn-rather-than-block.** Either makes `recommended + enforced` meaningful and
-forces the split.
 
 ### `applies_to`, and the precedent that settles it
 
@@ -552,9 +536,19 @@ preloading. With `preload` gone and obligation unified across scopes, it means
 exactly one thing everywhere: *strength of expectation*.
 
 **And `guidance / rule / guardrail` survives as prose vocabulary**, not as field
-values. It is the legend-free way to talk about the three states in writing,
-which is the job `advisory / binding / blocking` failed at. The frontmatter says
-`obligation`; the writing says *this one is a guardrail*.
+values. It is the legend-free way to talk about the common combinations in
+writing, which is the job `advisory / binding / blocking` failed at:
+
+| in prose | `obligation` | `on_violation` |
+| --- | --- | --- |
+| *guidance* | `optional` | `allow` |
+| *a convention* | `recommended` | `allow`, or `require_reason` where it is worth the friction |
+| *a rule* | `mandatory` | `audit` or `warn` |
+| *a guardrail* | `mandatory` | `block` |
+| *a limit* | `optional` | `block` — nobody claims it is wrong; it is stopped regardless |
+
+The frontmatter says `obligation` and `on_violation`; the writing says *this one
+is a guardrail*.
 
 ## Six readers, and only one of them is a model
 
