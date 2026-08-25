@@ -1,7 +1,7 @@
 ---
 type: document
 title: Loading mechanisms
-description: By what mechanism knowledge reaches a reader — the three load classes any design must implement, the six candidates for delivering them, which class each can actually serve, and why five of the six readers are not models.
+description: By what mechanism knowledge reaches a reader — the three fields an author writes and everything derived from them, the six candidates for delivering it, when the routing decision gets made, and why five of the six readers are not models.
 lifecycle_status: draft
 created: { by: human:benlinton, at: 2026-08-24T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-24T00:00:00Z }
@@ -50,15 +50,20 @@ the first.
 
 | class | metadata present at session start | body present at session start |
 | --- | --- | --- |
-| **mandatory** | yes | yes — read it now |
-| **progressive** | yes | no — opened when the situation matches |
-| **on-demand** | no | no — findable, not advertised |
+| **standing** | yes | yes — read it now |
+| **advertised** | yes | no — opened when the situation matches |
+| **on-demand** | no | no — findable, not announced |
+
+*These were first written as* mandatory / progressive / on-demand *and renamed
+once `obligation` gained a `mandatory` value — one word for both* this rule must
+be obeyed *and* this body sits in context *is the collision this whole exercise
+keeps refusing. See below.*
 
 **Splitting them is what makes anything cheap.** A design that only knows
 *loaded* and *not loaded* has to advertise everything at full weight or hide it
-entirely. With three classes, the standing surface carries mandatory bodies and
-progressive titles, and on-demand content costs nothing until somebody goes
-looking for it.
+entirely. With three classes, the standing surface carries the bodies that must
+be there and the names of everything else, and on-demand content costs nothing
+until somebody goes looking for it.
 
 **But these three are outcomes, not inputs** — see the next section. They are the
 observable states a document can be in, and they remain the right vocabulary for
@@ -77,7 +82,7 @@ be present.
 
 | axis | question | who knows |
 | --- | --- | --- |
-| **Obligation** | how bad is it to violate this? *advisory / binding / blocking* | the author, mostly |
+| **Obligation** | what happens if this is not complied with? | the author, mostly |
 | **Applicability** | when does this rule govern? *always, or when X* | the author |
 | **Delivery** | when does the text have to be present? | **nobody should write this** |
 
@@ -107,7 +112,7 @@ enough:
 | `path` | a file matching a glob is read or written |
 | `tool` | a named tool or capability is invoked |
 | `command` | a shell command of a given shape runs |
-| `phase` | a known moment — session start, before commit, before push |
+| `moment` | a point in a lifecycle — session start, before commit, before release |
 | `topic` | the work is *about* something — matched semantically, not mechanically |
 
 **The first five are mechanical and the last is not**, and that distinction
@@ -118,8 +123,84 @@ case: nothing mechanical knows the user is *thinking about* stylesheets before a
 file is touched, and no description reliably fires *at the moment of commit*.
 
 **A rule may carry more than one trigger.** *Never commit a credential* is
-`command` plus `path` plus `phase`, and wanting all three is normal rather than
+`command` plus `path` plus `moment`, and wanting all three is normal rather than
 a modelling failure.
+
+**A type definition needs no trigger declaration.** Its applicability is
+structural: it fires when a document declaring that type is being written. That
+is the most exact trigger in the system, it requires no glob, no configuration
+and no semantics — and it is the one nothing currently uses, since `_types/` is
+skipped from projection entirely.
+
+### Decided: triggers combine with OR, and there is no expression language
+
+**Multiple triggers mean *any one of these*.** Evaluate each independently, fire
+if any matches. A list, not a grammar.
+
+**Why the line is drawn here.** AND looks like one more operator and is not. The
+moment it exists, `(A AND B) OR C` has to either work or be explained away, which
+needs grouping and precedence; then somebody wants NOT for *everywhere except
+tests*, and the result is a boolean algebra with a parser, a specification and
+error messages. **That is the boundary between a closed vocabulary and an
+expression language, and it is a one-way door.**
+
+**The pressure is lower than it looks, because glob syntax already absorbs most
+of it.** `src/**/*.py` is *Python and in src*; `!tests/**` is negation. The path
+trigger's own syntax handles the common compound cases without the trigger layer
+carrying any logic.
+
+**Where OR-only genuinely fails** is combining across *different* trigger kinds —
+*editing Python **and** during a release*. No glob expresses that. The workarounds
+are writing two rules or accepting over-firing, and both are worse than an
+expression would be.
+
+**The evidence for shipping OR anyway:** assigning triggers to all 34 policies in
+the universal catalog produced **no case that needed cross-kind AND**. That was
+one pass by one reader rather than an audit, so it is a data point rather than a
+proof — but it is the relevant data point, and nothing else argues the other way.
+
+**Re-open trigger:** a real rule needs cross-kind AND and the two-rule workaround
+is visibly worse. Adding AND later stays additive **as long as nothing has
+assumed a list means OR by implication** — so the OR semantics should be written
+down where a future reader will find it, rather than left as the obvious reading.
+
+### Deferred: roles, for rules whose location varies by project
+
+**The problem, kept because it will come back.** A published rule saying *prose
+lives in `docs/`* carries the trigger `path: docs/**`. A project using `doc/`,
+`documentation/` or `website/` gets a rule that **silently never fires** — the
+rule is right and the location assumption is wrong.
+
+**The fix, when it is needed.** A *role* is an indirection: the rule names a
+concept, the project names the location.
+
+| | trigger says | project says |
+| --- | --- | --- |
+| **literal glob** | `path: docs/**` | nothing — silent no-op where the layout differs |
+| **role** | `path_role: docs` | `docs = "website/"` |
+
+**Why it is not free.** Role names would be **shared vocabulary** — every bundle
+referencing `docs` has to mean the same thing by it, or the mapping is silently
+wrong for one of them. Shared vocabulary needs an owner, and each candidate costs
+something: the **format** is most stable but would be learning about project
+layout; a **shared vocabulary bundle** is versioned but bundles are meant to
+reference nothing; the **tool** is simplest but puts a list inside an engine.
+Whoever owns it also owns a permanent word-allocation problem, and the list only
+stays bounded if it names conventions that already have names — `docs`, `readme`,
+`changelog`, `source`, `tests`, `config` — rather than accepting anything anybody
+wants a name for.
+
+**Why it is deferred rather than built.** The affected set is small. `.luma/` is
+already fixed by the layout policy, so most rules need no mapping at all, and the
+ones that would want a role concern generic project structure that is near-
+universal anyway. So: **literal globs, plus a per-rule path override for the few
+projects that differ.** That is exception-based configuration — two rules
+overridden, not thirty-four wired up — which inverts the cost that made
+adopter-written triggers unattractive in the first place.
+
+**Re-open trigger:** overrides become common, or **the same override appears in
+several projects**. A name repeated across adopters is a name doing real work and
+is worth allocating; a name used once is a local path with extra ceremony.
 
 ### Degradation is the property to design for
 
@@ -127,9 +208,10 @@ a modelling failure.
 
 | obligation | trigger honoured | trigger not available |
 | --- | --- | --- |
-| **blocking** | intercept at the action | **load at session start** — expensive, guarantee intact |
-| **binding** | deliver at the trigger | **load at session start** |
-| **advisory** | deliver at the trigger | advertise only |
+| **`on_violation: block`** | intercept at the action | **load at session start** — expensive, and the guarantee weakens from *prevented* to *told*. The one place degradation is not purely cost |
+| **`obligation: mandatory`** | deliver at the trigger | **load at session start** |
+| **`obligation: recommended`** | deliver at the trigger | advertise only |
+| **`obligation: optional`** | deliver at the trigger, cheaply | advertise only |
 
 **Read the middle column against the right one: only the cost moves.** That is
 what makes the declaration portable across harnesses — the author states
@@ -138,27 +220,83 @@ in missed rules. It is also the answer to *how much harness-specific machinery i
 acceptable*: as much as you like, provided it lives in a renderer and its absence
 degrades cost rather than correctness.
 
-**And it makes the failure legible.** *This project has four binding rules that
+**And it makes the failure legible.** *This project has four mandatory rules that
 cannot be triggered on this harness, costing 3,200 tokens every session* is a
 sentence somebody can act on — by changing harness, by rewriting the rule, or by
 accepting it. Today the same situation is invisible.
 
-### Where this leaves the three classes
+### Degradation is a property of the finished design, not of the first build
 
-They survive as **derived state**, which is the useful place for them. A document
-with `binding` obligation and an `always` trigger computes to *mandatory*. The
-same document with a `path` trigger, on a harness with hooks, computes to
-*progressive* — advertised, delivered on match — **without any weakening of the
-obligation**. That is exactly the thing the current vocabulary cannot say.
+**A first implementation should have none of it, and should fail instead.**
+Stated here because otherwise the section above reads as a day-one requirement,
+and building it first would be a mistake.
+
+**A fallback hides the thing the first build exists to discover.** The point of
+shipping this early is to find out where routing actually misses. Anything that
+converts a miss into a slightly-worse-but-working outcome produces exactly the
+silent failure the whole design is meant to eliminate — a system that cannot tell
+you it is broken. Failing loudly is the same principle already applied
+everywhere else here, pointed at build order.
+
+**Three different things get called a fallback, and only one should be stubbed.**
+
+| | | first build |
+| --- | --- | --- |
+| **failure fallback** | routing found nothing, so guess, browse, or load everything | **stub it — fail** |
+| **degradation path** | the harness lacks a capability, so deliver a cheaper way | legitimate to defer, but deferring it means **targeting exactly one harness**, which is a scope decision rather than a side effect |
+| **escalation** | denied, ask, grant, retry | **not a fallback at all.** It is the designed path and it stays |
+
+**The flag outlives the phase, and that is the strongest part.** A permanent mode
+that disables every fallback keeps the true edge of the system measurable
+forever, rather than only while it is young — a continuous-integration mode where
+any reliance on a fallback fails the build, and a way to answer *how much of this
+actually works* at any point without archaeology. Worth fixing the polarity now
+so it survives the default flipping: today there is nothing to turn off, later
+fallbacks default on and the flag disables them.
+
+**Two things make it cost more than it looks.** *Just fail* is cheap only if the
+failure is legible — a bare error teaches nothing, and the useful version says
+what was expected, what was checked, and why nothing matched, so the saving is
+diagnostic code rather than no code. And the **direction** of failure has to be
+chosen deliberately: failing by loading nothing is recoverable, failing by
+loading everything is a token bomb.
+
+**One trigger to write down.** This is correct while the user set is small and
+tolerant. **The first external adopter is when to revisit it**, because loud
+failure stops being a diagnostic and becomes an outage in somebody else's
+session.
+
+### Where this leaves the three classes, and why they get renamed
+
+They survive as **derived state**, which is the useful place for them — but not
+under their original names. *Mandatory / progressive / on-demand* collided with
+the obligation scale the moment that scale gained a `mandatory` value, and one
+word meaning both *this rule must be obeyed* and *this body sits in context* is
+the tax this whole exercise keeps refusing.
+
+| class | meaning |
+| --- | --- |
+| **standing** | the body is present before work starts |
+| **advertised** | the name and description are present; the body arrives on match |
+| **on-demand** | neither; findable, not announced |
+
+**`standing` rather than a coinage**, because `organizing-a-bundle` already uses
+it for exactly this — *standing, kept present*. **`advertised` rather than
+`progressive`**, because it names what is actually happening: something is being
+announced without being delivered.
+
+The derivation then reads without ambiguity. A document with `mandatory`
+obligation and an `always` trigger computes to **standing**. The same document
+with a `path` trigger on a harness that can honour it computes to
+**advertised** — announced, delivered on match — **with the obligation
+unchanged**. Separating the two vocabularies is what lets that sentence be said
+at all.
 
 **Open, and genuinely unsettled:**
 
-- **Is `blocking` an obligation level or a separate concern?** It requires
-  interception, which not every harness offers, and it may belong with permission
-  machinery rather than with knowledge.
 - **Can obligation and applicability be adopter-overridden separately?** Probably
   applicability yes and obligation no — an adopter narrowing *when* a rule applies
-  is configuration, and an adopter downgrading *how binding* it is is opting out
+  is configuration, and an adopter lowering *how strongly it binds* is opting out
   of the rule.
 - **What happens when two triggers fire at once and the rules conflict.** The
   contradiction failure, arriving through a new door.
@@ -179,6 +317,238 @@ override reaches into another bundle by path and breaks silently when the author
 renames a file — unless the override names a **stable identifier** rather than a
 path, which is a design option nobody has tried and which would remove the
 objection entirely.
+
+## What an author writes, and how the words were chosen
+
+**Three things, and everything else is computed from them plus what the harness
+can do** — which class a document lands in, which mechanism delivers it, and when.
+
+```yaml
+obligation:   mandatory
+on_violation: block
+applies_to:
+  - command: git commit
+  - moment: before-push
+```
+
+### `obligation` — what we believe
+
+**It grades one thing: how strongly compliance is expected.**
+
+| value | means | in prose |
+| --- | --- | --- |
+| `optional` | obliges nothing; it informs instead | *guidance* |
+| `recommended` | a strong default. Deviation is allowed but should be **deliberate** | *a convention* |
+| `mandatory` | compliance is expected; a violation is a defect | *a rule* |
+| `deprecated` | still in force, on its way out — migrate off it | — |
+
+**`optional` grades compliance, never readership**, and that has to be stated
+rather than assumed. A guardrail is precisely the thing nobody needs to read, so
+if the scale is misread as grading *whether to read this*, the whole thing
+inverts.
+
+**`recommended` is a value the earlier three-point scale could not express**, and
+it covers a lot of real ground: the strong default you may depart from provided
+you meant to. Most layout and style conventions live there and currently have to
+misdescribe themselves as either information or law.
+
+**`deprecated` arrives free from the existing scale and turns out to be wanted.**
+Retiring a rule is a real event and nothing else could say it.
+
+**`optional` grades compliance, never readership**, and that has to be stated
+rather than assumed. A guardrail is precisely the thing nobody needs to read — so
+if the scale is misread as grading *whether to read this*, then `optional` plus
+enforcement flips from nonsense into the normal case, and the whole scale
+inverts.
+
+**`recommended` is a value the earlier three-point scale could not express**, and
+it covers a lot of real ground: the strong default you may depart from provided
+you meant to. Most layout and style conventions live there and are currently
+forced to misdescribe themselves as either information or law.
+
+**`deprecated` arrives free from the existing scale and turns out to be wanted.**
+Retiring a rule is a real event and nothing else could say it.
+
+### Why `obligation` rather than a new word
+
+**It is not an occupied word. It is an established concept with two scopes
+already**, and grading a rule is the obvious third:
+
+| where | what it grades | scale |
+| --- | --- | --- |
+| the format, §5 | how strongly a **field** should be present | `mandatory / recommended / optional / deprecated` |
+| a catalog | how strongly it expects a project to **adopt a bundle** | `mandatory / recommended` |
+| **here** | how strongly a **rule** obliges compliance | the same four, unchanged |
+
+One word, one meaning — *strength of expectation* — at three scopes with one
+scale. That is the opposite of the two-meanings tax; it is a generalisation the
+vocabulary was already halfway to making.
+
+**Words rejected, so this is not re-run.** `force` reads well and the estate
+already says a rule is *in force*, but it is a second word for a concept that
+already has one. `binding` and `blocking` were the original pair and failed
+plainly: near-identical shape, and the actual distinction — inform versus
+intercept — appears in neither, so both needed a legend. `standing`,
+`conformance`, `severity`, `mandate`, `tier` and `precedence` are all taken
+elsewhere in the estate. `compliance` and `adherence` are clean and read
+correctly, and lost only to `obligation` already existing for this.
+
+### `on_violation` — what the system does
+
+**A separate field, because it answers a separate question.** `obligation` says
+what we believe; `on_violation` says what actually happens. Six values, ordered
+by how much reaches the actor:
+
+| value | what happens | who learns of it |
+| --- | --- | --- |
+| `allow` | nothing intercepts | nobody |
+| `audit` | detected and recorded, silently | **the log, not the actor** |
+| `warn` | detected, actor told, proceeds | the actor |
+| `require_reason` | proceeds only if a reason is recorded | the actor, and the log |
+| `ask` | stops until a **third party** approves | a person |
+| `block` | stops; no path through | the actor |
+
+**`audit` is where most rules should start.** Detect and record without changing
+behaviour, so the real violation rate is known before anyone decides the rule
+deserves teeth. Given this design already has an evidence loop, *measure first,
+escalate later* is the natural default — and nothing else on the ladder offers
+it. It also makes the ordering clean: `audit` sits below `warn` because nothing
+reaches the actor at all.
+
+**`require_reason` is what makes `recommended` mechanical.** *Deviate
+deliberately* is an honour system, because nothing checks that anyone was being
+deliberate. Demanding a recorded reason turns it into a mechanism and leaves a
+trail.
+
+**Rejected: a bare *acknowledge* step** between `warn` and `require_reason` —
+click-through with no content. Friction that produces no information, where
+`require_reason` costs the actor the same and yields data.
+
+**Worth knowing before anyone builds one: a model-overridable block is barely
+stronger than a warning.** If the agent may override at its own discretion, the
+constraint is the agent's judgement — which is the thing the rule exists to
+constrain. Hence `require_reason` and `ask` rather than a generic *overridable*:
+one produces a record, the other moves the decision to somebody who is not the
+party being constrained.
+
+**`allow` rather than `none`.** Every other value names an action; `none` names
+an absence, and reads as *this field was not filled in* rather than as a
+decision. It also invites null coercion somewhere in a pipeline. `allow` names
+what is actually being declared — violations of this are permitted — and pairs
+with `block` at the far end, matching the vocabulary permission systems already
+use.
+
+### Why the two fields are independent
+
+**The mismatched combinations are not errors. They are the interesting cases**,
+and that is what settles the shape.
+
+| | means |
+| --- | --- |
+| **`mandatory` + `allow`** | **a belief with no teeth** — the honest state of very nearly every prose policy that exists today |
+| **`optional` + `block`** | **a constraint that is not a norm.** Nobody claims this is *wrong*; the tooling stops it regardless. A file-size limit, a platform restriction, a formatter that rewrites your choice |
+
+**`mandatory` + `allow` is the clincher.** It is the normal case, so it has to be
+expressible — which means the two fields cannot be points on one scale.
+
+An earlier pass called `optional` + enforcement incoherent and used that to argue
+for folding enforcement into the obligation scale. **That was wrong.** It reads as
+contradictory only if both fields grade the same thing; once one describes the
+norm and the other the mechanism, a limit nobody has an opinion about is an
+ordinary thing to want to say.
+
+### The shape this replaces, kept so it is not re-argued
+
+Enforcement was very nearly a fifth value on the obligation scale —
+`optional | recommended | mandatory | enforced | deprecated`.
+
+**What that shape had going for it**, honestly, because it is not a weak
+argument. The incoherent state becomes unwritable rather than merely invalid.
+It plugs into machinery the format already has, since §10.3 lets a subtype
+strengthen an inherited field along `optional → recommended → mandatory` and
+appending a value extends that with nothing new. One field to read, validate and
+inherit.
+
+**What defeats it**, in order of weight:
+
+1. **`mandatory` + `allow` becomes inexpressible**, and it is the most common
+   state in the estate.
+2. **The cross product.** With more than two enforcement levels, one scale needs
+   `mandatory-warned`, `recommended-warned`, `mandatory-blocked` — compounds
+   announcing that the value is a pair.
+3. **It changes a core spec enum with three consumers.** Fields and bundles would
+   inherit a value that may mean nothing for them, and §5's conformance guarantee
+   would have to be re-examined. Two fields need no spec change at all.
+
+**What the two-field shape costs, accepted:** invalid combinations are
+expressible and need a validity rule, there are two fields to inherit rather than
+one, and `on_violation` has no inheritance rule yet where `obligation` already
+does.
+
+### A constraint on `on_violation`, whatever it grows into
+
+**§5 guarantees that obligation never affects conformance** — *"nothing about
+obligations changes whether a file is conformant… the sole hard requirement
+remains a non-empty `type`."* That tolerance is deliberate and load-bearing; it
+is what lets a consumer read documents it only partly understands.
+
+`on_violation` is a separate field, so §5 is untouched by construction. But the
+same discipline applies to it: **it must mean what a tool refuses to do, never
+whether a document is valid.** A writer declines to produce something; a file
+that exists anyway is still conformant and still readable.
+
+
+### `applies_to`, and the precedent that settles it
+
+**The format vacated this exact name and recorded why.** `applies_to` on the
+`bundle` type became `consumers`, and one of the two stated reasons was that
+*"in policy languages `applies_to` conventionally means enforcement scope — this
+rule applies to these targets — whereas this field is about eligibility."*
+
+That is precisely the use here. A trigger set **is** a policy target set:
+`command: git commit` is an action, `path: **/*.css` is a resource. The word was
+freed with a note saying where it belongs.
+
+`applies_when` was the alternative and reads the triggers as *conditions* rather
+than *targets*. Both parse, but the recorded convention decides it.
+
+### `moment`, and why not the obvious words
+
+`lifecycle` is the word that best explains why session-start, before-commit and
+before-release are one category — but the format already uses `lifecycle_status`
+for document maturity, so it is spent, and `lifecycle_event` with it.
+
+`event` is conventional and maps to what harnesses call these, but **a path write
+and a command are also events**, so it ends up meaning *the events that are not
+the other four* — a leftover category wearing a general name.
+
+`moment` collides with nothing, matches the noun shape of its siblings, and
+distinguishes itself honestly: the others are triggered by an artifact, this one
+by a point in time.
+
+### What disappears
+
+**`preload` is retired entirely.** Delivery is derived, so nothing declares it.
+
+That closes a collision nobody had flagged: **`mandatory` currently means three
+different things** in this ecosystem — field presence, bundle adoption, and
+preloading. With `preload` gone and obligation unified across scopes, it means
+exactly one thing everywhere: *strength of expectation*.
+
+**And `guidance / rule / guardrail` survives as prose vocabulary**, not as field
+values. It is the legend-free way to talk about the common combinations in
+writing, which is the job `advisory / binding / blocking` failed at:
+
+| in prose | `obligation` | `on_violation` |
+| --- | --- | --- |
+| *guidance* | `optional` | `allow` |
+| *a convention* | `recommended` | `allow`, or `require_reason` where it is worth the friction |
+| *a rule* | `mandatory` | `audit` or `warn` |
+| *a guardrail* | `mandatory` | `block` |
+| *a limit* | `optional` | `block` — nobody claims it is wrong; it is stopped regardless |
+
+The frontmatter says `obligation` and `on_violation`; the writing says *this one
+is a guardrail*.
 
 ## Six readers, and only one of them is a model
 
@@ -286,10 +656,61 @@ thorough without anyone paying for the thoroughness until they need it.
 than the project level. An agent that has never heard of a bundle does not go
 looking for one.
 
+## The axis underneath all six: when is the decision made
+
+**Sorting mechanisms into push and pull, or index and tool, hides the split that
+actually matters.** Ask instead **when the routing decision happens** — before the
+session, or during it — and the six candidates stop being peers and become
+answers to two different questions.
+
+| | **compile time** | **run time** |
+| --- | --- | --- |
+| **who decides** | a projector, ahead of the session | a live process, while work happens |
+| **what it can see** | declarations only | declarations **plus what this session is actually doing** |
+| **produces** | committed artifacts — an index, adapters, imports | decisions, per turn |
+| **changing the logic** | regenerate, commit, merge | edit code; nothing in the repository moves |
+| **when the tool is absent** | **stale but present** | **nothing at all** |
+
+**Run time wins on the thing that matters most, and it is not close.** The single
+most useful routing signal is *what is this session about* — what was asked for,
+which files were touched, what has happened so far. That information does not
+exist when a projector runs. A compile-time design is blind to it by
+construction, and no amount of better declarations fixes that.
+
+**It also makes evidence native rather than bolted on.** A live decider is
+already observing, so the decider and the observer are one thing and the feedback
+loop costs nothing extra. And it may retire a hard open question outright: if
+routing logic lives in code rather than in a committed artifact, *what is the
+authored-through content and does it merge cleanly* largely stops being asked.
+
+**Compile time wins on robustness, and only on robustness.** A bare clone with no
+tooling gets whatever was committed — degraded, not empty. A runtime router with
+no invocation channel delivers nothing at all, which violates the rule this
+document holds elsewhere: **absence must cost, never break.** There is a smaller
+cost too, worth naming because it cuts against a stated objective: a live decider
+means two runs of the same task can load different things, and predictability was
+supposed to be a feature.
+
+**So they are layers, not alternatives.** Declarations are the source of truth.
+**Compile-time projection is the floor** — not a safety net bolted on afterwards,
+but a second consumer of the same declarations, which is why it costs little to
+keep. **The runtime router is an accelerator** that uses what only it can see.
+Where the router runs you get good routing; where it does not, the floor holds.
+
+**And it explains why a live router needs hooks structurally rather than
+optionally.** A router decides; it has no way to speak unless something invokes
+it. At session start that is easy. Mid-session it is the crux — for the required
+set to be re-decided, something must call the router at the right moment, and it
+cannot be the model, because *what is required now* is exactly what the model does
+not know to ask. **The router is the brain and the hook is the mouth**, which
+settles the push-versus-pull question by dissolving it.
+
 ## The candidate mechanisms
 
 Six. Each gets the same treatment: how it works, what only it can do, where it
 breaks, and what would make it excellent. **None of them is ruled out here.**
+Read them against the axis above — some are compile-time artifacts, some are
+runtime channels, and a few can be either depending on what drives them.
 
 ### 1 — Generated indexes
 
@@ -361,9 +782,21 @@ context or block an action.
 - **Loading late.** A hook firing before a tool call can put text in front of an
   agent **at the moment it acts**, by returning a reason that reaches the model.
   *Platform fact, verified rather than assumed.* Its consequence is the useful
-  part: **you cannot unload, but you can load late, and loading late is most of
-  what conditional loading ever wanted.** A design that gives up on conditions
-  because nothing can drop what is loaded has answered the wrong question.
+  part: **loading late is most of what conditional loading ever wanted**, and a
+  design that gives up on conditions because dropping content is awkward has
+  answered the wrong question.
+
+  **On unloading, stated carefully, because the easy version is wrong.** Nothing
+  removes a document from a context window in place. Within one contiguous
+  window the loaded set only grows. It can be *shrunk* by resetting and reloading
+  a different set — so unloading is available, and the cost is the striking part:
+  **a reset costs what you keep, not what you drop.** Dropping one small document
+  from a large window means re-establishing the whole window. Unloading is
+  therefore cheap early in a session and prohibitive late, which is the opposite
+  of the intuition. It is also exact on content and lossy on reasoning — the
+  documents come back byte-identical, the thinking between load and reset does
+  not — and that, rather than the token cost, is why it stays a move you make
+  once rather than routinely.
 
 Plus enforcement: a hook that blocks makes a rule **execute** rather than be
 read, which is categorically stronger than any amount of presence. There is an
@@ -506,11 +939,11 @@ stop competing.
 
 | obligation + trigger | what can actually deliver it |
 | --- | --- |
-| **binding, `always`** | imports, or session-start injection by hook. **Not skills** — matching is probabilistic, and a rule that must never be missed cannot rest on a match that usually happens. **Not a tool** — that is pull |
-| **binding, mechanical trigger** | a hook at the trigger point. Falls back to the row above where no hook exists — costlier, same guarantee |
-| **binding, `topic` only** | **nothing delivers this reliably**, and saying so is the useful result. A binding rule whose only trigger is semantic either accepts probabilistic delivery or is rewritten to have a mechanical one |
-| **advisory, `topic`** | skills natively; a tool whose description advertises the surface |
-| **advisory, mechanical** | a hook, cheaply; or advertise and let it be pulled |
+| **mandatory, `always`** | imports, or session-start injection by hook. **Not skills** — matching is probabilistic, and a rule that must never be missed cannot rest on a match that usually happens. **Not a tool** — that is pull |
+| **mandatory, mechanical trigger** | a hook at the trigger point. Falls back to the row above where no hook exists — costlier, same guarantee |
+| **mandatory, `topic` only** | **nothing delivers this reliably**, and saying so is the useful result. A rule whose only trigger is semantic either accepts probabilistic delivery or is rewritten to have a mechanical one |
+| **recommended or optional, `topic`** | skills natively; a tool whose description advertises the surface |
+| **recommended or optional, mechanical** | a hook, cheaply; or advertise and let it be pulled |
 | **anything, on request** | tool query — and this is where an index earns its keep, as the thing the tool searches |
 
 **The third row is the finding.** It is the one combination with no honest
@@ -801,9 +1234,9 @@ whether skill-style progressive disclosure is available on both. **These change
 often enough that the answer must be dated**, and a design resting on an
 unverified capability is a design resting on nothing.
 
-**The floor also decides what `blocking` can mean.** If only one of the two can
-intercept an action, then blocking is either not a portable obligation level or
-it degrades to *loaded at session start and hoped for* on the other — and those
+**The floor also decides what enforcement can mean.** If only one of the two can
+intercept an action, then enforcement is either not portable or it degrades to
+*loaded at session start and hoped for* on the other — and those
 are very different promises to make to somebody writing a rule about credentials.
 
 ## Open questions that decide it
@@ -819,7 +1252,7 @@ are very different promises to make to somebody writing a rule about credentials
    worth deciding deliberately rather than by accident.
 3. **Is `mandatory` rare?** *Superseded.* The question assumed one kind of
    mandatory. With obligation and applicability separated, the real question is
-   **how many rules are binding *and* have no usable trigger** — because only
+   **how many rules are `mandatory` *and* have no usable trigger** — because only
    those cost a session anything. That number should be small, and if it is not,
    the content wants rewriting rather than the mechanism.
 4. **How much harness-specific machinery is acceptable?** *Answered by
