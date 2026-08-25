@@ -621,6 +621,33 @@ references it, and is invisible above that thing.** This is what fixes the
 observed leak where adopting one bundle put twenty-one tutorial step titles into
 every session's standing surface. It generalises rather than patching.
 
+**The mechanism is nesting, and it needs no new field.** A document that owns
+subordinate material occupies a directory; everything under that directory
+belongs to it.
+
+```
+workflows/token-tutorial/
+  main.md              the workflow
+  steps/01-….md        subordinate — inferred, never declared
+  steps/quiz.md
+```
+
+**`main.md` is a fixed name rather than a type-derived one**, because the type
+vocabulary is open — any rule of the form `<type>.md` has to be re-derived for
+types nobody has invented, where one fixed name is a single lookup that never
+changes. It is also robust to strays: a stray note beside the document is just
+another file, where a rule of *the one document at the top of this directory*
+would break on it. Lowercase because the only job capitals do is make one file
+stand out of a long listing, and a directory holding one document and one
+subdirectory has nothing that needs to stand out.
+
+**The directory is the identity.** The document's ID is `workflows/token-tutorial`
+— `main.md` is a local detail nothing references, so the repeated name
+disappears instead of relocating, and `entry_point`, wikilinks and skill names
+all shorten. **This part is a format addition rather than a convention:** the
+specification has to say a directory can *be* a document. Small, additive, and
+the only piece here that is not purely local.
+
 **Misfiling becomes diagnosable rather than a matter of review taste.** *A
 concept that must always be loaded is a policy wearing the wrong type.* *A
 workflow marked standing is confusing the trigger with the body* — what needs to
@@ -1609,6 +1636,11 @@ had felt settled in conversation.
 - **Does `command` become a real document type?** It appears in the per-kind
   table and exists nowhere in the format. Either it is added, or the row should
   say it is hypothetical.
+- **A naming policy for bundle-internal structure is owed.** What files inside a
+  bundle are called, and which names are reserved, has no policy — the existing
+  one covers repository-root documentation that outside tools match, which is a
+  different problem and should not be stretched to cover this. Worth writing
+  eventually; not worth writing before the structure settles.
 - **Does `applies_to` accept multiple values of the same kind** — two globs, two
   commands — or one of each? OR semantics implies a flat list, but nothing says
   the list may repeat a kind.
