@@ -644,10 +644,26 @@ beats a convention argued from first principles. A workflow is a skill that
 travels across harnesses and carries more than one does, so it cannot take the
 name — but it can take the shape.
 
-**This is narrower than a general rule that capitals mean reserved**, and
-deliberately so. `bundle.md`, `index.md`, `log.md`, `catalog.md` and
-`project.md` are bundle- and repository-root manifests in a different position
-doing a different job. They are untouched.
+**The rule it belongs to, stated once:** *reserved markdown files are ALL CAPS —
+unless the name is shared with an outside convention, in which case that
+convention's casing wins.*
+
+`index.md` is the only name that currently qualifies for the exemption: site
+generators hardcode lowercase and Pages builds on a case-sensitive filesystem,
+so capitalising it forfeits directory-default behaviour for nothing. `README.md`
+and `LICENSE` would land uppercase from the outside rule anyway, so the clause
+costs no consistency.
+
+**The casing carries information rather than emphasis.** All-caps says *a tool
+matches this exact string; it is not yours to rename* — which is the fact a
+reader needs and the one a lowercase name cannot state. It matters most for
+hand-authored files, since those are where somebody tidies up without knowing
+what depends on the name.
+
+**Applied, this makes `bundle.md` → `BUNDLE.md`, `catalog.md` → `CATALOG.md`,
+`log.md` → `LOG.md` and `project.md` → `PROJECT.md`.** Sequenced separately from
+this design — the rule is settled, the renames are mechanical and can land
+whenever.
 
 **The directory is the identity.** The document's ID is `workflows/token-tutorial`
 — `WORKFLOW.md` is a local detail nothing references, visible only to somebody
