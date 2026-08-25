@@ -627,23 +627,31 @@ belongs to it.
 
 ```
 workflows/token-tutorial/
-  main.md              the workflow
+  WORKFLOW.md          the workflow
   steps/01-….md        subordinate — inferred, never declared
   steps/quiz.md
 ```
 
-**`main.md` is a fixed name rather than a type-derived one**, because the type
-vocabulary is open — any rule of the form `<type>.md` has to be re-derived for
-types nobody has invented, where one fixed name is a single lookup that never
-changes. It is also robust to strays: a stray note beside the document is just
-another file, where a rule of *the one document at the top of this directory*
-would break on it. Lowercase because the only job capitals do is make one file
-stand out of a long listing, and a directory holding one document and one
-subdirectory has nothing that needs to stand out.
+**The owner is the all-caps markdown file, and the casing is the signal rather
+than any particular word.** A policy carrying diagrams gets `POLICY.md`; a
+custom type gets its own. **Nothing is centrally reserved**, which matters
+because the type vocabulary is open and a reserved name per type would not
+scale — and a tool finds the owner without needing to know the type first.
+
+**Borrowed from `SKILL.md` deliberately.** Anyone who has seen one reads this
+correctly with nothing to learn, which is recognition rather than derivation and
+beats a convention argued from first principles. A workflow is a skill that
+travels across harnesses and carries more than one does, so it cannot take the
+name — but it can take the shape.
+
+**This is narrower than a general rule that capitals mean reserved**, and
+deliberately so. `bundle.md`, `index.md`, `log.md`, `catalog.md` and
+`project.md` are bundle- and repository-root manifests in a different position
+doing a different job. They are untouched.
 
 **The directory is the identity.** The document's ID is `workflows/token-tutorial`
-— `main.md` is a local detail nothing references, so the repeated name
-disappears instead of relocating, and `entry_point`, wikilinks and skill names
+— `WORKFLOW.md` is a local detail nothing references, visible only to somebody
+already standing in the directory, so `entry_point`, wikilinks and skill names
 all shorten. **This part is a format addition rather than a convention:** the
 specification has to say a directory can *be* a document. Small, additive, and
 the only piece here that is not purely local.
