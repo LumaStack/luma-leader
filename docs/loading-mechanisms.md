@@ -55,7 +55,7 @@ the first.
 | **on-demand** | no | no — findable, not announced |
 
 *These were first written as* mandatory / progressive / on-demand *and renamed
-once `obligation` gained a `mandatory` value — one word for both* this rule must
+once `compliance` gained a `mandatory` value — one word for both* this rule must
 be obeyed *and* this body sits in context *is the collision this whole exercise
 keeps refusing. See below.*
 
@@ -206,16 +206,16 @@ is worth allocating; a name used once is a local path with extra ceremony.
 
 **A harness that cannot honour a trigger must cost more, never guarantee less.**
 
-| obligation | trigger honoured | trigger not available |
+| compliance | trigger honoured | trigger not available |
 | --- | --- | --- |
 | **`on_violation: block`** | intercept at the action | **load at session start** — expensive, and the guarantee weakens from *prevented* to *told*. The one place degradation is not purely cost |
-| **`obligation: mandatory`** | deliver at the trigger | **load at session start** |
-| **`obligation: recommended`** | deliver at the trigger | advertise only |
-| **`obligation: optional`** | deliver at the trigger, cheaply | advertise only |
+| **`compliance: mandatory`** | deliver at the trigger | **load at session start** |
+| **`compliance: recommended`** | deliver at the trigger | advertise only |
+| **`compliance: optional`** | deliver at the trigger, cheaply | advertise only |
 
 **Read the middle column against the right one: only the cost moves.** That is
 what makes the declaration portable across harnesses — the author states
-obligation and applicability once, and a weak harness pays in tokens rather than
+compliance and applicability once, and a weak harness pays in tokens rather than
 in missed rules. It is also the answer to *how much harness-specific machinery is
 acceptable*: as much as you like, provided it lives in a renderer and its absence
 degrades cost rather than correctness.
@@ -270,7 +270,7 @@ session.
 
 They survive as **derived state**, which is the useful place for them — but not
 under their original names. *Mandatory / progressive / on-demand* collided with
-the obligation scale the moment that scale gained a `mandatory` value, and one
+the compliance scale the moment that scale gained a `mandatory` value, and one
 word meaning both *this rule must be obeyed* and *this body sits in context* is
 the tax this whole exercise keeps refusing.
 
@@ -286,18 +286,16 @@ it for exactly this — *standing, kept present*. **`advertised` rather than
 announced without being delivered.
 
 The derivation then reads without ambiguity. A document with `mandatory`
-obligation and an `always` trigger computes to **standing**. The same document
+compliance and an `always` trigger computes to **standing**. The same document
 with a `path` trigger on a harness that can honour it computes to
-**advertised** — announced, delivered on match — **with the obligation
+**advertised** — announced, delivered on match — **with the compliance
 unchanged**. Separating the two vocabularies is what lets that sentence be said
 at all.
 
 **Open, and genuinely unsettled:**
 
-- **Can obligation and applicability be adopter-overridden separately?** Probably
-  applicability yes and obligation no — an adopter narrowing *when* a rule applies
-  is configuration, and an adopter lowering *how strongly it binds* is opting out
-  of the rule.
+- **Can compliance and applicability be adopter-overridden separately?** See
+  *whose rule wins* below.
 - **What happens when two triggers fire at once and the rules conflict.** The
   contradiction failure, arriving through a new door.
 
@@ -324,14 +322,28 @@ objection entirely.
 can do** — which class a document lands in, which mechanism delivers it, and when.
 
 ```yaml
-obligation:   mandatory
+compliance:   optional | recommended | mandatory | deprecated
+on_violation: allow | audit | warn | require_reason | require_approval | block
+applies_to:   [ path | tool | command | moment | topic ]
+```
+
+A real one:
+
+```yaml
+compliance:   mandatory
 on_violation: block
 applies_to:
   - command: git commit
   - moment: before-push
 ```
 
-### `obligation` — what we believe
+**The common case is one field.** `on_violation` defaults to `allow` and appears
+only when a rule gets teeth; `applies_to` is absent for anything that applies
+always. A typical concept carries `compliance: optional` and nothing else. The
+space exists so the rare cases are expressible — it is not a form anybody fills
+out.
+
+### `compliance` — what we believe
 
 **It grades one thing: how strongly compliance is expected.**
 
@@ -369,7 +381,7 @@ forced to misdescribe themselves as either information or law.
 **`deprecated` arrives free from the existing scale and turns out to be wanted.**
 Retiring a rule is a real event and nothing else could say it.
 
-### Why `obligation` rather than a new word
+### Why `compliance`, and why not `obligation`
 
 **It is not an occupied word. It is an established concept with two scopes
 already**, and grading a rule is the obvious third:
@@ -391,11 +403,11 @@ plainly: near-identical shape, and the actual distinction — inform versus
 intercept — appears in neither, so both needed a legend. `standing`,
 `conformance`, `severity`, `mandate`, `tier` and `precedence` are all taken
 elsewhere in the estate. `compliance` and `adherence` are clean and read
-correctly, and lost only to `obligation` already existing for this.
+correctly.
 
 ### `on_violation` — what the system does
 
-**A separate field, because it answers a separate question.** `obligation` says
+**A separate field, because it answers a separate question.** `compliance` says
 what we believe; `on_violation` says what actually happens. Six values, ordered
 by how much reaches the actor:
 
@@ -405,7 +417,7 @@ by how much reaches the actor:
 | `audit` | detected and recorded, silently | **the log, not the actor** |
 | `warn` | detected, actor told, proceeds | the actor |
 | `require_reason` | proceeds only if a reason is recorded | the actor, and the log |
-| `ask` | stops until a **third party** approves | a person |
+| `require_approval` | stops until a **third party** approves | a person |
 | `block` | stops; no path through | the actor |
 
 **`audit` is where most rules should start.** Detect and record without changing
@@ -420,6 +432,11 @@ deliberately* is an honour system, because nothing checks that anyone was being
 deliberate. Demanding a recorded reason turns it into a mechanism and leaves a
 trail.
 
+**`require_approval` rather than `ask`**, which does not say who is asked. The
+pair reads together: `require_reason` demands something of the actor,
+`require_approval` demands it of somebody else. Four extra characters buys a
+value that is legible on its own, out of context, in a grep result.
+
 **Rejected: a bare *acknowledge* step** between `warn` and `require_reason` —
 click-through with no content. Friction that produces no information, where
 `require_reason` costs the actor the same and yields data.
@@ -427,7 +444,7 @@ click-through with no content. Friction that produces no information, where
 **Worth knowing before anyone builds one: a model-overridable block is barely
 stronger than a warning.** If the agent may override at its own discretion, the
 constraint is the agent's judgement — which is the thing the rule exists to
-constrain. Hence `require_reason` and `ask` rather than a generic *overridable*:
+constrain. Hence `require_reason` and `require_approval` rather than a generic *overridable*:
 one produces a record, the other moves the decision to somebody who is not the
 party being constrained.
 
@@ -452,14 +469,14 @@ and that is what settles the shape.
 expressible — which means the two fields cannot be points on one scale.
 
 An earlier pass called `optional` + enforcement incoherent and used that to argue
-for folding enforcement into the obligation scale. **That was wrong.** It reads as
+for folding enforcement into the compliance scale. **That was wrong.** It reads as
 contradictory only if both fields grade the same thing; once one describes the
 norm and the other the mechanism, a limit nobody has an opinion about is an
 ordinary thing to want to say.
 
 ### The shape this replaces, kept so it is not re-argued
 
-Enforcement was very nearly a fifth value on the obligation scale —
+Enforcement was very nearly a fifth value on the compliance scale —
 `optional | recommended | mandatory | enforced | deprecated`.
 
 **What that shape had going for it**, honestly, because it is not a weak
@@ -482,8 +499,7 @@ inherit.
 
 **What the two-field shape costs, accepted:** invalid combinations are
 expressible and need a validity rule, there are two fields to inherit rather than
-one, and `on_violation` has no inheritance rule yet where `obligation` already
-does.
+one.
 
 ### A constraint on `on_violation`, whatever it grows into
 
@@ -532,14 +548,14 @@ by a point in time.
 
 That closes a collision nobody had flagged: **`mandatory` currently means three
 different things** in this ecosystem — field presence, bundle adoption, and
-preloading. With `preload` gone and obligation unified across scopes, it means
-exactly one thing everywhere: *strength of expectation*.
+preloading. With `preload` gone and `compliance` naming our use directly,
+`mandatory` keeps one meaning per scope and none of them is about loading.
 
 **And `guidance / rule / guardrail` survives as prose vocabulary**, not as field
 values. It is the legend-free way to talk about the common combinations in
 writing, which is the job `advisory / binding / blocking` failed at:
 
-| in prose | `obligation` | `on_violation` |
+| in prose | `compliance` | `on_violation` |
 | --- | --- | --- |
 | *guidance* | `optional` | `allow` |
 | *a convention* | `recommended` | `allow`, or `require_reason` where it is worth the friction |
@@ -547,7 +563,7 @@ writing, which is the job `advisory / binding / blocking` failed at:
 | *a guardrail* | `mandatory` | `block` |
 | *a limit* | `optional` | `block` — nobody claims it is wrong; it is stopped regardless |
 
-The frontmatter says `obligation` and `on_violation`; the writing says *this one
+The frontmatter says `compliance` and `on_violation`; the writing says *this one
 is a guardrail*.
 
 ## Six readers, and only one of them is a model
@@ -934,10 +950,10 @@ problem rather than a mechanism problem.**
 
 ## Which mechanism can serve which class
 
-Mapping the mechanisms against obligation and trigger is where the candidates
+Mapping the mechanisms against compliance and trigger is where the candidates
 stop competing.
 
-| obligation + trigger | what can actually deliver it |
+| compliance + trigger | what can actually deliver it |
 | --- | --- |
 | **mandatory, `always`** | imports, or session-start injection by hook. **Not skills** — matching is probabilistic, and a rule that must never be missed cannot rest on a match that usually happens. **Not a tool** — that is pull |
 | **mandatory, mechanical trigger** | a hook at the trigger point. Falls back to the row above where no hook exists — costlier, same guarantee |
@@ -1176,7 +1192,7 @@ enforces **deliberateness**, which is a different and more achievable goal.
 ### Who opens it, and when
 
 Three answers, materially different, and the design probably wants all three at
-different obligation levels:
+different compliance levels:
 
 | | who decides | good for |
 | --- | --- | --- |
@@ -1241,17 +1257,20 @@ are very different promises to make to somebody writing a rule about credentials
 
 ## Open questions that decide it
 
-**Four of these now have answers or working positions, recorded inline.**
+**Six of the eight are now decided or dissolved, recorded inline. Two remain
+genuinely open — number 2's counterpart below, and number 8.**
 
 1. **Should the model ever read the index directly?** *Working position: it should
    normally not, but it must remain able to.* The consequence is specific — see
    below, because it decides how much has to be built before anything is usable.
-2. **Which form is the source: the human one or the machine one?** Open. If the
-   primary reader is a person, the index should be legible first and the
-   structured form derived from it; if a tool, the reverse. Hard to unwind, so
-   worth deciding deliberately rather than by accident.
+2. **Which form is the source: the human one or the machine one?** *Decided:
+   markdown, and a structured form later only if something concrete needs one.*
+   It reviews in a pull request, renders on a forge, and survives with no tooling
+   at all — and since the index is fully derived, nobody edits either form by
+   hand, so the question is only what a person sees on opening the file.
+   Generating JSON from markdown later is additive; the reverse is not.
 3. **Is `mandatory` rare?** *Superseded.* The question assumed one kind of
-   mandatory. With obligation and applicability separated, the real question is
+   mandatory. With compliance and applicability separated, the real question is
    **how many rules are `mandatory` *and* have no usable trigger** — because only
    those cost a session anything. That number should be small, and if it is not,
    the content wants rewriting rather than the mechanism.
@@ -1263,9 +1282,33 @@ are very different promises to make to somebody writing a rule about credentials
    decides which.* Mechanical triggers are pushed because the system can detect
    them; `topic` is pulled because only the model can recognise it. Neither covers
    the other's case, so a design with only one of them has a hole.
-6. **What is the authored-through content, exactly?** Open. For a tool-owned index
-   this decides whether it merges cleanly, and it is the part that cannot be
-   rebuilt from the filesystem.
+6. **What is the authored-through content, exactly?** *Largely dissolved.* The
+   question assumed a tool-owned index holding human notes the rebuild must not
+   erase. With `compliance`, `on_violation` and `applies_to` living on each
+   document, the facts a person decides are already in frontmatter and the index
+   derives from them entirely — there is nothing left for the rebuild to
+   protect. **Frontmatter first**, and where something genuinely cannot be
+   expressed there, the fallback already has precedent: a generated region
+   inside a hand-written file, delimited by markers, with everything outside
+   them untouched.
+7. **Whose rule wins — the author's or the adopter's?** *Decided.* An adopter
+   may narrow **`applies_to`**, since only they know their
+   own geography, and may **raise** compliance. They may not lower it. If they
+   need it lower the honest moves already exist — do not adopt, or fork it into
+   their own namespace — and both make weakening **visible as a fork** rather
+   than invisible as a config line. Without that, an organisation mandating a
+   bundle means nothing, because every project can adopt it and quietly gut it.
+8. **Two rules that fire at once and disagree.** **Genuinely open, and the worst
+   of them**, because nothing detects it: both rules load, both look
+   authoritative, the model picks one, and the output looks like a normal answer.
+   It cannot really happen today — one catalog, one author, nothing contradicts
+   anything — and **it arrives with the second catalog**, which the estate
+   already plans for via `upstream` chains. Two candidate answers that compose:
+   **precedence by source**, where the nearest catalog wins, which has precedent
+   in `configuration-precedence` resolving six layers the same way; and
+   **detection**, flagging when two `mandatory` rules from different sources fire
+   on one trigger. Precedence alone silently picks a winner; detection alone
+   stops the work.
 
 ### What the answer to question 1 actually changes
 
