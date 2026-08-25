@@ -9,7 +9,10 @@ modified: { by: agent:claude-opus-5, at: 2026-08-24T00:00:00Z }
 
 # Loading mechanisms
 
-**Draft. Nothing here is settled, and most of it is half-baked deliberately.**
+**Draft, and no longer uniformly so.** Much of this began as half-baked options
+and a good deal of it has since been decided. **What is settled, what is deferred
+with a re-open trigger, and what this document still owes are listed at the end**
+— read that first if you need to know which you are looking at.
 Eighth companion to [bundle-dependencies.md](bundle-dependencies.md),
 [bundle-versioning.md](bundle-versioning.md),
 [shared-types.md](shared-types.md), [curator.md](curator.md),
@@ -41,7 +44,7 @@ design quietly becomes an incremental one.**
 earlier draft reached something that survives the test, it is restated as a
 requirement with its argument, not deferred to.
 
-## The one thing to implement regardless of what wins
+## The three classes a document can land in
 
 **`preload: mandatory | optional` is a single axis hiding two.** Whether a
 document's *body* is present at session start, and whether its *existence* is
@@ -55,7 +58,7 @@ the first.
 | **on-demand** | no | no — findable, not announced |
 
 *These were first written as* mandatory / progressive / on-demand *and renamed
-once `obligation` gained a `mandatory` value — one word for both* this rule must
+once `compliance` gained a `mandatory` value — one word for both* this rule must
 be obeyed *and* this body sits in context *is the collision this whole exercise
 keeps refusing. See below.*
 
@@ -70,7 +73,7 @@ observable states a document can be in, and they remain the right vocabulary for
 *describing* where a document ended up. What an author writes should be something
 else, from which these are computed.
 
-## `mandatory` is three questions welded together
+## Splitting `preload` into the things an author actually knows
 
 **The sentence that breaks it open: *we want the model to follow these rules and
 never miss, but we do not want them loaded until it is time to follow them.***
@@ -206,16 +209,16 @@ is worth allocating; a name used once is a local path with extra ceremony.
 
 **A harness that cannot honour a trigger must cost more, never guarantee less.**
 
-| obligation | trigger honoured | trigger not available |
+| compliance | trigger honoured | trigger not available |
 | --- | --- | --- |
 | **`on_violation: block`** | intercept at the action | **load at session start** — expensive, and the guarantee weakens from *prevented* to *told*. The one place degradation is not purely cost |
-| **`obligation: mandatory`** | deliver at the trigger | **load at session start** |
-| **`obligation: recommended`** | deliver at the trigger | advertise only |
-| **`obligation: optional`** | deliver at the trigger, cheaply | advertise only |
+| **`compliance: mandatory`** | deliver at the trigger | **load at session start** |
+| **`compliance: recommended`** | deliver at the trigger | advertise only |
+| **`compliance: optional`** | deliver at the trigger, cheaply | advertise only |
 
 **Read the middle column against the right one: only the cost moves.** That is
 what makes the declaration portable across harnesses — the author states
-obligation and applicability once, and a weak harness pays in tokens rather than
+compliance and applicability once, and a weak harness pays in tokens rather than
 in missed rules. It is also the answer to *how much harness-specific machinery is
 acceptable*: as much as you like, provided it lives in a renderer and its absence
 degrades cost rather than correctness.
@@ -270,7 +273,7 @@ session.
 
 They survive as **derived state**, which is the useful place for them — but not
 under their original names. *Mandatory / progressive / on-demand* collided with
-the obligation scale the moment that scale gained a `mandatory` value, and one
+the compliance scale the moment that scale gained a `mandatory` value, and one
 word meaning both *this rule must be obeyed* and *this body sits in context* is
 the tax this whole exercise keeps refusing.
 
@@ -286,18 +289,16 @@ it for exactly this — *standing, kept present*. **`advertised` rather than
 announced without being delivered.
 
 The derivation then reads without ambiguity. A document with `mandatory`
-obligation and an `always` trigger computes to **standing**. The same document
+compliance and an `always` trigger computes to **standing**. The same document
 with a `path` trigger on a harness that can honour it computes to
-**advertised** — announced, delivered on match — **with the obligation
+**advertised** — announced, delivered on match — **with the compliance
 unchanged**. Separating the two vocabularies is what lets that sentence be said
 at all.
 
 **Open, and genuinely unsettled:**
 
-- **Can obligation and applicability be adopter-overridden separately?** Probably
-  applicability yes and obligation no — an adopter narrowing *when* a rule applies
-  is configuration, and an adopter lowering *how strongly it binds* is opting out
-  of the rule.
+- **Can compliance and applicability be adopter-overridden separately?** See
+  *whose rule wins* below.
 - **What happens when two triggers fire at once and the rules conflict.** The
   contradiction failure, arriving through a new door.
 
@@ -324,14 +325,28 @@ objection entirely.
 can do** — which class a document lands in, which mechanism delivers it, and when.
 
 ```yaml
-obligation:   mandatory
+compliance:   optional | recommended | mandatory | deprecated
+on_violation: allow | audit | warn | require_reason | require_approval | block
+applies_to:   [ path | tool | command | moment | topic ]
+```
+
+A real one:
+
+```yaml
+compliance:   mandatory
 on_violation: block
 applies_to:
   - command: git commit
   - moment: before-push
 ```
 
-### `obligation` — what we believe
+**The common case is one field.** `on_violation` defaults to `allow` and appears
+only when a rule gets teeth; `applies_to` is absent for anything that applies
+always. A typical concept carries `compliance: optional` and nothing else. The
+space exists so the rare cases are expressible — it is not a form anybody fills
+out.
+
+### `compliance` — what we believe
 
 **It grades one thing: how strongly compliance is expected.**
 
@@ -369,7 +384,7 @@ forced to misdescribe themselves as either information or law.
 **`deprecated` arrives free from the existing scale and turns out to be wanted.**
 Retiring a rule is a real event and nothing else could say it.
 
-### Why `obligation` rather than a new word
+### Why `compliance`, and why not `obligation`
 
 **It is not an occupied word. It is an established concept with two scopes
 already**, and grading a rule is the obvious third:
@@ -391,11 +406,11 @@ plainly: near-identical shape, and the actual distinction — inform versus
 intercept — appears in neither, so both needed a legend. `standing`,
 `conformance`, `severity`, `mandate`, `tier` and `precedence` are all taken
 elsewhere in the estate. `compliance` and `adherence` are clean and read
-correctly, and lost only to `obligation` already existing for this.
+correctly.
 
 ### `on_violation` — what the system does
 
-**A separate field, because it answers a separate question.** `obligation` says
+**A separate field, because it answers a separate question.** `compliance` says
 what we believe; `on_violation` says what actually happens. Six values, ordered
 by how much reaches the actor:
 
@@ -405,7 +420,7 @@ by how much reaches the actor:
 | `audit` | detected and recorded, silently | **the log, not the actor** |
 | `warn` | detected, actor told, proceeds | the actor |
 | `require_reason` | proceeds only if a reason is recorded | the actor, and the log |
-| `ask` | stops until a **third party** approves | a person |
+| `require_approval` | stops until a **third party** approves | a person |
 | `block` | stops; no path through | the actor |
 
 **`audit` is where most rules should start.** Detect and record without changing
@@ -420,6 +435,11 @@ deliberately* is an honour system, because nothing checks that anyone was being
 deliberate. Demanding a recorded reason turns it into a mechanism and leaves a
 trail.
 
+**`require_approval` rather than `ask`**, which does not say who is asked. The
+pair reads together: `require_reason` demands something of the actor,
+`require_approval` demands it of somebody else. Four extra characters buys a
+value that is legible on its own, out of context, in a grep result.
+
 **Rejected: a bare *acknowledge* step** between `warn` and `require_reason` —
 click-through with no content. Friction that produces no information, where
 `require_reason` costs the actor the same and yields data.
@@ -427,7 +447,7 @@ click-through with no content. Friction that produces no information, where
 **Worth knowing before anyone builds one: a model-overridable block is barely
 stronger than a warning.** If the agent may override at its own discretion, the
 constraint is the agent's judgement — which is the thing the rule exists to
-constrain. Hence `require_reason` and `ask` rather than a generic *overridable*:
+constrain. Hence `require_reason` and `require_approval` rather than a generic *overridable*:
 one produces a record, the other moves the decision to somebody who is not the
 party being constrained.
 
@@ -452,14 +472,14 @@ and that is what settles the shape.
 expressible — which means the two fields cannot be points on one scale.
 
 An earlier pass called `optional` + enforcement incoherent and used that to argue
-for folding enforcement into the obligation scale. **That was wrong.** It reads as
+for folding enforcement into the compliance scale. **That was wrong.** It reads as
 contradictory only if both fields grade the same thing; once one describes the
 norm and the other the mechanism, a limit nobody has an opinion about is an
 ordinary thing to want to say.
 
 ### The shape this replaces, kept so it is not re-argued
 
-Enforcement was very nearly a fifth value on the obligation scale —
+Enforcement was very nearly a fifth value on the compliance scale —
 `optional | recommended | mandatory | enforced | deprecated`.
 
 **What that shape had going for it**, honestly, because it is not a weak
@@ -482,8 +502,7 @@ inherit.
 
 **What the two-field shape costs, accepted:** invalid combinations are
 expressible and need a validity rule, there are two fields to inherit rather than
-one, and `on_violation` has no inheritance rule yet where `obligation` already
-does.
+one.
 
 ### A constraint on `on_violation`, whatever it grows into
 
@@ -532,14 +551,14 @@ by a point in time.
 
 That closes a collision nobody had flagged: **`mandatory` currently means three
 different things** in this ecosystem — field presence, bundle adoption, and
-preloading. With `preload` gone and obligation unified across scopes, it means
-exactly one thing everywhere: *strength of expectation*.
+preloading. With `preload` gone and `compliance` naming our use directly,
+`mandatory` keeps one meaning per scope and none of them is about loading.
 
 **And `guidance / rule / guardrail` survives as prose vocabulary**, not as field
 values. It is the legend-free way to talk about the common combinations in
 writing, which is the job `advisory / binding / blocking` failed at:
 
-| in prose | `obligation` | `on_violation` |
+| in prose | `compliance` | `on_violation` |
 | --- | --- | --- |
 | *guidance* | `optional` | `allow` |
 | *a convention* | `recommended` | `allow`, or `require_reason` where it is worth the friction |
@@ -547,8 +566,112 @@ writing, which is the job `advisory / binding / blocking` failed at:
 | *a guardrail* | `mandatory` | `block` |
 | *a limit* | `optional` | `block` — nobody claims it is wrong; it is stopped regardless |
 
-The frontmatter says `obligation` and `on_violation`; the writing says *this one
+The frontmatter says `compliance` and `on_violation`; the writing says *this one
 is a guardrail*.
+
+## What each kind of document gets
+
+**The two authored fields plus the harness determine delivery, and for most kinds
+the answer is implied by the kind itself.** The derivation, first:
+
+| trigger | compliance | → class |
+| --- | --- | --- |
+| **inherited** | any | **invisible above its owner**; arrives with it |
+| **mechanical** | any | **advertised** — delivered at the trigger |
+| **semantic** | any | **advertised** — announced by description, pulled on match |
+| **none** | `mandatory` | **standing** |
+| **none** | `recommended` or `optional` | **on-demand** |
+
+**There is exactly one path to always-loaded: mandatory with no statable
+trigger.** That is the whole discipline. Standing stops being something an author
+selects and becomes something they *fail into* — which is the right shape,
+because it makes the expensive outcome visible as a gap rather than as a decision
+somebody made.
+
+### The kinds
+
+| kind | can it bind? | trigger | lands on |
+| --- | --- | --- | --- |
+| **`type_definition`** | `mandatory` | **mechanical, and exact** — the `type:` of the document being written | advertised |
+| **`workflow`** | usually `optional`; occasionally `mandatory` | semantic — *use when…* — or `command` / `moment` | advertised |
+| **command** | `optional` | mechanical — its own invocation | advertised |
+| **`policy`** | `mandatory` or `recommended` | **varies — the hard kind** | advertised, or standing where no trigger exists |
+| **concept** | **never binds** | semantic | on-demand |
+| **template, asset** | n/a — cannot declare, no frontmatter | inherited | invisible |
+| **subordinate documents** — tutorial steps, quiz | n/a | inherited from the owning workflow | invisible |
+| **`bundle.md`** | n/a — it *is* the ring-2 index | arrives when the bundle loads | — |
+
+**`policy` is the only kind whose answer is not implied by the kind**, and that
+is where authoring effort actually goes. It matches the measurement below
+exactly.
+
+### Three consequences
+
+**Type definitions are the best-served kind by this design and the worst-served
+today.** Their trigger is exact and machine-derivable — a document declaring
+`type: X` is being written, so load X's contract. No glob, no configuration, no
+semantics, and no declaration: it follows from being a type definition at all.
+And today `_types/` is skipped from projection entirely, so **the cleanest
+trigger in the system is the one nothing uses.**
+
+**Subordination is a structural rule, not a special case.** Anything that cannot
+declare for itself — a template with deliberately no frontmatter, a tutorial step
+owned by the workflow that runs it — **inherits applicability from whatever
+references it, and is invisible above that thing.** This is what fixes the
+observed leak where adopting one bundle put twenty-one tutorial step titles into
+every session's standing surface. It generalises rather than patching.
+
+**Misfiling becomes diagnosable rather than a matter of review taste.** *A
+concept that must always be loaded is a policy wearing the wrong type.* *A
+workflow marked standing is confusing the trigger with the body* — what needs to
+be present is its name, never its procedure. Both are now mechanical checks.
+
+### The evidence this rests on
+
+**Applicability is already being written — in prose, in `description` — and only
+where a mechanism consumes it.**
+
+| | states when it applies | |
+| --- | --- | --- |
+| **workflows** | **33 / 44** | 75% |
+| **policies** | **4 / 34** | 11% |
+
+Workflows say *"Use when a position is settled…"* almost universally. Policies say
+what they are *about*, not when they fire.
+
+**The asymmetry has a cause, and it is the argument for the whole design.**
+Workflows become skills, skills match on description, so stating *when this
+applies* is rewarded — the mechanism pays for the discipline. Nothing consumes a
+policy's applicability, so nobody writes it. The field exists; the incentive does
+not. **So the trigger vocabulary is not asking for a new discipline. It extends
+one that already holds in three-quarters of one document type**, which is a much
+better position than proposing a convention and hoping.
+
+**It also collapses one of the triggers.** `topic` is not a new field — it is the
+`description` every document already carries, and which 75% of workflows already
+write correctly. The vocabulary is really *five mechanical triggers plus the
+description you already wrote.*
+
+**Assigning triggers to all 34 policies by hand** gave roughly: a third cleanly
+mechanical (`readme` → `path: README.md`, `never-commit-credentials` →
+`command: git commit`), a quarter semantic-only and genuinely diffuse, the rest
+wanting both. Two were mechanical but far too broad — `writing-style` on
+`**/*.md` fires on nearly every write in a prose repository, which is `always`
+with extra machinery. **A useful rule falls out: if a trigger's hit rate
+approaches one, it is not applicability, it is compliance.**
+
+### What this predicts about the existing catalog
+
+Falsifiable, which is the point — and between them these are the migration.
+
+- **All four `preload: mandatory` workflows are wrong** — `record-decision`,
+  `adopt-knowledge`, `capturing-ideas`, `conduct-audit`. What must be present is
+  the trigger, not the procedure.
+- **The true standing set is one to three policies, not fourteen.** Most of the
+  diffuse ones can state a semantic trigger and become advertised; only those
+  genuinely governing everything stay.
+- **Around thirty policies need applicability written.** Content work, not
+  tooling, and the bulk of the effort.
 
 ## Six readers, and only one of them is a model
 
@@ -798,6 +921,14 @@ context or block an action.
   not — and that, rather than the token cost, is why it stays a move you make
   once rather than routinely.
 
+  **Rewind was considered and deliberately excluded as a design input.** It is
+  the cheapest unload available — returning to a state that already existed
+  rather than rebuilding one — but it is user-operated with no way for a system
+  to invoke it, harness-specific, and above all **it only helps when somebody
+  notices.** Every failure this design targets is silent, so rewind is recovery
+  for the problems we do not have. A fact about the environment, not a thing to
+  build on.
+
 Plus enforcement: a hook that blocks makes a rule **execute** rather than be
 read, which is categorically stronger than any amount of presence. There is an
 existence proof that this is buildable — a permission gate doing exactly it — but
@@ -934,10 +1065,10 @@ problem rather than a mechanism problem.**
 
 ## Which mechanism can serve which class
 
-Mapping the mechanisms against obligation and trigger is where the candidates
+Mapping the mechanisms against compliance and trigger is where the candidates
 stop competing.
 
-| obligation + trigger | what can actually deliver it |
+| compliance + trigger | what can actually deliver it |
 | --- | --- |
 | **mandatory, `always`** | imports, or session-start injection by hook. **Not skills** — matching is probabilistic, and a rule that must never be missed cannot rest on a match that usually happens. **Not a tool** — that is pull |
 | **mandatory, mechanical trigger** | a hook at the trigger point. Falls back to the row above where no hook exists — costlier, same guarantee |
@@ -1176,7 +1307,7 @@ enforces **deliberateness**, which is a different and more achievable goal.
 ### Who opens it, and when
 
 Three answers, materially different, and the design probably wants all three at
-different obligation levels:
+different compliance levels:
 
 | | who decides | good for |
 | --- | --- | --- |
@@ -1217,6 +1348,12 @@ this structural:
 
 ## Two harnesses are required, and that sets the floor
 
+> **Parked.** Harness parity is assumed for now — treat every harness as able to
+> do what Claude Code can, and revisit deliberately later. Accounting for the
+> difference complicates every other decision while settling none of them. The
+> section is kept because the *shape* of the argument survives whatever the
+> verification turns up.
+
 **Claude Code and Codex are must-haves; anything further is upside.** That is a
 requirement rather than a preference, and it has a sharper consequence than it
 looks.
@@ -1241,17 +1378,20 @@ are very different promises to make to somebody writing a rule about credentials
 
 ## Open questions that decide it
 
-**Four of these now have answers or working positions, recorded inline.**
+**Six of the eight are now decided or dissolved, recorded inline. Two remain
+genuinely open — number 2's counterpart below, and number 8.**
 
 1. **Should the model ever read the index directly?** *Working position: it should
    normally not, but it must remain able to.* The consequence is specific — see
    below, because it decides how much has to be built before anything is usable.
-2. **Which form is the source: the human one or the machine one?** Open. If the
-   primary reader is a person, the index should be legible first and the
-   structured form derived from it; if a tool, the reverse. Hard to unwind, so
-   worth deciding deliberately rather than by accident.
+2. **Which form is the source: the human one or the machine one?** *Decided:
+   markdown, and a structured form later only if something concrete needs one.*
+   It reviews in a pull request, renders on a forge, and survives with no tooling
+   at all — and since the index is fully derived, nobody edits either form by
+   hand, so the question is only what a person sees on opening the file.
+   Generating JSON from markdown later is additive; the reverse is not.
 3. **Is `mandatory` rare?** *Superseded.* The question assumed one kind of
-   mandatory. With obligation and applicability separated, the real question is
+   mandatory. With compliance and applicability separated, the real question is
    **how many rules are `mandatory` *and* have no usable trigger** — because only
    those cost a session anything. That number should be small, and if it is not,
    the content wants rewriting rather than the mechanism.
@@ -1263,9 +1403,92 @@ are very different promises to make to somebody writing a rule about credentials
    decides which.* Mechanical triggers are pushed because the system can detect
    them; `topic` is pulled because only the model can recognise it. Neither covers
    the other's case, so a design with only one of them has a hole.
-6. **What is the authored-through content, exactly?** Open. For a tool-owned index
-   this decides whether it merges cleanly, and it is the part that cannot be
-   rebuilt from the filesystem.
+6. **What is the authored-through content, exactly?** *Largely dissolved.* The
+   question assumed a tool-owned index holding human notes the rebuild must not
+   erase. With `compliance`, `on_violation` and `applies_to` living on each
+   document, the facts a person decides are already in frontmatter and the index
+   derives from them entirely — there is nothing left for the rebuild to
+   protect. **Frontmatter first**, and where something genuinely cannot be
+   expressed there, the fallback already has precedent: a generated region
+   inside a hand-written file, delimited by markers, with everything outside
+   them untouched.
+7. **Whose rule wins — the author's or the adopter's?** *Decided.* An adopter
+   may narrow **`applies_to`**, since only they know their
+   own geography, and may **raise** compliance. They may not lower it. If they
+   need it lower the honest moves already exist — do not adopt, or fork it into
+   their own namespace — and both make weakening **visible as a fork** rather
+   than invisible as a config line. Without that, an organisation mandating a
+   bundle means nothing, because every project can adopt it and quietly gut it.
+8. **Two rules that fire at once and disagree.** *Answered, and the answer is
+   shaped by a limitation rather than a preference.* See below.
+
+### Two rules that disagree, and why nothing can error on it
+
+**The framing that unsticks this is not error-versus-warn. It is *when do you
+catch it*,** because the answer differs by how far the person standing there is
+from the fix.
+
+| when | who is standing there | can they fix it? |
+| --- | --- | --- |
+| publishing a catalog | the catalog author | yes — it is their content |
+| **adopting a bundle** | the adopter, who just chose to add the second one | **yes. They picked both, one command ago** |
+| projecting | same person, same information | yes |
+| **the rules fire** | somebody mid-task | **no. The fix is in a file they may not own** |
+
+**Fail early, degrade late.** A hard stop is fair at adopt time, where the person
+holding the problem is the person who created it. At runtime they are trying to
+get work done and the fix is somewhere else entirely.
+
+**And now the uncomfortable part: this vocabulary cannot express a contradiction,
+so nothing can reliably error on one.** Every rule is *when X happens, do Y*. Two
+rules firing on one trigger do not conflict mechanically — both interventions
+apply and they compose cleanly, since `block` beats `warn` beats `audit`. There
+is no pair of triggers that cannot both be satisfied.
+
+**The contradiction is in the prose.** One document says *prose goes in `docs/`*,
+another says *design drafts go in the central repo*. Both fire, both are
+delivered, and the machinery did its job perfectly. No program reads those two
+paragraphs and concludes they disagree.
+
+**A program can detect overlap** — two `mandatory` rules, from different sources,
+on one trigger. That is a proxy: usually legitimate, occasionally smoke from a
+fire, which makes it a warning and never an error.
+
+**The only component that can detect the real thing is the model**, because it is
+the only part that reads both documents and understands them. So make it the
+detector deliberately: when two `mandatory` rules from different sources are
+delivered together, **say so explicitly — these two both bind here, from these
+two sources** — and have it stop and report a genuine conflict. That converts an
+undetectable failure into a detectable one using the only component capable of
+detection, which is the move this design keeps making.
+
+**So, concretely:**
+
+- **Adopt time** — detect overlap, **warn** loudly, show both texts, name both
+  sources. Not an error; overlap is usually fine.
+- **Runtime** — deliver both, **labelled with their source**, and let precedence
+  decide if the model must act: nearest catalog beats upstream, the way
+  `configuration-precedence` already resolves six layers.
+- **The model reports** a real conflict, and the report is logged.
+- **The log is the input to fixing it** — someone reviews, and either the local
+  rule or the upstream one changes.
+
+**This is a starting position, not a settlement.** It is cheap to move: the
+detection is the same either way, and only what happens next changes.
+**Re-open triggers, either one:** adopt-time warnings get routinely clicked
+past, which would mean the warning is not doing the work and the stop belongs
+earlier or harder; or runtime conflicts turn out common enough that degrading
+quietly is producing real errors, which would argue for stopping there after
+all.
+
+**Why the usual instinct does not transfer.** In most software a contradiction is
+between two things you own, in one repository, fixable in an hour — so you fail
+the build and make somebody fix it. Here **half the content arrived by copy from
+a catalog you do not control**, and the person who hits the failure often has
+authority over neither side. Erroring at them makes their work impossible in
+order to punish an authoring mistake made elsewhere, possibly at another company.
+The adopt-time warning is where the discipline goes, because there the person
+did choose.
 
 ### What the answer to question 1 actually changes
 
@@ -1330,6 +1553,65 @@ reading for the enforcement ladder — cited as reading, not as settlement.
   scored against the acquisition designs in
   [adoption-use-cases.md](adoption-use-cases.md). The budget duty above is the
   second of them seen from the loading side.
+
+## What this document still owes
+
+**Audited after heavy churn**, because a long document decided in pieces will
+quietly disagree with itself. The *agreed but unwritten* and *written but stale*
+lists have both been cleared — the per-kind design, the evidence and the
+predictions are now in, the two options-era headings are retitled, the parity
+question is marked parked, and rewind is recorded as considered-and-excluded.
+
+What follows has never been designed at all.
+
+### Never discussed
+
+Ranked by how much they would hurt.
+
+1. **A trigger that matches nothing is silently inert.** `path: docs/**` in a
+   project with no `docs/` never fires, and that is **indistinguishable from a
+   rule that simply has not come up yet**. This is the exact failure class the
+   design exists to eliminate, reappearing inside the design's own machinery. The
+   sharpest gap on the list, and probably the next thing to work on.
+2. **How a document declares it is subordinate.** Directory nesting, an explicit
+   `owned_by`, or inference from the owner referencing it. The subordination rule
+   is written down; the mechanism that implements it is not, and the
+   tutorial-step fix depends on it.
+3. **Migration.** `preload` becoming three fields breaks every published bundle
+   and every adopter, and `preload` is a core spec field at §5.2, so removing it
+   is a specification change. Nineteen bundles need rewriting.
+4. **What a `bundle.md` declares.** Bundle-level and document-level conditions
+   were called the same mechanism recursed, and then nothing said what a bundle
+   itself carries. Does a bundle have its own `compliance` and `applies_to`?
+5. **Doors versus `applies_to`.** Multiple entry points, each with a *when*, is
+   recorded as a working position. Every document later gained `applies_to`.
+   Those look like the same thing — which would make a door simply a document
+   with a trigger — and both sit in this document as separate ideas.
+6. **What the evidence log records.** The daily reconciliation job is invoked
+   repeatedly; nothing specifies what it captures.
+
+### Questions raised by writing this down
+
+Smaller than the above, and each one surfaced while transcribing something that
+had felt settled in conversation.
+
+- **Where do the per-kind defaults live?** *A concept can never bind* and *a type
+  definition's trigger is structural* are stated as facts. Are they enforced by
+  the tool, declared in each type definition, or convention a linter reports? The
+  three have very different costs, and nothing chooses.
+- **Can a `workflow` ever be `mandatory`, and what would it mean?** Written as
+  *occasionally* without saying whether that makes the **trigger** binding or the
+  **body** standing. Only the first is ever wanted; the text does not say so.
+- **Is *hit rate approaching one means it is compliance, not applicability* a
+  lint or a guideline?** It is a good rule and it needs measurement that does not
+  exist before anything has run. A rule you can only check in hindsight may
+  belong in review rather than in tooling.
+- **Does `command` become a real document type?** It appears in the per-kind
+  table and exists nowhere in the format. Either it is added, or the row should
+  say it is hypothetical.
+- **Does `applies_to` accept multiple values of the same kind** — two globs, two
+  commands — or one of each? OR semantics implies a flat list, but nothing says
+  the list may repeat a kind.
 
 ## Separable: the verb for what `outfit` does
 
