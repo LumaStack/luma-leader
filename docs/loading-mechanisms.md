@@ -621,6 +621,73 @@ references it, and is invisible above that thing.** This is what fixes the
 observed leak where adopting one bundle put twenty-one tutorial step titles into
 every session's standing surface. It generalises rather than patching.
 
+**The mechanism is nesting, and it needs no new field.** A document that owns
+subordinate material occupies a directory; everything under that directory
+belongs to it.
+
+```
+workflows/token-tutorial/
+  WORKFLOW.md          the workflow
+  steps/01-….md        subordinate — inferred, never declared
+  steps/quiz.md
+```
+
+**The owner is the all-caps markdown file, and the casing is the signal rather
+than any particular word.** A policy carrying diagrams gets `POLICY.md`; a
+custom type gets its own. **Nothing is centrally reserved**, which matters
+because the type vocabulary is open and a reserved name per type would not
+scale — and a tool finds the owner without needing to know the type first.
+
+**Borrowed from `SKILL.md` deliberately.** Anyone who has seen one reads this
+correctly with nothing to learn, which is recognition rather than derivation and
+beats a convention argued from first principles. A workflow is a skill that
+travels across harnesses and carries more than one does, so it cannot take the
+name — but it can take the shape.
+
+**The rule it belongs to, stated once:** *reserved markdown files are ALL CAPS —
+unless the name is shared with an outside convention, in which case that
+convention's casing wins.*
+
+`README.md` and `LICENSE` land uppercase from the outside rule anyway, so the
+clause costs no consistency — it exists for names an outside tool resolves in a
+casing we do not choose.
+
+**`index.md` is being retired rather than exempted**, which leaves the rule with
+no exceptions at all. The specification reserves it for derived per-directory
+navigation that is unspecified, unbuilt, and superseded by a project-level index
+— and the name is one site generators hardcode in lowercase, so keeping it would
+have been the rule's only carve-out. Renaming what little depends on it is owed;
+`MANIFEST.md` is a good name waiting.
+
+**The real reason it works is that nobody types all-caps by accident.** A file
+becomes load-bearing only when somebody deliberately made it so, and getting it
+wrong fails in the **safe** direction — write `bundle.md` and it is simply
+ignored, rather than silently wired into machinery you did not know existed.
+Somebody who writes lowercase is either not using the tools, or does not want
+that file hooked up; both are cases where hooking it up anyway would be wrong.
+
+**It is the exact inverse of the `README.md` problem.** README fails as a
+reserved name because people edit it *without* knowing the rules — universal
+permission semantics, and no documentation overturns them. An all-caps name
+cannot be opted into by accident, so the rules only ever bind somebody who went
+looking for them.
+
+That also makes the system hard to half-break by hand, which matters more than
+legibility: the casing is not a label explaining what the file is, it is a
+**gate on participation**.
+
+**Applied, this makes `bundle.md` → `BUNDLE.md`, `catalog.md` → `CATALOG.md`,
+`log.md` → `LOG.md` and `project.md` → `PROJECT.md`.** Sequenced separately from
+this design — the rule is settled, the renames are mechanical and can land
+whenever.
+
+**The directory is the identity.** The document's ID is `workflows/token-tutorial`
+— `WORKFLOW.md` is a local detail nothing references, visible only to somebody
+already standing in the directory, so `entry_point`, wikilinks and skill names
+all shorten. **This part is a format addition rather than a convention:** the
+specification has to say a directory can *be* a document. Small, additive, and
+the only piece here that is not purely local.
+
 **Misfiling becomes diagnosable rather than a matter of review taste.** *A
 concept that must always be loaded is a policy wearing the wrong type.* *A
 workflow marked standing is confusing the trigger with the body* — what needs to
@@ -1609,6 +1676,11 @@ had felt settled in conversation.
 - **Does `command` become a real document type?** It appears in the per-kind
   table and exists nowhere in the format. Either it is added, or the row should
   say it is hypothetical.
+- **A naming policy for bundle-internal structure is owed.** What files inside a
+  bundle are called, and which names are reserved, has no policy — the existing
+  one covers repository-root documentation that outside tools match, which is a
+  different problem and should not be stretched to cover this. Worth writing
+  eventually; not worth writing before the structure settles.
 - **Does `applies_to` accept multiple values of the same kind** — two globs, two
   commands — or one of each? OR semantics implies a flat list, but nothing says
   the list may repeat a kind.
