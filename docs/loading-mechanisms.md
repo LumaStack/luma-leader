@@ -1355,6 +1355,14 @@ detection, which is the move this design keeps making.
 - **The log is the input to fixing it** — someone reviews, and either the local
   rule or the upstream one changes.
 
+**This is a starting position, not a settlement.** It is cheap to move: the
+detection is the same either way, and only what happens next changes.
+**Re-open triggers, either one:** adopt-time warnings get routinely clicked
+past, which would mean the warning is not doing the work and the stop belongs
+earlier or harder; or runtime conflicts turn out common enough that degrading
+quietly is producing real errors, which would argue for stopping there after
+all.
+
 **Why the usual instinct does not transfer.** In most software a contradiction is
 between two things you own, in one repository, fixable in an hour — so you fail
 the build and make somebody fix it. Here **half the content arrived by copy from
