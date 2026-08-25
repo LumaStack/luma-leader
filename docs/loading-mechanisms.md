@@ -143,6 +143,47 @@ cannot be triggered on this harness, costing 3,200 tokens every session* is a
 sentence somebody can act on — by changing harness, by rewriting the rule, or by
 accepting it. Today the same situation is invisible.
 
+### Degradation is a property of the finished design, not of the first build
+
+**A first implementation should have none of it, and should fail instead.**
+Stated here because otherwise the section above reads as a day-one requirement,
+and building it first would be a mistake.
+
+**A fallback hides the thing the first build exists to discover.** The point of
+shipping this early is to find out where routing actually misses. Anything that
+converts a miss into a slightly-worse-but-working outcome produces exactly the
+silent failure the whole design is meant to eliminate — a system that cannot tell
+you it is broken. Failing loudly is the same principle already applied
+everywhere else here, pointed at build order.
+
+**Three different things get called a fallback, and only one should be stubbed.**
+
+| | | first build |
+| --- | --- | --- |
+| **failure fallback** | routing found nothing, so guess, browse, or load everything | **stub it — fail** |
+| **degradation path** | the harness lacks a capability, so deliver a cheaper way | legitimate to defer, but deferring it means **targeting exactly one harness**, which is a scope decision rather than a side effect |
+| **escalation** | denied, ask, grant, retry | **not a fallback at all.** It is the designed path and it stays |
+
+**The flag outlives the phase, and that is the strongest part.** A permanent mode
+that disables every fallback keeps the true edge of the system measurable
+forever, rather than only while it is young — a continuous-integration mode where
+any reliance on a fallback fails the build, and a way to answer *how much of this
+actually works* at any point without archaeology. Worth fixing the polarity now
+so it survives the default flipping: today there is nothing to turn off, later
+fallbacks default on and the flag disables them.
+
+**Two things make it cost more than it looks.** *Just fail* is cheap only if the
+failure is legible — a bare error teaches nothing, and the useful version says
+what was expected, what was checked, and why nothing matched, so the saving is
+diagnostic code rather than no code. And the **direction** of failure has to be
+chosen deliberately: failing by loading nothing is recoverable, failing by
+loading everything is a token bomb.
+
+**One trigger to write down.** This is correct while the user set is small and
+tolerant. **The first external adopter is when to revisit it**, because loud
+failure stops being a diagnostic and becomes an outage in somebody else's
+session.
+
 ### Where this leaves the three classes
 
 They survive as **derived state**, which is the useful place for them. A document
@@ -286,10 +327,61 @@ thorough without anyone paying for the thoroughness until they need it.
 than the project level. An agent that has never heard of a bundle does not go
 looking for one.
 
+## The axis underneath all six: when is the decision made
+
+**Sorting mechanisms into push and pull, or index and tool, hides the split that
+actually matters.** Ask instead **when the routing decision happens** — before the
+session, or during it — and the six candidates stop being peers and become
+answers to two different questions.
+
+| | **compile time** | **run time** |
+| --- | --- | --- |
+| **who decides** | a projector, ahead of the session | a live process, while work happens |
+| **what it can see** | declarations only | declarations **plus what this session is actually doing** |
+| **produces** | committed artifacts — an index, adapters, imports | decisions, per turn |
+| **changing the logic** | regenerate, commit, merge | edit code; nothing in the repository moves |
+| **when the tool is absent** | **stale but present** | **nothing at all** |
+
+**Run time wins on the thing that matters most, and it is not close.** The single
+most useful routing signal is *what is this session about* — what was asked for,
+which files were touched, what has happened so far. That information does not
+exist when a projector runs. A compile-time design is blind to it by
+construction, and no amount of better declarations fixes that.
+
+**It also makes evidence native rather than bolted on.** A live decider is
+already observing, so the decider and the observer are one thing and the feedback
+loop costs nothing extra. And it may retire a hard open question outright: if
+routing logic lives in code rather than in a committed artifact, *what is the
+authored-through content and does it merge cleanly* largely stops being asked.
+
+**Compile time wins on robustness, and only on robustness.** A bare clone with no
+tooling gets whatever was committed — degraded, not empty. A runtime router with
+no invocation channel delivers nothing at all, which violates the rule this
+document holds elsewhere: **absence must cost, never break.** There is a smaller
+cost too, worth naming because it cuts against a stated objective: a live decider
+means two runs of the same task can load different things, and predictability was
+supposed to be a feature.
+
+**So they are layers, not alternatives.** Declarations are the source of truth.
+**Compile-time projection is the floor** — not a safety net bolted on afterwards,
+but a second consumer of the same declarations, which is why it costs little to
+keep. **The runtime router is an accelerator** that uses what only it can see.
+Where the router runs you get good routing; where it does not, the floor holds.
+
+**And it explains why a live router needs hooks structurally rather than
+optionally.** A router decides; it has no way to speak unless something invokes
+it. At session start that is easy. Mid-session it is the crux — for the required
+set to be re-decided, something must call the router at the right moment, and it
+cannot be the model, because *what is required now* is exactly what the model does
+not know to ask. **The router is the brain and the hook is the mouth**, which
+settles the push-versus-pull question by dissolving it.
+
 ## The candidate mechanisms
 
 Six. Each gets the same treatment: how it works, what only it can do, where it
 breaks, and what would make it excellent. **None of them is ruled out here.**
+Read them against the axis above — some are compile-time artifacts, some are
+runtime channels, and a few can be either depending on what drives them.
 
 ### 1 — Generated indexes
 
@@ -361,9 +453,21 @@ context or block an action.
 - **Loading late.** A hook firing before a tool call can put text in front of an
   agent **at the moment it acts**, by returning a reason that reaches the model.
   *Platform fact, verified rather than assumed.* Its consequence is the useful
-  part: **you cannot unload, but you can load late, and loading late is most of
-  what conditional loading ever wanted.** A design that gives up on conditions
-  because nothing can drop what is loaded has answered the wrong question.
+  part: **loading late is most of what conditional loading ever wanted**, and a
+  design that gives up on conditions because dropping content is awkward has
+  answered the wrong question.
+
+  **On unloading, stated carefully, because the easy version is wrong.** Nothing
+  removes a document from a context window in place. Within one contiguous
+  window the loaded set only grows. It can be *shrunk* by resetting and reloading
+  a different set — so unloading is available, and the cost is the striking part:
+  **a reset costs what you keep, not what you drop.** Dropping one small document
+  from a large window means re-establishing the whole window. Unloading is
+  therefore cheap early in a session and prohibitive late, which is the opposite
+  of the intuition. It is also exact on content and lossy on reasoning — the
+  documents come back byte-identical, the thinking between load and reset does
+  not — and that, rather than the token cost, is why it stays a move you make
+  once rather than routinely.
 
 Plus enforcement: a hook that blocks makes a rule **execute** rather than be
 read, which is categorically stronger than any amount of presence. There is an
