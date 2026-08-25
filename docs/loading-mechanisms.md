@@ -44,7 +44,7 @@ design quietly becomes an incremental one.**
 earlier draft reached something that survives the test, it is restated as a
 requirement with its argument, not deferred to.
 
-## The one thing to implement regardless of what wins
+## The three classes a document can land in
 
 **`preload: mandatory | optional` is a single axis hiding two.** Whether a
 document's *body* is present at session start, and whether its *existence* is
@@ -73,7 +73,7 @@ observable states a document can be in, and they remain the right vocabulary for
 *describing* where a document ended up. What an author writes should be something
 else, from which these are computed.
 
-## `mandatory` is three questions welded together
+## Splitting `preload` into the things an author actually knows
 
 **The sentence that breaks it open: *we want the model to follow these rules and
 never miss, but we do not want them loaded until it is time to follow them.***
@@ -569,6 +569,110 @@ writing, which is the job `advisory / binding / blocking` failed at:
 The frontmatter says `compliance` and `on_violation`; the writing says *this one
 is a guardrail*.
 
+## What each kind of document gets
+
+**The two authored fields plus the harness determine delivery, and for most kinds
+the answer is implied by the kind itself.** The derivation, first:
+
+| trigger | compliance | → class |
+| --- | --- | --- |
+| **inherited** | any | **invisible above its owner**; arrives with it |
+| **mechanical** | any | **advertised** — delivered at the trigger |
+| **semantic** | any | **advertised** — announced by description, pulled on match |
+| **none** | `mandatory` | **standing** |
+| **none** | `recommended` or `optional` | **on-demand** |
+
+**There is exactly one path to always-loaded: mandatory with no statable
+trigger.** That is the whole discipline. Standing stops being something an author
+selects and becomes something they *fail into* — which is the right shape,
+because it makes the expensive outcome visible as a gap rather than as a decision
+somebody made.
+
+### The kinds
+
+| kind | can it bind? | trigger | lands on |
+| --- | --- | --- | --- |
+| **`type_definition`** | `mandatory` | **mechanical, and exact** — the `type:` of the document being written | advertised |
+| **`workflow`** | usually `optional`; occasionally `mandatory` | semantic — *use when…* — or `command` / `moment` | advertised |
+| **command** | `optional` | mechanical — its own invocation | advertised |
+| **`policy`** | `mandatory` or `recommended` | **varies — the hard kind** | advertised, or standing where no trigger exists |
+| **concept** | **never binds** | semantic | on-demand |
+| **template, asset** | n/a — cannot declare, no frontmatter | inherited | invisible |
+| **subordinate documents** — tutorial steps, quiz | n/a | inherited from the owning workflow | invisible |
+| **`bundle.md`** | n/a — it *is* the ring-2 index | arrives when the bundle loads | — |
+
+**`policy` is the only kind whose answer is not implied by the kind**, and that
+is where authoring effort actually goes. It matches the measurement below
+exactly.
+
+### Three consequences
+
+**Type definitions are the best-served kind by this design and the worst-served
+today.** Their trigger is exact and machine-derivable — a document declaring
+`type: X` is being written, so load X's contract. No glob, no configuration, no
+semantics, and no declaration: it follows from being a type definition at all.
+And today `_types/` is skipped from projection entirely, so **the cleanest
+trigger in the system is the one nothing uses.**
+
+**Subordination is a structural rule, not a special case.** Anything that cannot
+declare for itself — a template with deliberately no frontmatter, a tutorial step
+owned by the workflow that runs it — **inherits applicability from whatever
+references it, and is invisible above that thing.** This is what fixes the
+observed leak where adopting one bundle put twenty-one tutorial step titles into
+every session's standing surface. It generalises rather than patching.
+
+**Misfiling becomes diagnosable rather than a matter of review taste.** *A
+concept that must always be loaded is a policy wearing the wrong type.* *A
+workflow marked standing is confusing the trigger with the body* — what needs to
+be present is its name, never its procedure. Both are now mechanical checks.
+
+### The evidence this rests on
+
+**Applicability is already being written — in prose, in `description` — and only
+where a mechanism consumes it.**
+
+| | states when it applies | |
+| --- | --- | --- |
+| **workflows** | **33 / 44** | 75% |
+| **policies** | **4 / 34** | 11% |
+
+Workflows say *"Use when a position is settled…"* almost universally. Policies say
+what they are *about*, not when they fire.
+
+**The asymmetry has a cause, and it is the argument for the whole design.**
+Workflows become skills, skills match on description, so stating *when this
+applies* is rewarded — the mechanism pays for the discipline. Nothing consumes a
+policy's applicability, so nobody writes it. The field exists; the incentive does
+not. **So the trigger vocabulary is not asking for a new discipline. It extends
+one that already holds in three-quarters of one document type**, which is a much
+better position than proposing a convention and hoping.
+
+**It also collapses one of the triggers.** `topic` is not a new field — it is the
+`description` every document already carries, and which 75% of workflows already
+write correctly. The vocabulary is really *five mechanical triggers plus the
+description you already wrote.*
+
+**Assigning triggers to all 34 policies by hand** gave roughly: a third cleanly
+mechanical (`readme` → `path: README.md`, `never-commit-credentials` →
+`command: git commit`), a quarter semantic-only and genuinely diffuse, the rest
+wanting both. Two were mechanical but far too broad — `writing-style` on
+`**/*.md` fires on nearly every write in a prose repository, which is `always`
+with extra machinery. **A useful rule falls out: if a trigger's hit rate
+approaches one, it is not applicability, it is compliance.**
+
+### What this predicts about the existing catalog
+
+Falsifiable, which is the point — and between them these are the migration.
+
+- **All four `preload: mandatory` workflows are wrong** — `record-decision`,
+  `adopt-knowledge`, `capturing-ideas`, `conduct-audit`. What must be present is
+  the trigger, not the procedure.
+- **The true standing set is one to three policies, not fourteen.** Most of the
+  diffuse ones can state a semantic trigger and become advertised; only those
+  genuinely governing everything stay.
+- **Around thirty policies need applicability written.** Content work, not
+  tooling, and the bulk of the effort.
+
 ## Six readers, and only one of them is a model
 
 **The question *should the index be loaded* assumes the reader is a model.** It
@@ -816,6 +920,14 @@ context or block an action.
   documents come back byte-identical, the thinking between load and reset does
   not — and that, rather than the token cost, is why it stays a move you make
   once rather than routinely.
+
+  **Rewind was considered and deliberately excluded as a design input.** It is
+  the cheapest unload available — returning to a state that already existed
+  rather than rebuilding one — but it is user-operated with no way for a system
+  to invoke it, harness-specific, and above all **it only helps when somebody
+  notices.** Every failure this design targets is silent, so rewind is recovery
+  for the problems we do not have. A fact about the environment, not a thing to
+  build on.
 
 Plus enforcement: a hook that blocks makes a rule **execute** rather than be
 read, which is categorically stronger than any amount of presence. There is an
@@ -1236,6 +1348,12 @@ this structural:
 
 ## Two harnesses are required, and that sets the floor
 
+> **Parked.** Harness parity is assumed for now — treat every harness as able to
+> do what Claude Code can, and revisit deliberately later. Accounting for the
+> difference complicates every other decision while settling none of them. The
+> section is kept because the *shape* of the argument survives whatever the
+> verification turns up.
+
 **Claude Code and Codex are must-haves; anything further is upside.** That is a
 requirement rather than a preference, and it has a sharper consequence than it
 looks.
@@ -1438,50 +1556,15 @@ reading for the enforcement ladder — cited as reading, not as settlement.
 
 ## What this document still owes
 
-**Audited after heavy churn**, because a document this long that has been decided
-in pieces will quietly disagree with itself. Three lists: agreed but unwritten,
-written but stale, and never discussed at all.
+**Audited after heavy churn**, because a long document decided in pieces will
+quietly disagree with itself. The *agreed but unwritten* and *written but stale*
+lists have both been cleared — the per-kind design, the evidence and the
+predictions are now in, the two options-era headings are retitled, the parity
+question is marked parked, and rewind is recorded as considered-and-excluded.
 
-### Agreed in conversation, missing from the page
+What follows has never been designed at all.
 
-- **The per-kind design.** What each kind of document gets — a `type_definition`
-  whose trigger is *structural* and needs no declaration, a `workflow` that is
-  almost never `mandatory`, a `concept` that can never bind, a `policy` as the
-  only kind where the answer is not implied by the kind. Along with
-  **subordination**: templates, tutorial steps and other documents that cannot
-  declare for themselves inherit applicability from whatever references them and
-  are invisible above it. **That rule is what fixes the tutorial-step leak**,
-  where adopting one bundle put twenty-one step titles into every session, and it
-  is not written down anywhere.
-- **The empirical evidence.** Workflows declare their applicability in prose
-  **33 times out of 44**; policies **4 out of 34**. The asymmetry has a cause —
-  workflows become skills, skills match on description, so the discipline is
-  rewarded, while nothing consumes a policy's applicability. **That is the
-  strongest argument in the whole design**, because it shows the vocabulary
-  formalises a practice that already holds in three-quarters of one document type
-  rather than proposing one and hoping. Also missing: the tally of all 34 policies
-  against the trigger set — roughly a third cleanly mechanical, a quarter
-  semantic-only, the rest wanting both.
-- **The concrete predictions.** All four `preload: mandatory` workflows are wrong,
-  because what must be present is the trigger and not the procedure. The true
-  always-loaded set is one to three policies rather than fourteen. Around thirty
-  policies need applicability written, which is content work and is the bulk of
-  the migration. Falsifiable, which is the point.
-
-### Written, but now stale
-
-- **Two headings survive from when this was all options** — *the one thing to
-  implement regardless of what wins* and *`mandatory` is three questions welded
-  together*. Both now title solved problems.
-- **The Codex section still reads as blocking.** Harness parity is assumed for
-  now and the question is parked deliberately; the page still says the floor
-  cannot be stated honestly until it is verified.
-- **Rewind is not mentioned.** It was considered and **deliberately excluded as a
-  design input**: it is user-operated, harness-specific, and above all it only
-  helps when somebody notices — where every failure here is silent. Without that
-  note recorded, the next reader raises it again.
-
-### Never discussed at all
+### Never discussed
 
 Ranked by how much they would hurt.
 
@@ -1489,23 +1572,46 @@ Ranked by how much they would hurt.
    project with no `docs/` never fires, and that is **indistinguishable from a
    rule that simply has not come up yet**. This is the exact failure class the
    design exists to eliminate, reappearing inside the design's own machinery. The
-   sharpest gap on the list.
+   sharpest gap on the list, and probably the next thing to work on.
 2. **How a document declares it is subordinate.** Directory nesting, an explicit
-   `owned_by`, or inference from the owner referencing it. Undecided, and the
+   `owned_by`, or inference from the owner referencing it. The subordination rule
+   is written down; the mechanism that implements it is not, and the
    tutorial-step fix depends on it.
 3. **Migration.** `preload` becoming three fields breaks every published bundle
    and every adopter, and `preload` is a core spec field at §5.2, so removing it
-   is a specification change. Nineteen bundles need rewriting. Not one line about
-   it anywhere.
+   is a specification change. Nineteen bundles need rewriting.
 4. **What a `bundle.md` declares.** Bundle-level and document-level conditions
    were called the same mechanism recursed, and then nothing said what a bundle
-   itself carries.
+   itself carries. Does a bundle have its own `compliance` and `applies_to`?
 5. **Doors versus `applies_to`.** Multiple entry points, each with a *when*, is
    recorded as a working position. Every document later gained `applies_to`.
    Those look like the same thing — which would make a door simply a document
    with a trigger — and both sit in this document as separate ideas.
 6. **What the evidence log records.** The daily reconciliation job is invoked
    repeatedly; nothing specifies what it captures.
+
+### Questions raised by writing this down
+
+Smaller than the above, and each one surfaced while transcribing something that
+had felt settled in conversation.
+
+- **Where do the per-kind defaults live?** *A concept can never bind* and *a type
+  definition's trigger is structural* are stated as facts. Are they enforced by
+  the tool, declared in each type definition, or convention a linter reports? The
+  three have very different costs, and nothing chooses.
+- **Can a `workflow` ever be `mandatory`, and what would it mean?** Written as
+  *occasionally* without saying whether that makes the **trigger** binding or the
+  **body** standing. Only the first is ever wanted; the text does not say so.
+- **Is *hit rate approaching one means it is compliance, not applicability* a
+  lint or a guideline?** It is a good rule and it needs measurement that does not
+  exist before anything has run. A rule you can only check in hindsight may
+  belong in review rather than in tooling.
+- **Does `command` become a real document type?** It appears in the per-kind
+  table and exists nowhere in the format. Either it is added, or the row should
+  say it is hypothetical.
+- **Does `applies_to` accept multiple values of the same kind** — two globs, two
+  commands — or one of each? OR semantics implies a flat list, but nothing says
+  the list may repeat a kind.
 
 ## Separable: the verb for what `outfit` does
 
