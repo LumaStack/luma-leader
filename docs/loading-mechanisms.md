@@ -9,7 +9,10 @@ modified: { by: agent:claude-opus-5, at: 2026-08-24T00:00:00Z }
 
 # Loading mechanisms
 
-**Draft. Nothing here is settled, and most of it is half-baked deliberately.**
+**Draft, and no longer uniformly so.** Much of this began as half-baked options
+and a good deal of it has since been decided. **What is settled, what is deferred
+with a re-open trigger, and what this document still owes are listed at the end**
+— read that first if you need to know which you are looking at.
 Eighth companion to [bundle-dependencies.md](bundle-dependencies.md),
 [bundle-versioning.md](bundle-versioning.md),
 [shared-types.md](shared-types.md), [curator.md](curator.md),
@@ -1298,17 +1301,68 @@ genuinely open — number 2's counterpart below, and number 8.**
    their own namespace — and both make weakening **visible as a fork** rather
    than invisible as a config line. Without that, an organisation mandating a
    bundle means nothing, because every project can adopt it and quietly gut it.
-8. **Two rules that fire at once and disagree.** **Genuinely open, and the worst
-   of them**, because nothing detects it: both rules load, both look
-   authoritative, the model picks one, and the output looks like a normal answer.
-   It cannot really happen today — one catalog, one author, nothing contradicts
-   anything — and **it arrives with the second catalog**, which the estate
-   already plans for via `upstream` chains. Two candidate answers that compose:
-   **precedence by source**, where the nearest catalog wins, which has precedent
-   in `configuration-precedence` resolving six layers the same way; and
-   **detection**, flagging when two `mandatory` rules from different sources fire
-   on one trigger. Precedence alone silently picks a winner; detection alone
-   stops the work.
+8. **Two rules that fire at once and disagree.** *Answered, and the answer is
+   shaped by a limitation rather than a preference.* See below.
+
+### Two rules that disagree, and why nothing can error on it
+
+**The framing that unsticks this is not error-versus-warn. It is *when do you
+catch it*,** because the answer differs by how far the person standing there is
+from the fix.
+
+| when | who is standing there | can they fix it? |
+| --- | --- | --- |
+| publishing a catalog | the catalog author | yes — it is their content |
+| **adopting a bundle** | the adopter, who just chose to add the second one | **yes. They picked both, one command ago** |
+| projecting | same person, same information | yes |
+| **the rules fire** | somebody mid-task | **no. The fix is in a file they may not own** |
+
+**Fail early, degrade late.** A hard stop is fair at adopt time, where the person
+holding the problem is the person who created it. At runtime they are trying to
+get work done and the fix is somewhere else entirely.
+
+**And now the uncomfortable part: this vocabulary cannot express a contradiction,
+so nothing can reliably error on one.** Every rule is *when X happens, do Y*. Two
+rules firing on one trigger do not conflict mechanically — both interventions
+apply and they compose cleanly, since `block` beats `warn` beats `audit`. There
+is no pair of triggers that cannot both be satisfied.
+
+**The contradiction is in the prose.** One document says *prose goes in `docs/`*,
+another says *design drafts go in the central repo*. Both fire, both are
+delivered, and the machinery did its job perfectly. No program reads those two
+paragraphs and concludes they disagree.
+
+**A program can detect overlap** — two `mandatory` rules, from different sources,
+on one trigger. That is a proxy: usually legitimate, occasionally smoke from a
+fire, which makes it a warning and never an error.
+
+**The only component that can detect the real thing is the model**, because it is
+the only part that reads both documents and understands them. So make it the
+detector deliberately: when two `mandatory` rules from different sources are
+delivered together, **say so explicitly — these two both bind here, from these
+two sources** — and have it stop and report a genuine conflict. That converts an
+undetectable failure into a detectable one using the only component capable of
+detection, which is the move this design keeps making.
+
+**So, concretely:**
+
+- **Adopt time** — detect overlap, **warn** loudly, show both texts, name both
+  sources. Not an error; overlap is usually fine.
+- **Runtime** — deliver both, **labelled with their source**, and let precedence
+  decide if the model must act: nearest catalog beats upstream, the way
+  `configuration-precedence` already resolves six layers.
+- **The model reports** a real conflict, and the report is logged.
+- **The log is the input to fixing it** — someone reviews, and either the local
+  rule or the upstream one changes.
+
+**Why the usual instinct does not transfer.** In most software a contradiction is
+between two things you own, in one repository, fixable in an hour — so you fail
+the build and make somebody fix it. Here **half the content arrived by copy from
+a catalog you do not control**, and the person who hits the failure often has
+authority over neither side. Erroring at them makes their work impossible in
+order to punish an authoring mistake made elsewhere, possibly at another company.
+The adopt-time warning is where the discipline goes, because there the person
+did choose.
 
 ### What the answer to question 1 actually changes
 
@@ -1373,6 +1427,77 @@ reading for the enforcement ladder — cited as reading, not as settlement.
   scored against the acquisition designs in
   [adoption-use-cases.md](adoption-use-cases.md). The budget duty above is the
   second of them seen from the loading side.
+
+## What this document still owes
+
+**Audited after heavy churn**, because a document this long that has been decided
+in pieces will quietly disagree with itself. Three lists: agreed but unwritten,
+written but stale, and never discussed at all.
+
+### Agreed in conversation, missing from the page
+
+- **The per-kind design.** What each kind of document gets — a `type_definition`
+  whose trigger is *structural* and needs no declaration, a `workflow` that is
+  almost never `mandatory`, a `concept` that can never bind, a `policy` as the
+  only kind where the answer is not implied by the kind. Along with
+  **subordination**: templates, tutorial steps and other documents that cannot
+  declare for themselves inherit applicability from whatever references them and
+  are invisible above it. **That rule is what fixes the tutorial-step leak**,
+  where adopting one bundle put twenty-one step titles into every session, and it
+  is not written down anywhere.
+- **The empirical evidence.** Workflows declare their applicability in prose
+  **33 times out of 44**; policies **4 out of 34**. The asymmetry has a cause —
+  workflows become skills, skills match on description, so the discipline is
+  rewarded, while nothing consumes a policy's applicability. **That is the
+  strongest argument in the whole design**, because it shows the vocabulary
+  formalises a practice that already holds in three-quarters of one document type
+  rather than proposing one and hoping. Also missing: the tally of all 34 policies
+  against the trigger set — roughly a third cleanly mechanical, a quarter
+  semantic-only, the rest wanting both.
+- **The concrete predictions.** All four `preload: mandatory` workflows are wrong,
+  because what must be present is the trigger and not the procedure. The true
+  always-loaded set is one to three policies rather than fourteen. Around thirty
+  policies need applicability written, which is content work and is the bulk of
+  the migration. Falsifiable, which is the point.
+
+### Written, but now stale
+
+- **Two headings survive from when this was all options** — *the one thing to
+  implement regardless of what wins* and *`mandatory` is three questions welded
+  together*. Both now title solved problems.
+- **The Codex section still reads as blocking.** Harness parity is assumed for
+  now and the question is parked deliberately; the page still says the floor
+  cannot be stated honestly until it is verified.
+- **Rewind is not mentioned.** It was considered and **deliberately excluded as a
+  design input**: it is user-operated, harness-specific, and above all it only
+  helps when somebody notices — where every failure here is silent. Without that
+  note recorded, the next reader raises it again.
+
+### Never discussed at all
+
+Ranked by how much they would hurt.
+
+1. **A trigger that matches nothing is silently inert.** `path: docs/**` in a
+   project with no `docs/` never fires, and that is **indistinguishable from a
+   rule that simply has not come up yet**. This is the exact failure class the
+   design exists to eliminate, reappearing inside the design's own machinery. The
+   sharpest gap on the list.
+2. **How a document declares it is subordinate.** Directory nesting, an explicit
+   `owned_by`, or inference from the owner referencing it. Undecided, and the
+   tutorial-step fix depends on it.
+3. **Migration.** `preload` becoming three fields breaks every published bundle
+   and every adopter, and `preload` is a core spec field at §5.2, so removing it
+   is a specification change. Nineteen bundles need rewriting. Not one line about
+   it anywhere.
+4. **What a `bundle.md` declares.** Bundle-level and document-level conditions
+   were called the same mechanism recursed, and then nothing said what a bundle
+   itself carries.
+5. **Doors versus `applies_to`.** Multiple entry points, each with a *when*, is
+   recorded as a working position. Every document later gained `applies_to`.
+   Those look like the same thing — which would make a door simply a document
+   with a trigger — and both sit in this document as separate ideas.
+6. **What the evidence log records.** The daily reconciliation job is invoked
+   repeatedly; nothing specifies what it captures.
 
 ## Separable: the verb for what `outfit` does
 
