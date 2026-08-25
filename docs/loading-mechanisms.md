@@ -648,17 +648,33 @@ name — but it can take the shape.
 unless the name is shared with an outside convention, in which case that
 convention's casing wins.*
 
-`index.md` is the only name that currently qualifies for the exemption: site
-generators hardcode lowercase and Pages builds on a case-sensitive filesystem,
-so capitalising it forfeits directory-default behaviour for nothing. `README.md`
-and `LICENSE` would land uppercase from the outside rule anyway, so the clause
-costs no consistency.
+`README.md` and `LICENSE` land uppercase from the outside rule anyway, so the
+clause costs no consistency — it exists for names an outside tool resolves in a
+casing we do not choose.
 
-**The casing carries information rather than emphasis.** All-caps says *a tool
-matches this exact string; it is not yours to rename* — which is the fact a
-reader needs and the one a lowercase name cannot state. It matters most for
-hand-authored files, since those are where somebody tidies up without knowing
-what depends on the name.
+**`index.md` is being retired rather than exempted**, which leaves the rule with
+no exceptions at all. The specification reserves it for derived per-directory
+navigation that is unspecified, unbuilt, and superseded by a project-level index
+— and the name is one site generators hardcode in lowercase, so keeping it would
+have been the rule's only carve-out. Renaming what little depends on it is owed;
+`MANIFEST.md` is a good name waiting.
+
+**The real reason it works is that nobody types all-caps by accident.** A file
+becomes load-bearing only when somebody deliberately made it so, and getting it
+wrong fails in the **safe** direction — write `bundle.md` and it is simply
+ignored, rather than silently wired into machinery you did not know existed.
+Somebody who writes lowercase is either not using the tools, or does not want
+that file hooked up; both are cases where hooking it up anyway would be wrong.
+
+**It is the exact inverse of the `README.md` problem.** README fails as a
+reserved name because people edit it *without* knowing the rules — universal
+permission semantics, and no documentation overturns them. An all-caps name
+cannot be opted into by accident, so the rules only ever bind somebody who went
+looking for them.
+
+That also makes the system hard to half-break by hand, which matters more than
+legibility: the casing is not a label explaining what the file is, it is a
+**gate on participation**.
 
 **Applied, this makes `bundle.md` → `BUNDLE.md`, `catalog.md` → `CATALOG.md`,
 `log.md` → `LOG.md` and `project.md` → `PROJECT.md`.** Sequenced separately from
