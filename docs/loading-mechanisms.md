@@ -644,9 +644,23 @@ beats a convention argued from first principles. A workflow is a skill that
 travels across harnesses and carries more than one does, so it cannot take the
 name — but it can take the shape.
 
-**The rule it belongs to, stated once:** *reserved markdown files are ALL CAPS —
-unless the name is shared with an outside convention, in which case that
-convention's casing wins.*
+**The rule it belongs to, stated once:**
+
+> **ALL CAPS names a file that speaks for the thing containing it. Lowercase
+> names one of the things contained.** Unless the name is shared with an outside
+> convention, in which case that convention's casing wins.
+
+**In plain terms, because the line above reads well to a parser and badly to a
+person:** a file in CAPITALS is the folder's own file — it tells you what the
+folder *is*. Everything in lowercase is one of the things the folder *holds*.
+The test when unsure: *is this file describing what surrounds it, or is it one
+of the things surrounded?*
+
+**The abstract form earns its place by having no exceptions.** `templates/bundle.md`
+is a pattern for making a bundle, not a bundle; `_types/catalog.md` describes
+what a catalog is while living inside something else. The rule **excludes** them
+rather than exempting them, which is why there is no list to memorise — and that
+property is only visible in the precise wording. Both wordings, both audiences.
 
 `README.md` and `LICENSE` land uppercase from the outside rule anyway, so the
 clause costs no consistency — it exists for names an outside tool resolves in a
