@@ -4,7 +4,14 @@ Settled positions and the reasoning that settled them. Recorded so they are not 
 
 ## Generated artifacts stay committed, for now
 
-**Settled 2026-08-26, and deliberately reversible.**
+**Not settled. Current practice, and the reasoning for it, recorded 2026-08-26
+so that it is not re-derived — but nobody has decided it.**
+
+*It was first written here as settled, which it was not: it came from an
+instinct explicitly hedged in the same sentence that raised it. **A position
+recorded as settled acquires an authority nobody granted it**, and this file is
+read as the record of what was decided. Corrected the same day. What follows is
+an argument worth keeping, not a decision to cite.*
 
 **`CLAUDE.md`, `.claude/skills/` and `.luma/bundles/routing.toml` are committed**,
 though every one of them is written by `luma-foreman outfit` and could be
@@ -30,10 +37,16 @@ never to hand-merge — a hand-resolved generated file is wrong in a way nothing
 reports, and the next run discards it. That rule is published in
 `adopt-knowledge` so it reaches adopters rather than living here.
 
-**Re-open trigger:** the conflicts stop being an occasional nuisance and start
-costing real time, **or** somebody hand-resolves one and it reaches `main` — the
-failure this is betting will not happen. `.claude/skills/` is the first to go if
-so: it serves one harness and nothing reads it at runtime.
+**What would settle it, either way:** a deliberate call on whether the history
+of a generated file is worth the conflicts, made when somebody has felt both.
+Until then this describes what the repositories do and why, and a reader is free
+to disagree with it without arguing against a decision.
+
+**What would force the question:** the conflicts stop being an occasional
+nuisance and start costing real time, **or** somebody hand-resolves one and it
+reaches `main` — the failure this practice is betting will not happen.
+`.claude/skills/` is the first to go if so: it serves one harness and nothing
+reads it at runtime.
 
 ## A document says what makes it surface, not what it governs
 
