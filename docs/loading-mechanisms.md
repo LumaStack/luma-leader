@@ -218,7 +218,7 @@ enough:
 | `path` | a file matching a glob is read or written |
 | `tool` | a named tool or capability is invoked |
 | `command` | a shell command of a given shape runs |
-| `moment` | a point in a lifecycle — session start, before commit, before release |
+| `event` | a lifecycle point — session start, before commit, before release |
 | `topic` | the work is *about* something — matched semantically, not mechanically |
 
 **The first five are mechanical and the last is not**, and that distinction
@@ -229,7 +229,7 @@ case: nothing mechanical knows the user is *thinking about* stylesheets before a
 file is touched, and no description reliably fires *at the moment of commit*.
 
 **A rule may carry more than one trigger.** *Never commit a credential* is
-`command` plus `path` plus `moment`, and wanting all three is normal rather than
+`command` plus `path` plus `event`, and wanting all three is normal rather than
 a modelling failure.
 
 **A type definition needs no trigger declaration.** Its applicability is
@@ -440,7 +440,7 @@ compliance:   mandatory
 on_violation: block
 applies_to:
   - command: git commit
-  - moment: before-push
+  - event: before-push
 ```
 
 **The common case is one field.** `on_violation` defaults to `allow` and appears
@@ -634,7 +634,7 @@ freed with a note saying where it belongs.
 `applies_when` was the alternative and reads the triggers as *conditions* rather
 than *targets*. Both parse, but the recorded convention decides it.
 
-### `moment`, and why not the obvious words
+### `event`, and why not the obvious words
 
 `lifecycle` is the word that best explains why session-start, before-commit and
 before-release are one category — but the format already uses `lifecycle_status`
