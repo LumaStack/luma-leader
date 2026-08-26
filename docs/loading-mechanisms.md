@@ -52,58 +52,61 @@ rather than at the end.** Everything below is the reasoning; this is the result.
 ### What an author writes
 
 ```yaml
-compliance:    required | recommended    # policies only; absent means required
-applies_to:    [ path | tool | command | event | topic ]
-on_violation:  allow | audit | warn | require_reason | require_approval | block
+applies_to:   [ path | tool | command | event | topic ]
+on_violation: allow | audit | warn | require_reason | require_approval | block
 ```
 
-Three fields, three questions, and **nothing else is declared**:
+**Two fields, and nothing else is declared:**
 
 | field | the question it answers |
 | --- | --- |
-| `compliance` | **how much trouble am I in if I do not do this?** |
 | `applies_to` | **when does this even come up?** |
 | `on_violation` | **what does the system do when it is not complied with?** |
 
-**Nobody writes when a document loads.** That is computed:
+**Whether it binds is what the `type` is for.** A policy binds because it is a
+policy; that is the definition. A workflow is run. A `document` is read.
+
+**Nobody writes when a document loads.** That is computed from the type and the
+trigger:
 
 | | |
 | --- | --- |
 | has a trigger | **advertised** — named up front, body arrives on match |
-| no trigger, and it is a policy | **standing** — loaded unconditionally, the expensive outcome |
+| no trigger, and it is a **policy** | **standing** — loaded unconditionally, the expensive outcome |
 | no trigger, anything else | **on-demand** — findable, not announced |
 
 **There is exactly one path to standing**, so it is something an author *falls
 into* by being unable to say when a rule applies, rather than something they
 select. After the catalog migration nothing takes it.
 
-### Which fields go on which kind
+### `compliance` was invented here and removed the same day
 
-- **A policy** carries `compliance`. It *is* the obligation, so it grades the
-  obligation. Absent means `required`, because a policy that binds nothing is
-  not a policy — it is an ordinary `document`.
-- **A workflow** may carry `compliance` too, and it grades something different:
-  **must you run this when its trigger fires.** *Configure your identity before
-  your first commit* is required; *leave a handoff note at session end* is
-  recommended, because skipping it loses something rather than breaking
-  something.
-  **It only means anything with a trigger.** *Must you run it* is unanswerable
-  alone — must you run it **when?** So a workflow with no `applies_to` carries
-  no compliance, which is most of them: you run them when you want, and there is
-  no moment to be obliged at.
-  Never about its *steps*, which bind by being steps. You needn't migrate
-  decisions; once you are, *never delete the original until the split is
-  verified* is not negotiable.
-- **An ordinary `document`** — background, rationale, the things filed under
-  `concepts/` — obliges nothing by definition, so `compliance` does not apply.
-- **`event`** covers what no other trigger can reach — `session-start`,
-  `session-end`, `before-commit`, `before-push`, `before-merge`,
-  `before-release`. Four of those overlap with `command` deliberately: a
-  `command` trigger fires on a literal invocation, an `event` fires at that
-  point **however it is reached**. Under OR semantics that is belt and braces,
-  not redundancy. Only the two session values are irreducible.
-- **A type definition** needs no trigger: it fires when a document declaring its
-  type is written, which is structural.
+**It graded how strongly a rule binds** — `required` / `recommended` — and it
+does not appear above because it did not survive. Recorded because the reasoning
+matters more than the field did:
+
+- **`type` already said it.** A policy binds; declaring `compliance: required`
+  on one says *a policy is a policy*.
+- **`on_violation` already said the other half.** Blocking *is* the announcement
+  that something is serious; a companion field restating it adds nothing.
+- **It was mechanically inert.** It changed delivery for **zero** documents,
+  because everything in the catalog has a trigger. The derivation reads better
+  with one fewer input.
+- **Its one surviving value was a doubt.** `recommended` marked seven policies,
+  several of which read as guidance filed as `policy` — **a type error rather
+  than a strength setting.**
+
+**And the evidence I first offered against it was circular**, which is worth
+recording alongside: I argued the field was empty because all forty-four
+workflows carried the same value — having set all forty-four myself in one
+sweep. The same mistake happened twice more that day, against `develop` and
+against the `moment` naming. *A rule nobody followed because you did not read it
+is evidence about you, not about the rule.*
+
+**What went with it, and is now inexpressible:** *you must run this workflow when
+this moment arrives.* Eight workflows once carried `preload: mandatory`, so their
+authors were reaching for something. Whether that claim deserves a mechanism is
+open — see the questions at the end.
 
 ### Why `preload` died
 
@@ -1770,6 +1773,30 @@ predictions are now in, the two options-era headings are retitled, the parity
 question is marked parked, and rewind is recorded as considered-and-excluded.
 
 What follows has never been designed at all.
+
+### Open after the `compliance` removal
+
+Both arrived when the field went, and neither is settled.
+
+1. **"You must run this workflow when this moment arrives" is inexpressible.**
+   `applies_to` says a workflow's subject arises at a moment; nothing says
+   running it is obligatory then. *Configure your identity before your first
+   commit* and *cut the release with this, not by hand* are real claims with no
+   home. **Eight workflows once carried `preload: mandatory`**, so authors were
+   reaching for it. The open question is whether it deserves a mechanism or
+   whether prose in the workflow is enough — and the honest test is whether
+   anything would *do* something differently, because a field nothing acts on is
+   what `compliance` turned out to be.
+
+2. **Seven policies may be misfiled.** `writing-style`, `tending-ideas`,
+   `which-document`, `where-history-belongs`, `decision-guidelines`,
+   `configuration-precedence`, `an-index-of-what-exists` were all
+   `compliance: recommended` — and with the field gone they are **binding
+   policies now**, silently promoted. Several read as guidance: *which document
+   should I write?* is help with a decision, not a course of action adopted. If
+   they are guidance they are `document`s under `concepts/`, and the fix is
+   retyping rather than softening. Nobody has read them with that question in
+   mind.
 
 ### Never discussed
 
