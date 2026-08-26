@@ -52,7 +52,7 @@ rather than at the end.** Everything below is the reasoning; this is the result.
 ### What an author writes
 
 ```yaml
-applies_to:   [ path | tool | command | event | topic ]
+matches:      always | nothing | [ path | tool | command | event | topic ]
 on_violation: allow | audit | warn | require_reason | require_approval | block
 ```
 
@@ -60,17 +60,46 @@ on_violation: allow | audit | warn | require_reason | require_approval | block
 
 | field | the question it answers |
 | --- | --- |
-| `applies_to` | **when does this even come up?** |
+| `matches` | **what makes this surface?** |
 | `on_violation` | **what does the system do when it is not complied with?** |
+
+**The field is `matches`, and the word is load-bearing.** It was `applies_to`
+until a reader hit the sentence the name forces: *`applies_to: everything`
+claims the rule governs everything, and no rule does.* `writing-style` governs
+prose — that bound is in its body, where it belongs, and no frontmatter value
+widens or narrows it. What the field lists is **what makes the document
+surface**, which is a different claim and the only one it can honestly make.
+
+**The old name also mis-described its own contents.** The vocabulary is
+heterogeneous: `path: src/**` is a target, but `event: before-push` is a
+*moment*, and nothing about a moment is a resource a rule scopes over. A list
+holding both is a list of triggers, not a scope — so `applies_to` stopped being
+accurate the moment `event` joined it.
+
+*This overturns a recorded choice. `applies_to` was taken deliberately, on the
+grounds that "in policy languages `applies_to` conventionally means enforcement
+scope." The convention is real; the reading it produces here is false, and a
+name that reads correctly to somebody who knows the convention and falsely to
+everybody else is the wrong trade.*
+
+**All three forms read as sentences**, which is the test the name has to pass:
+
+```yaml
+matches: always                 # nothing gates when this surfaces
+matches:                        # these situations do, any one of them
+  - command: git commit
+  - event: before-commit
+matches: nothing                # nothing surfaces it; go and get it
+```
 
 **Whether it binds is what the `type` is for.** A policy binds because it is a
 policy; that is the definition. A workflow is run. A `document` is read.
 
-**And only two kinds carry either field.** `applies_to` is declared by `policy`
+**And only two kinds carry either field.** `matches` is declared by `policy`
 and `workflow`; `on_violation` by `policy` alone. Nothing else — not the
 `document` root, not background under `concepts/`.
 
-| | `applies_to` | `on_violation` |
+| | `matches` | `on_violation` |
 | --- | --- | --- |
 | **`policy`** | yes | **yes** |
 | **`workflow`** | yes | no |
@@ -86,18 +115,46 @@ by an action somebody takes. The only way to fail a workflow is not to run it �
 the **absence** of an action, and detecting absence needs state no consumer
 keeps.
 
-**Nobody writes when a document loads.** That is computed from the type and the
-trigger:
+**What happens next is computed, and it has no vocabulary of its own:**
 
-| | |
+| `matches` | the body is |
 | --- | --- |
-| has a trigger | **advertised** — named up front, body arrives on match |
-| no trigger, and it is a **policy** | **standing** — loaded unconditionally, the expensive outcome |
-| no trigger, anything else | **on-demand** — findable, not announced |
+| `always` | **always loaded** — present before work starts, the expensive outcome |
+| a list of triggers | **delivered when matched** |
+| `nothing`, or absent | **available on request** — its name is in the index; the body waits to be asked for |
 
-**There is exactly one path to standing**, so it is something an author *falls
-into* by being unable to say when a rule applies, rather than something they
-select. After the catalog migration nothing takes it.
+**These are sentences, not terms, and that is deliberate.** This slot has been
+named five times — `preload`, then `standing`, `advertised`, `always-on`,
+`on-match` — and every one of them needed a paragraph underneath explaining it.
+Five failures at one word is the evidence: the meaning is a sentence, so it stays
+a sentence. Nothing is defined here that a reader has to learn, and there is no
+mapping between what an author writes and what a tool reports.
+
+**The expensive outcome is asked for, never fallen into.** A policy that says
+nothing about what surfaces it is **available on request** — not loaded always.
+This reverses an earlier position and the reversal is the important part:
+
+> **the direction of failure has to be chosen deliberately: failing by loading
+> nothing is recoverable, failing by loading everything is a token bomb.**
+
+That rule is stated elsewhere in this document, and the old default broke it.
+Omitting `matches` used to buy the single most expensive delivery mode in the
+system — the lazy path was the costly path, silently. The earlier argument for
+it was that falling in makes the cost *"visible as a gap rather than as a
+decision somebody made"*, but that visibility depends on somebody running
+`inspect` and reading a low-severity finding. **Requiring `matches: always`
+makes the expensive outcome impossible by accident, which needs no tooling at
+all.** Structural beats diagnostic.
+
+**Nothing is silently absent under the new default**, which is the objection it
+has to answer. A document's *name* and description are in the index either way —
+existence is cheap, content is expensive — so an agent can always see what it is
+not loading. What changes is only whether the body arrives uninvited.
+
+**The catalog is already compatible.** All thirty-two policies state what
+matches them, so flipping the default changes the behaviour of exactly zero
+published documents. That is what makes now the cheapest moment this change will
+ever have.
 
 ### `compliance` was invented here and removed the same day
 
@@ -247,14 +304,30 @@ enough:
 
 | trigger | fires when |
 | --- | --- |
-| `always` | unconditionally |
 | `path` | a file matching a glob is read or written |
 | `tool` | a named tool or capability is invoked |
 | `command` | a shell command of a given shape runs |
 | `event` | a lifecycle point — session start, before commit, before release |
 | `topic` | the work is *about* something — matched semantically, not mechanically |
 
-**The first five are mechanical and the last is not**, and that distinction
+**`always` is not on this list, and was for a while.** It is a value of the
+field, never a member of the vocabulary — `matches: always` or a list of these,
+never one inside the other. Two reasons, and the second is the one that decides
+it. As a list member the combination `[always, path: src/**]` is writable, and
+under OR semantics `always` swallows the entry beside it: the path parses,
+validates, and does nothing, which is the silent no-op this whole design exists
+to eliminate, arriving inside the design's own vocabulary. And structurally it
+was never a peer — **every kind here narrows, and `always` refuses to narrow.**
+Giving it the same shape claimed a kinship it does not have.
+
+*It was briefly both, and that state shipped: `always` sat in the tool's list of
+kinds while being unwritable. `matches: always` and `- always:` were silently
+discarded, and `- always: true` parsed into a trigger that classed the document
+as cheap — a rule declaring itself ever-present was the one rule that would not
+be there. Worth recording because nothing failed: it published, validated, and
+lied.*
+
+**The first four are mechanical and the last is not**, and that distinction
 decides push versus pull rather than taste. A mechanical trigger is something the
 system can detect, so it can be pushed. `topic` can only be recognised by the
 model reading a description, so it must be pulled. Neither can cover the other's
@@ -460,27 +533,32 @@ objection entirely.
 **Three things, and everything else is computed from them plus what the harness
 can do** — which class a document lands in, which mechanism delivers it, and when.
 
+> **Superseded below this line, and kept for the reasoning.** `compliance` was
+> removed the day it was invented, and the field is now `matches` rather than
+> `applies_to`. **The settled shape is at the top of this document**; what
+> follows is how the words were argued, including two that did not survive.
+> Read it for the arguments, never for the schema.
+
+The shape as it stands:
+
 ```yaml
-compliance:   optional | recommended | mandatory | deprecated
+matches:      always | nothing | [ path | tool | command | event | topic ]
 on_violation: allow | audit | warn | require_reason | require_approval | block
-applies_to:   [ path | tool | command | event | topic ]
 ```
 
 A real one:
 
 ```yaml
-compliance:   mandatory
 on_violation: block
-applies_to:
+matches:
   - command: git commit
   - event: before-push
 ```
 
 **The common case is one field.** `on_violation` defaults to `allow` and appears
-only when a rule gets teeth; `applies_to` is absent for anything that applies
-always. A typical background document carries none of the three. The
-space exists so the rare cases are expressible — it is not a form anybody fills
-out.
+only when a rule gets teeth; `matches` is absent for anything nothing needs to
+surface on its own. A typical background document carries neither. The space
+exists so the rare cases are expressible — it is not a form anybody fills out.
 
 ### `compliance` — what we believe
 
@@ -653,19 +731,41 @@ whether a document is valid.** A writer declines to produce something; a file
 that exists anyway is still conformant and still readable.
 
 
-### `applies_to`, and the precedent that settles it
+### `matches`, and why `applies_to` was overturned
 
-**The format vacated this exact name and recorded why.** `applies_to` on the
-`bundle` type became `consumers`, and one of the two stated reasons was that
-*"in policy languages `applies_to` conventionally means enforcement scope — this
-rule applies to these targets — whereas this field is about eligibility."*
+**`applies_to` held this slot first, on a precedent that turned out to argue for
+the wrong thing.** The format had vacated the name — `applies_to` on the `bundle`
+type became `consumers` — partly because *"in policy languages `applies_to`
+conventionally means enforcement scope — this rule applies to these targets."*
+The word was freed with a note saying where it belonged, and this looked like
+the place.
 
-That is precisely the use here. A trigger set **is** a policy target set:
-`command: git commit` is an action, `path: **/*.css` is a resource. The word was
-freed with a note saying where it belongs.
+**What defeated it is the sentence the name forces an author to write.**
+`applies_to: everything` claims a rule governs everything, and no rule does.
+`writing-style` governs prose; that bound lives in its body, and no frontmatter
+value widens it. **The field does not scope governance — it says what makes the
+document surface**, and every name implying otherwise produces a false reading
+in the one case that matters most.
 
-`applies_when` was the alternative and reads the triggers as *conditions* rather
-than *targets*. Both parse, but the recorded convention decides it.
+**The old name also mis-described its own contents.** The vocabulary is
+heterogeneous — `path: src/**` is a target, but `event: before-push` is a
+*moment*, and nothing about a moment is a resource a rule scopes over. A list
+holding both is a trigger list, so the enforcement-scope convention stopped
+applying the moment `event` joined.
+
+**`matches` was chosen on one test: does it read as a sentence in all three
+forms the field takes?** *Matches `git commit`.* *Matches always.* *Matches
+nothing.* Every alternative broke on at least one. `matches_on` and `fires_on`
+turn clumsy at `always`; `triggered_by` — the most internally consistent, since
+the entries are called triggers everywhere — fails at *triggered by always*;
+`relevant_when` and `applies_when` read the entries as conditions and go clumsy
+in the list form; `when` collapses at both scalars.
+
+**The residue, stated so nobody re-opens it as a defect:** the field is
+`matches` and its entries are still called *triggers* in prose. Two words for
+one relationship, which English does constantly — the field says what happens,
+the noun names the thing. Renaming the entries to *matchers* would close it and
+costs more than the seam does.
 
 ### `event`, and why not the obvious words
 
@@ -674,8 +774,10 @@ before-release are one category — but the format already uses `lifecycle_statu
 for document maturity, so it is spent, and `lifecycle_event` with it.
 
 **`moment` was chosen first and then lost to grammar.** A moment is a point in
-time, and `applies_to` takes nouns — *applies to moment before-push* does not
-read, where *applies to event before-push* does.
+time, and the field takes nouns — *matches moment before-push* does not read,
+where *matches event before-push* does. The argument survived the field's own
+rename, which is mild evidence it was about the grammar rather than about
+`applies_to`.
 
 **`event` also survived the objection raised against it**, which was that a path
 write and a command are events too, so it would mean *the events that are not
@@ -738,18 +840,18 @@ somebody made.
 
 ### The kinds
 
-| kind | binds? | trigger | lands on |
+| kind | binds? | `matches` | the body is |
 | --- | --- | --- | --- |
-| **`policy`** | **yes, by being one** | `applies_to`, and this is the hard kind to write | advertised — or **standing** where no trigger exists |
-| **`workflow`** | no; its *steps* bind once you run it | `applies_to` — often `command` or `event` | advertised, and it is a skill |
-| **`type_definition`** | its contract binds | **structural and exact** — a document declaring its type is being written. Declares nothing | advertised |
-| **`document`** — background, under `concepts/` | **never** | **none. It carries no `applies_to`** | on-demand |
+| **`policy`** | **yes, by being one** | declares it, and this is the hard kind to write | delivered when matched — or **always loaded**, where it says `always` |
+| **`workflow`** | no; its *steps* bind once you run it | declares it — often `command` or `event` | delivered when matched, and it is a skill |
+| **`type_definition`** | its contract binds | **structural and exact** — a document declaring its type is being written. Declares nothing | delivered when matched |
+| **`document`** — background, under `concepts/` | **never** | **none. It carries no `matches`** | available on request |
 | **template, asset** | n/a — no frontmatter to declare with | inherited from whatever references it | invisible |
 | **subordinate documents** — tutorial steps, a quiz | n/a | inherited from the owning workflow | invisible |
 | **`BUNDLE.md`** | n/a — it *is* the bundle's index | arrives when the bundle does | — |
 
 *A `command` kind was sketched here and does not exist in the format. It would be
-a workflow with a mechanical trigger, which `applies_to` already covers.*
+a workflow with a mechanical trigger, which `matches` already covers.*
 
 **`policy` is the only kind whose answer is not implied by the kind**, and that
 is where authoring effort actually goes. It matches the measurement below
