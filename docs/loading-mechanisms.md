@@ -246,20 +246,29 @@ the first.
 
 | class | metadata present at session start | body present at session start |
 | --- | --- | --- |
-| **standing** | yes | yes — read it now |
+| **always-on** | yes | yes — read it now |
 | **advertised** | yes | no — opened when the situation matches |
-| **on-demand** | no | no — findable, not announced |
+| **on-demand** | yes | no — findable; the body waits to be asked for |
 
-*These were first written as* mandatory / progressive / on-demand *and renamed
-once `compliance` gained a `mandatory` value — one word for both* this rule must
-be obeyed *and* this body sits in context *is the collision this whole exercise
-keeps refusing. See below.*
+*Named four times before this one: mandatory / progressive / on-demand, then
+standing / advertised / on-demand, then always-on. Each rename fixed a real
+collision and none of them made the first word self-explanatory — which is the
+finding recorded below.*
 
 **Splitting them is what makes anything cheap.** A design that only knows
 *loaded* and *not loaded* has to advertise everything at full weight or hide it
-entirely. With three classes, the standing surface carries the bodies that must
+entirely. With three classes, the always-on surface carries the bodies that must
 be there and the names of everything else, and on-demand content costs nothing
 until somebody goes looking for it.
+
+**On-demand still gets a line in the index, and that is a correction.** The
+table above once said its metadata was absent too — nothing announced, findable
+only by looking. That was safe while on-demand meant *background*, and it stopped
+being safe the moment the default reversed: a policy that matches nothing now
+lands here, and **a rule nobody can see governs nothing.** Existence is cheap and
+content is expensive, so every policy and workflow is named whatever its class.
+Background under `concepts/` remains unannounced, on the format's own reasoning —
+it does not act, and it is reached *through* the things that do.
 
 **But these three are outcomes, not inputs** — see the next section. They are the
 observable states a document can be in, and they remain the right vocabulary for
@@ -418,17 +427,22 @@ is worth allocating; a name used once is a local path with extra ceremony.
 
 **A harness that cannot honour a trigger must cost more, never guarantee less.**
 
-| compliance | trigger honoured | trigger not available |
+| declared | trigger honoured | trigger not available |
 | --- | --- | --- |
 | **`on_violation: block`** | intercept at the action | **load at session start** — expensive, and the guarantee weakens from *prevented* to *told*. The one place degradation is not purely cost |
-| **`compliance: mandatory`** | deliver at the trigger | **load at session start** |
-| **`compliance: recommended`** | deliver at the trigger | advertise only |
-| **`compliance: optional`** | deliver at the trigger, cheaply | advertise only |
+| **`matches: always`** | already loaded | already loaded — nothing to degrade |
+| **a `policy` with triggers** | deliver at the trigger | **load at session start** |
+| **a `workflow` with triggers** | deliver at the trigger | advertise only |
+| **`matches: nothing`** | nothing surfaces it | nothing surfaces it — nothing to degrade |
+
+*Written against `compliance` before that field was removed, and the shape
+survives its removal: the type now supplies what the scale used to. A policy
+degrades by being loaded because it binds; a workflow degrades by being named
+because its trigger is what has to arrive, never its procedure.*
 
 **Read the middle column against the right one: only the cost moves.** That is
-what makes the declaration portable across harnesses — the author states
-compliance and applicability once, and a weak harness pays in tokens rather than
-in missed rules. It is also the answer to *how much harness-specific machinery is
+what makes the declaration portable across harnesses — the author says what
+matches once, and a weak harness pays in tokens rather than in missed rules. It is also the answer to *how much harness-specific machinery is
 acceptable*: as much as you like, provided it lives in a renderer and its absence
 degrades cost rather than correctness.
 
@@ -478,36 +492,50 @@ tolerant. **The first external adopter is when to revisit it**, because loud
 failure stops being a diagnostic and becomes an outage in somebody else's
 session.
 
-### Where this leaves the three classes, and why they get renamed
+### Where this leaves the three classes: derived state, and not a vocabulary
 
-They survive as **derived state**, which is the useful place for them — but not
-under their original names. *Mandatory / progressive / on-demand* collided with
-the compliance scale the moment that scale gained a `mandatory` value, and one
-word meaning both *this rule must be obeyed* and *this body sits in context* is
-the tax this whole exercise keeps refusing.
+They survive as **derived state**, which is the useful place for them.
 
 | class | meaning |
 | --- | --- |
-| **standing** | the body is present before work starts |
+| **always-on** | the body is present before work starts |
 | **advertised** | the name and description are present; the body arrives on match |
-| **on-demand** | neither; findable, not announced |
+| **on-demand** | the name is present; the body waits to be asked for |
 
-**`standing` rather than a coinage**, because `organizing-a-bundle` already uses
-it for exactly this — *standing, kept present*. **`advertised` rather than
-`progressive`**, because it names what is actually happening: something is being
-announced without being delivered.
+**This slot has now been named five times — `preload`, `standing`, `advertised`,
+`always-on`, `on-match` — and every one of them needed a paragraph underneath
+explaining it.** That is the finding, and it is worth more than any of the
+names: **the meaning is a sentence, so it should stay a sentence.** A tool says
+*always loaded*, *delivered when matched*, *available on request*, and nothing
+has to be learned before reading its output.
 
-The derivation then reads without ambiguity. A document with `mandatory`
-compliance and an `always` trigger computes to **standing**. The same document
-with a `path` trigger on a harness that can honour it computes to
-**advertised** — announced, delivered on match — **with the compliance
-unchanged**. Separating the two vocabularies is what lets that sentence be said
-at all.
+**The class names survive in exactly one place: a derived column printed beside
+its input.**
+
+```
+document                        matches            derives to
+policy/writing-style            always             always-on
+policy/never-commit-credentials command, event     advertised
+concepts/why-this-exists        —                  on-demand
+```
+
+**A lookup table printed with the answer already in it is not a glossary**, which
+is what makes this different from asking an author to learn three words before
+writing a document. `luma-foreman outfit --explain` prints it.
+
+**Why `standing` failed, recorded because the failure is the evidence.** It was
+chosen carefully — `organizing-a-bundle` already used it for exactly this,
+*standing, kept present* — and a reader still took it to mean *left over from
+before*, which is close to the opposite. **A word chosen by argument lost to a
+word read on sight.** `always-on` was taken over plain `always` because the class
+is strictly larger than the trigger: documents can land in it without having said
+anything, so sharing one word would imply an equivalence that does not hold.
 
 **Open, and genuinely unsettled:**
 
-- **Can compliance and applicability be adopter-overridden separately?** See
-  *whose rule wins* below.
+- **Can obligation and applicability be adopter-overridden separately?** See
+  *whose rule wins* below. `compliance` is gone, so the first half of that
+  question is now *may an adopter change `on_violation`*.
 - **What happens when two triggers fire at once and the rules conflict.** The
   contradiction failure, arriving through a new door.
 
@@ -761,6 +789,19 @@ the entries are called triggers everywhere — fails at *triggered by always*;
 `relevant_when` and `applies_when` read the entries as conditions and go clumsy
 in the list form; `when` collapses at both scalars.
 
+**`applies_to` was removed rather than deprecated, and the reasoning generalises.**
+The rename shipped with the old name still readable, so that upgrading the tools
+could not drop a repository's triggers mid-migration — the expand step, and it
+was necessary for about four hours. Then it was deleted outright rather than left
+to age out. **Deprecation is a cost paid on behalf of adopters who exist**, and
+this estate has none outside itself; a dead name kept early buys nothing and
+charges every reader a second spelling for it. The window in which removal is
+free is exactly now, and it closes on the first outside adopter.
+
+*The general form, worth keeping: **expand, migrate, contract — and contract
+immediately when the adopter count is zero.** The three steps are about not
+requiring two things to ship together, not about waiting.*
+
 **The residue, stated so nobody re-opens it as a defect:** the field is
 `matches` and its entries are still called *triggers* in prose. Two words for
 one relationship, which English does constantly — the field says what happens,
@@ -994,18 +1035,34 @@ wanting both. Two were mechanical but far too broad — `writing-style` on
 with extra machinery. **A useful rule falls out: if a trigger's hit rate
 approaches one, it is not applicability, it is compliance.**
 
-### What this predicts about the existing catalog
+### What this predicted about the existing catalog, and what happened
 
-Falsifiable, which is the point — and between them these are the migration.
+Falsifiable, which was the point — and between them these were the migration.
+**It ran on 2026-08-26. The results are recorded beside each prediction**,
+because a prediction nobody scores is a prediction that cost nothing to make.
 
-- **All four `preload: mandatory` workflows are wrong** — `record-decision`,
-  `adopt-knowledge`, `capturing-ideas`, `conduct-audit`. What must be present is
-  the trigger, not the procedure.
-- **The true standing set is one to three policies, not fourteen.** Most of the
-  diffuse ones can state a semantic trigger and become advertised; only those
-  genuinely governing everything stay.
-- **Around thirty policies need applicability written.** Content work, not
-  tooling, and the bulk of the effort.
+| predicted | outcome |
+| --- | --- |
+| **All four `preload: mandatory` workflows are wrong** — what must be present is the trigger, not the procedure | **Held.** None survived. No workflow in the catalog is loaded up front, and all forty-four are reached as skills |
+| **The true always-on set is one to three policies, not fourteen** | **Beaten, and by more than the margin claimed.** It is **zero**. Every one of the thirty-two policies could say what surfaces it, including the diffuse ones — `writing-style` became `topic: writing or editing prose` rather than the `**/*.md` glob that would have fired on nearly every write |
+| **Around thirty policies need applicability written** | **Held: thirty-two.** Content work, as predicted, and the bulk of the effort |
+
+**The one that matters is the middle row, and it is worth being suspicious of.**
+A design predicting *one to three* and delivering *zero* has either found
+something real or moved the goalposts — and this one moved them once, when the
+default reversed. Before that, a policy unable to say what surfaced it fell into
+being always-on; afterwards it falls into being available on request. **So zero
+is partly an artifact of the change, not purely evidence for it.** What survives
+the caveat: no policy was *forced* to declare `matches: always` to remain
+correct, which is the claim the prediction was really making.
+
+**A fourth thing was not predicted and should have been.** `an-index-of-what-exists`
+justified its own permanent presence by *having no trigger* — the very property
+that, after the reversal, means nothing surfaces it. The one document in the
+estate that must always be present would have become the one nobody sees. It now
+declares `matches: always`, and it is the only document in the catalog that
+does. **A rule stated in terms of a default is a rule that breaks when the
+default moves**, and nothing in this document anticipated that.
 
 ## Six readers, and only one of them is a model
 
@@ -1739,7 +1796,7 @@ genuinely open — number 2's counterpart below, and number 8.**
    the other's case, so a design with only one of them has a hole.
 6. **What is the authored-through content, exactly?** *Largely dissolved.* The
    question assumed a tool-owned index holding human notes the rebuild must not
-   erase. With `compliance`, `on_violation` and `applies_to` living on each
+   erase. With `on_violation` and `matches` living on each
    document, the facts a person decides are already in frontmatter and the index
    derives from them entirely — there is nothing left for the rebuild to
    protect. **Frontmatter first**, and where something genuinely cannot be
@@ -1747,7 +1804,7 @@ genuinely open — number 2's counterpart below, and number 8.**
    inside a hand-written file, delimited by markers, with everything outside
    them untouched.
 7. **Whose rule wins — the author's or the adopter's?** *Decided.* An adopter
-   may narrow **`applies_to`**, since only they know their
+   may narrow **`matches`**, since only they know their
    own geography, and may **raise** compliance. They may not lower it. If they
    need it lower the honest moves already exist — do not adopt, or fork it into
    their own namespace — and both make weakening **visible as a fork** rather
@@ -1900,11 +1957,9 @@ What follows has never been designed at all.
 
 ### Open after the `compliance` removal
 
-Both arrived when the field went, and neither is settled.
-
 1. **"You must run this workflow when this moment arrives" is inexpressible.**
-   `applies_to` says a workflow's subject arises at a moment; nothing says
-   running it is obligatory then. *Configure your identity before your first
+   *Still open.* `matches` says a workflow's subject arises at a moment; nothing
+   says running it is obligatory then. *Configure your identity before your first
    commit* and *cut the release with this, not by hand* are real claims with no
    home. **Eight workflows once carried `preload: mandatory`**, so authors were
    reaching for it. The open question is whether it deserves a mechanism or
@@ -1912,15 +1967,72 @@ Both arrived when the field went, and neither is settled.
    anything would *do* something differently, because a field nothing acts on is
    what `compliance` turned out to be.
 
-2. **Seven policies may be misfiled.** `writing-style`, `tending-ideas`,
-   `which-document`, `where-history-belongs`, `decision-guidelines`,
-   `configuration-precedence`, `an-index-of-what-exists` were all
-   `compliance: recommended` — and with the field gone they are **binding
-   policies now**, silently promoted. Several read as guidance: *which document
-   should I write?* is help with a decision, not a course of action adopted. If
-   they are guidance they are `document`s under `concepts/`, and the fix is
-   retyping rather than softening. Nobody has read them with that question in
-   mind.
+2. **Seven policies may be misfiled.** ***Settled 2026-08-25.*** Read with the
+   question in mind, five were genuinely rules and two were not.
+   `where-history-belongs` disclaims binding in its own opening — *preferences,
+   not rules* — and `configuration-precedence` describes how resolution behaves
+   so a reader can predict it, which nobody can violate. Both became
+   `type: document` under `concepts/` and lost their triggers. The other five —
+   `tending-ideas`, `decision-guidelines`, `writing-style`,
+   `an-index-of-what-exists`, `which-document` — all instruct, and stayed.
+
+### Deferred: an explicit way to say *nobody has considered this*
+
+**What the reversal left unresolved.** A document with no `matches` and one
+declaring `matches: nothing` are the same to every consumer — both are available
+on request, and nothing branches on the difference. So *the author thought about
+it and there is genuinely nothing to surface it* and *nobody has ever looked* are
+still one state wearing two spellings.
+
+**Deferred rather than solved, because the distinction has no consumer yet.** It
+would matter at review, when somebody is deciding whether a bundle is finished —
+and a reviewer looking at that list still has to read each document and judge.
+Knowing which spelling the author used shortens nothing. **A field nothing acts
+on is what `compliance` turned out to be**, and that test has to be applied to
+this too.
+
+**The candidate answer is already written down elsewhere**, which is the reason
+to wait rather than invent: `verified` (§7.2 of the format) records that somebody
+confirmed a document at a moment, independent of `modified`, and it is explicitly
+orthogonal to `lifecycle_status`. A policy with no `matches` **and** a live
+confirmation is one somebody looked at; one with neither is one nobody has. That
+carries the distinction for every document rather than as a special value in one
+field, and it needs no new vocabulary. See
+`.luma/backlog/ideas/changing-many-moving-parts-at-once.md`, where the axis is
+worked through.
+
+**Re-open triggers, any one:** a reviewer asks for the distinction twice; a
+consumer appears that would behave differently; or `verified` acquires its first
+real reader and the cost of extending it turns out to be near zero.
+
+### Settled: `always` is a value, and the expensive outcome is asked for
+
+Recorded here because both were argued at length and both are cheap to
+re-litigate from the top.
+
+**`always` is a value of `matches`, never a member of the trigger vocabulary.**
+It shipped briefly as both — listed in the tool's kinds while being unwritable —
+and the failure is the argument: `matches: always` and `- always:` were silently
+discarded, while `- always: true` parsed into a trigger that classed the document
+as *cheap*. **A rule declaring itself ever-present was the one rule that would
+not be there.** As a value it also makes `[always, path: "src/**"]` unwritable,
+where as a list member it would parse and silently ignore the path under OR
+semantics.
+
+**Absence means `nothing`, and the reversal is the load-bearing part.** A policy
+that says nothing about what surfaces it is available on request. It used to be
+loaded into every session — so forgetting a field bought the most expensive
+delivery mode in the system, silently, which made the lazy path the costly one
+and failed in the direction that cannot be recovered from. The earlier argument
+for it was that falling in makes the cost *visible as a gap rather than as a
+decision somebody made*; that visibility depends on somebody running `inspect`
+and reading a low-severity finding, where **requiring `matches: always` makes the
+expensive outcome impossible by accident.** Structural beats diagnostic.
+
+**Re-open trigger:** a real rule genuinely governs everything, its author writes
+`matches: always`, and the resulting cost is disputed rather than accepted. That
+is the case this design has never seen — the catalog contains exactly one
+`matches: always` document, and it is the index.
 
 ### Never discussed
 
@@ -1940,9 +2052,9 @@ Ranked by how much they would hurt.
    is a specification change. Nineteen bundles need rewriting.
 4. **What a `bundle.md` declares.** Bundle-level and document-level conditions
    were called the same mechanism recursed, and then nothing said what a bundle
-   itself carries. Does a bundle have its own `compliance` and `applies_to`?
-5. **Doors versus `applies_to`.** Multiple entry points, each with a *when*, is
-   recorded as a working position. Every document later gained `applies_to`.
+   itself carries. Does a bundle have its own `matches`?
+5. **Doors versus `matches`.** Multiple entry points, each with a *when*, is
+   recorded as a working position. Every document later gained `matches`.
    Those look like the same thing — which would make a door simply a document
    with a trigger — and both sit in this document as separate ideas.
 6. **What the evidence log records.** The daily reconciliation job is invoked
@@ -1972,7 +2084,7 @@ had felt settled in conversation.
   one covers repository-root documentation that outside tools match, which is a
   different problem and should not be stretched to cover this. Worth writing
   eventually; not worth writing before the structure settles.
-- **Does `applies_to` accept multiple values of the same kind** — two globs, two
+- **Does `matches` accept multiple values of the same kind** — two globs, two
   commands — or one of each? OR semantics implies a flat list, but nothing says
   the list may repeat a kind.
 
