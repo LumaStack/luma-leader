@@ -430,7 +430,7 @@ can do** — which class a document lands in, which mechanism delivers it, and w
 ```yaml
 compliance:   optional | recommended | mandatory | deprecated
 on_violation: allow | audit | warn | require_reason | require_approval | block
-applies_to:   [ path | tool | command | moment | topic ]
+applies_to:   [ path | tool | command | event | topic ]
 ```
 
 A real one:
@@ -640,13 +640,25 @@ than *targets*. Both parse, but the recorded convention decides it.
 before-release are one category — but the format already uses `lifecycle_status`
 for document maturity, so it is spent, and `lifecycle_event` with it.
 
-`event` is conventional and maps to what harnesses call these, but **a path write
-and a command are also events**, so it ends up meaning *the events that are not
-the other four* — a leftover category wearing a general name.
+**`moment` was chosen first and then lost to grammar.** A moment is a point in
+time, and `applies_to` takes nouns — *applies to moment before-push* does not
+read, where *applies to event before-push* does.
 
-`moment` collides with nothing, matches the noun shape of its siblings, and
-distinguishes itself honestly: the others are triggered by an artifact, this one
-by a point in time.
+**`event` also survived the objection raised against it**, which was that a path
+write and a command are events too, so it would mean *the events that are not
+the other four* — a leftover category under a general name. That is weaker in
+context than it sounds: the specific kinds are named alongside it in the same
+list, so nothing is ambiguous, and most vocabularies have exactly this shape.
+It is also what harnesses call these, and here the mechanism **is** the thing
+being named.
+
+**What no name captures is `event`'s actual distinction:** invocation
+independence. `command: git commit` fires on that literal invocation; `event:
+before-commit` fires at that point **however it is reached**. Four of the six
+values overlap with `command` for exactly that reason — belt and braces under
+OR semantics, not redundancy — and only `session-start` and `session-end` are
+irreducible. If the kind ever feels like it carries two ideas, that is the seam:
+strip what `command` already covers and what remains is session lifecycle.
 
 ### What disappears
 
@@ -696,7 +708,7 @@ somebody made.
 | kind | can it bind? | trigger | lands on |
 | --- | --- | --- | --- |
 | **`type_definition`** | `mandatory` | **mechanical, and exact** — the `type:` of the document being written | advertised |
-| **`workflow`** | usually `optional`; occasionally `mandatory` | semantic — *use when…* — or `command` / `moment` | advertised |
+| **`workflow`** | carries no `compliance` — its steps bind by being steps | semantic — *use when…* — or `command` / `event` | advertised |
 | **command** | `optional` | mechanical — its own invocation | advertised |
 | **`policy`** | `mandatory` or `recommended` | **varies — the hard kind** | advertised, or standing where no trigger exists |
 | **concept** | **never binds** | semantic | on-demand |
