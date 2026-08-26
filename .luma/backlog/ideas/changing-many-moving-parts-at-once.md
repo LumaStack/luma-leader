@@ -92,6 +92,140 @@ sentences disagree, and this one is the current one* is not derivable from
 either document — it needs the change to be a thing with a record, which is
 close to how a `decision` already works and might simply be one.
 
+### The second axis, as raised: what it claims, and whether anyone still stands behind it
+
+**Raised as an addition to the idea, and it answers all three jobs above with
+one field.** Two axes, where the estate currently reasons on one:
+
+| axis | the question | where it lives today |
+| --- | --- | --- |
+| **the claim** | how does this bind, *taken at face value* | `type`, `applies_to`, `on_violation` — every document states it |
+| **the confirmation** | is it trusted right now, is it ready, is it current with how we now think | **`verified`, and nothing reads it** |
+
+**A document written perfectly for the old world still states its claim with
+full confidence.** Sincerity does not expire, which is why the first axis alone
+cannot resolve a contradiction.
+
+**The format already has the second axis and does not know it.** §7.2:
+
+```yaml
+verified:
+  - { by: human:benlinton, at: 2026-08-26T09:00:00Z }
+```
+
+A list of independent confirmation events, **explicitly independent of
+`modified`** — *"content can change without re-confirmation, and be re-confirmed
+without changing"* — and trust tier is **orthogonal to `lifecycle_status`**. That
+orthogonality is exactly the one this idea needs, written down before anybody
+needed it.
+
+**What is missing is what a confirmation was made *against*.** `{by, at}` says
+somebody confirmed this at a moment; it does not say under which worldview.
+
+### Two ways to close it, and they layer rather than compete
+
+**Derive it, by date.** Give a change a date, and any document whose newest
+`verified.at` predates it has not been confirmed under the new regime. No new
+field: the change record supplies the date, `verified` supplies the timestamp,
+and the rest is subtraction. **The honest limit is that it proves *not* current
+and cannot prove current** — a document confirmed last Tuesday for unrelated
+reasons passes without anybody having thought about the change.
+
+**Stamp it, on the document.** A verification event gains an end:
+
+```yaml
+verified:
+  - { by: human:benlinton, at: 2026-08-26T09:00:00Z, invalid_at: 2026-08-27T14:00:00Z }
+```
+
+**This is push where the date test is pull.** A reader holding only the file —
+a bare clone, no tooling, no change record — can see that the confirmation is
+dead. Every failure this idea is about is silent, so a form that speaks without
+being interrogated is worth more than its cost.
+
+**They are the same layering the loading design already settled**, arriving a
+third time: the change record is the declaration and the source of truth,
+stamping is the projection, and the floor when no tool is present is whatever
+was committed. Derive first, stamp when the document should carry its own truth.
+
+### What `invalid_at` changes, precisely
+
+**It separates three states that currently collapse into two.**
+
+| | means |
+| --- | --- |
+| no `verified` | **nobody ever checked** |
+| `verified`, live | somebody checked, and it stands |
+| `verified`, `invalid_at` set | **somebody checked, and it is known not to stand any more** |
+
+The third is strictly more informative than the first, and today they are
+indistinguishable. *Never examined* and *examined, now known stale* are
+different facts about a document, and only one of them tells you a person has
+already read it once.
+
+**It is append-only, which is what the estate requires.** Ending an event rather
+than deleting it keeps the history: that Benjamin confirmed this on the 26th
+remains true and visible after the confirmation stops counting. Deleting the
+entry would lose the only evidence anybody ever looked.
+
+**The name is open. Three candidates, as raised:**
+
+| candidate | what it says | against it |
+| --- | --- | --- |
+| **`invalid_at`** | the confirmation no longer holds, from this moment. Neutral about why | says nothing about cause, so *aged out* and *actively withdrawn* read alike |
+| **`compromised_at`** | the confirmation was **undermined** — something happened that makes it untrustworthy, rather than it merely ageing out | **`compromised` is the security word for a leaked credential**, and this estate publishes `git-secrets` and `never-commit-credentials`. A reader can take it as *this document was breached* |
+| **`invalidated`** | same as the first, in the verb form | the composite form `{by, at}` follows naturally from it, which is heavier than the bare-date family it would join |
+
+**`invalid_at` is the safest of the three** on the estate's own naming
+rules — consistent with `archived` and `stale_after`, both bare dates on a
+thing rather than composites, and it takes no word that is already spoken for.
+If *who revoked it* turns out to matter it can grow into a `{by, at}` later,
+which is additive and breaks nothing.
+
+**`compromised_at` is the more expressive one and the question underneath it is
+real:** is *this confirmation expired because the world moved* the same fact as
+*this confirmation was actively undermined*? If they are two facts, the answer
+is a cause on one field rather than two fields — and if they are one fact,
+`invalid_at` says it without borrowing a word from security.
+
+**It must not be confused with `stale_after`, and the two are easy to conflate.**
+
+| | subject | direction | says |
+| --- | --- | --- | --- |
+| `stale_after` | the **document** | forward, set in advance | recheck after this date; the content may well still be right |
+| `invalid_at` | one **confirmation** | backward, set when it happens | this confirmation stopped counting at this moment |
+
+**The normative edit it forces is small and is the real change.** §7.2 derives
+trust tiers from `verified`; the derivation has to ignore invalidated events, so
+a document whose only human confirmation has been invalidated falls back to
+*unverified*. Without that, the tier keeps reporting *human-reviewed* for a
+review that has been withdrawn, which is the same silent lie in a new place.
+
+**The cost is zero right now, and will not be later.** Nothing reads `verified`
+and no real document writes it — so changing its shape today needs no expand,
+no migrate, no contract. **This is the cheapest moment this change will ever
+have**, and that is an argument for settling the shape now even if nothing
+builds on it for months.
+
+### The test this has to pass, from the `compliance` removal
+
+**Does anything *do* something differently?** That is the test that killed
+`compliance` yesterday — a field nothing acts on. Applying it honestly:
+
+- **The ledger becomes a query**, not a hand-kept checklist: every document in
+  scope with no live confirmation since the change. That satisfies *hold only
+  what cannot be derived*.
+- **The verdict becomes a rule** needing no judgement: when two documents
+  disagree, prefer the confirmed one and say plainly that the other is
+  unconfirmed.
+- **The quarantine becomes demotion**, not deletion — which is what
+  `the-estate` requires anyway, since deletion is not the tool here.
+
+Three consumers, each doing something concrete. **The warning is the other
+direction:** `verified` today has zero readers and zero writers, so if this axis
+does not land, `verified` is the next `compliance` — a specified field that
+means nothing because nothing acts on it.
+
 ### What already exists, so it is not built twice
 
 **`change-a-shared-type` is the narrow version, already solved.** Expand,
