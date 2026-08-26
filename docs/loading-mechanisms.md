@@ -66,6 +66,26 @@ on_violation: allow | audit | warn | require_reason | require_approval | block
 **Whether it binds is what the `type` is for.** A policy binds because it is a
 policy; that is the definition. A workflow is run. A `document` is read.
 
+**And only two kinds carry either field.** `applies_to` is declared by `policy`
+and `workflow`; `on_violation` by `policy` alone. Nothing else — not the
+`document` root, not background under `concepts/`.
+
+| | `applies_to` | `on_violation` |
+| --- | --- | --- |
+| **`policy`** | yes | **yes** |
+| **`workflow`** | yes | no |
+| **everything else** | no | no |
+
+**The two kinds that carry a trigger are the two that act on you** — a rule that
+binds, and a procedure you run. Background does not act; it is reached *through*
+the things that do, and it has no moment of its own: rationale is wanted when
+somebody wonders *why*, and wondering is not a trigger.
+
+**`on_violation` stops at `policy`** because a rule can be *broken*, at a moment,
+by an action somebody takes. The only way to fail a workflow is not to run it —
+the **absence** of an action, and detecting absence needs state no consumer
+keeps.
+
 **Nobody writes when a document loads.** That is computed from the type and the
 trigger:
 
@@ -718,16 +738,18 @@ somebody made.
 
 ### The kinds
 
-| kind | can it bind? | trigger | lands on |
+| kind | binds? | trigger | lands on |
 | --- | --- | --- | --- |
-| **`type_definition`** | `mandatory` | **mechanical, and exact** — the `type:` of the document being written | advertised |
-| **`workflow`** | carries no `compliance` — its steps bind by being steps | semantic — *use when…* — or `command` / `event` | advertised |
-| **command** | `optional` | mechanical — its own invocation | advertised |
-| **`policy`** | `mandatory` or `recommended` | **varies — the hard kind** | advertised, or standing where no trigger exists |
-| **`document`** — background, filed under `concepts/` | **never binds** | semantic | on-demand |
-| **template, asset** | n/a — cannot declare, no frontmatter | inherited | invisible |
-| **subordinate documents** — tutorial steps, quiz | n/a | inherited from the owning workflow | invisible |
-| **`bundle.md`** | n/a — it *is* the ring-2 index | arrives when the bundle loads | — |
+| **`policy`** | **yes, by being one** | `applies_to`, and this is the hard kind to write | advertised — or **standing** where no trigger exists |
+| **`workflow`** | no; its *steps* bind once you run it | `applies_to` — often `command` or `event` | advertised, and it is a skill |
+| **`type_definition`** | its contract binds | **structural and exact** — a document declaring its type is being written. Declares nothing | advertised |
+| **`document`** — background, under `concepts/` | **never** | **none. It carries no `applies_to`** | on-demand |
+| **template, asset** | n/a — no frontmatter to declare with | inherited from whatever references it | invisible |
+| **subordinate documents** — tutorial steps, a quiz | n/a | inherited from the owning workflow | invisible |
+| **`BUNDLE.md`** | n/a — it *is* the bundle's index | arrives when the bundle does | — |
+
+*A `command` kind was sketched here and does not exist in the format. It would be
+a workflow with a mechanical trigger, which `applies_to` already covers.*
 
 **`policy` is the only kind whose answer is not implied by the kind**, and that
 is where authoring effort actually goes. It matches the measurement below
