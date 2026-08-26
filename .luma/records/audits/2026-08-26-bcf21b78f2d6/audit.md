@@ -4,6 +4,7 @@ title: The estate, under two lenses — unearned assertions and general quality
 audited: 2026-08-26
 commit: bcf21b78f2d6
 scope: All seven repositories, at the commits pinned below. Two lenses, kept separate.
+anchor: targeted — and the second lens was anchored too, without saying so. See "What anchored this".
 auditor: agent:claude-opus-5
 ---
 
@@ -25,6 +26,12 @@ is one nobody has to answer.
 | `luma-leader` | `bcf21b78f2d6` |
 | `luma-clarify` | `c5b06b1978bc` |
 | `luma-backlog` | `43e40aceca9e` |
+
+> **Annotation, added 2026-08-26 after this audit was filed.** It claims one
+> targeted lens and one general one. **The second was not general.** See
+> *What anchored this* below before reading Lens B's findings — the claim is
+> corrected in place rather than rewritten, because a record is append-only and
+> anything that cited it should stay findable.
 
 **Two lenses, reported separately** so a reader can tell which findings came
 from which question:
@@ -60,6 +67,46 @@ clean*:
 - **Whether the design decisions are *correct*.** This audit asks whether a
   claim is supported and whether content agrees with itself, never whether the
   position is a good one.
+
+## What anchored this
+
+**Lens A was anchored, correctly and openly.** The maintainer had said, hours
+earlier, that the repositories were *"full of bad ideas that need to be cleaned
+up, because opus 5 takes a lot of liberties."* Lens A is that worry, and F-001
+through F-003 are its answer.
+
+**Lens B was described as general and was not.** The auditor had spent the whole
+of 2026-08-26 working in these repositories — running the `applies_to` to
+`matches` migration across all six, cutting two format releases, and rewriting
+the design draft it then audited. **Its own recent context was the anchor**, and
+nobody named it, which is the harder version of the problem: an unstated anchor
+cannot be discounted by a reader.
+
+**It shows in the findings.** F-004 is a policy the auditor had read that
+morning while fixing its sibling. F-005 is a vocabulary it had personally
+synchronised across three artifacts hours earlier. F-007 restates a limitation
+the estate policy already records. **These are not discoveries; they are
+recollections**, and an auditor with no history here would likely have surfaced
+a different set.
+
+**What follows from that, stated so a reader can weigh it:**
+
+- **Lens B's findings are probably true and are certainly not complete.** Each
+  was checked against the pinned trees, and the checks are in the Method section.
+  What is missing is everything an auditor without a day of context would have
+  noticed and this one walked past.
+- **Its silence is worth nothing.** Where Lens A's absence of a finding means
+  *looked and did not find*, Lens B's means *did not happen to think of it*.
+- **The count is not a measure of anything.** Seven findings reflects how much
+  the auditor already carried, not how much is there.
+
+**The correct remedy is a re-run of the open-ended half by a reader that has not
+seen the work**, and that has not been done. Until it is, treat Lens B as a
+partial and self-selected list.
+
+*The workflow now names this failure — `conduct-audit` 0.6.0: "An auditor who
+has just worked on the subject cannot run an open-ended audit of it." That text
+was written because of this audit.*
 
 ## Method
 
@@ -101,6 +148,11 @@ from one an agent made and nobody read. Lens A finds that directly (F-001,
 F-002, F-003). Lens B's largest finding (F-004) is the same failure seen from
 the other side — content that outlived its subject and was never re-read by
 anyone accountable for it.
+
+**That convergence is weaker evidence than it reads as**, given the annotation
+above: the auditor that noticed the shared cause is the one that created several
+of the instances. A cause found by the party responsible for it deserves a
+second reader.
 
 **Nothing found here is a defect in behaviour.** Both engines pass their suites,
 the catalog passes its own checks, and no repository contradicts the format at
