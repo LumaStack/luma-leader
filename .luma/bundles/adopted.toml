@@ -4,6 +4,12 @@
 # sha256, in sorted path order. Editing this value makes the drift check start
 # passing silently, which is the one failure it exists to prevent.
 
+["luma/audit-records"]
+version  = "0.5.0"
+source   = "https://github.com/LumaStack/luma-catalog.git"
+commit   = "ae2db5fcab0d2bec760f41fb87f2ad40bc3bb499"
+checksum = "sha256:b4117566d3cb0a80fc4c51f26c2e5de598f21a13fa2d06fc538f70f806bfcca2"
+
 ["luma/luma-maintainers"]
 version  = "0.9.0"
 source   = "https://github.com/LumaStack/luma-catalog.git"

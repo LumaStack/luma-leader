@@ -4,6 +4,20 @@
 
 Everything below is vendored under `.luma/bundles/` and is part of this repository.
 
+### `luma/audit-records` 0.5.0
+
+Audits as records — findings written by one party, answered by another, closed by the first. The whole exchange lives in git.
+
+In `.luma/bundles/luma/audit-records/` — **open one when the work matches its line**, and not before:
+
+- `policy/audit-layout` (policy) — Where an audit lives, how it is named, and the three-party loop — auditor, respondent, auditor again — that makes the record settle rather than accumulate.
+  - matches: topic:conducting an audit, or recording one
+- `policy/writing-findings` (policy) — What makes a finding actionable rather than an opinion — the five parts, how to rate severity, and the failures that make audits get ignored.
+  - matches: topic:writing a finding in an audit
+- `workflows/conduct-audit` (workflow) — Examine something, record what is wrong and why, and leave a record somebody else can act on. Use when auditing a codebase, a process, or any artifact that has a commit.
+- `workflows/respond-to-audit` (workflow) — Take a position on every finding — agreed, partially agreed, disagreed, or accepted — and point at the evidence. Use when an audit has been filed against something you are accountable for.
+- `workflows/verify-audit` (workflow) — Check whether each finding is genuinely resolved and record a disposition. Use after a response is filed — this is what closes the loop.
+
 ### `luma/luma-maintainers` 0.9.0
 
 Working on the luma tools themselves — the repositories and the boundary each defends, publishing to the universal catalog, and changing a type without making every tool upgrade at once.

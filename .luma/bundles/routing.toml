@@ -6,6 +6,22 @@
 # writes here.
 
 [[rule]]
+bundle = "luma/audit-records"
+document = "policy/audit-layout"
+title = "How audits are stored"
+path = ".luma/bundles/luma/audit-records/policy/audit-layout.md"
+on_violation = "allow"
+matches = ["topic:conducting an audit, or recording one"]
+
+[[rule]]
+bundle = "luma/audit-records"
+document = "policy/writing-findings"
+title = "Writing a finding"
+path = ".luma/bundles/luma/audit-records/policy/writing-findings.md"
+on_violation = "allow"
+matches = ["topic:writing a finding in an audit"]
+
+[[rule]]
 bundle = "luma/luma-maintainers"
 document = "policy/the-estate"
 title = "The estate, and what each repository owns"
