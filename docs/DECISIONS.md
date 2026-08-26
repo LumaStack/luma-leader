@@ -2,6 +2,39 @@
 
 Settled positions and the reasoning that settled them. Recorded so they are not re-argued from scratch. A path not taken is recorded as deferred with a re-open trigger, never as rejected.
 
+## Generated artifacts stay committed, for now
+
+**Settled 2026-08-26, and deliberately reversible.**
+
+**`CLAUDE.md`, `.claude/skills/` and `.luma/bundles/routing.toml` are committed**,
+though every one of them is written by `luma-foreman outfit` and could be
+rebuilt in seconds.
+
+**The argument is asymmetry rather than conviction.** Removing them from the
+index later costs one commit. Reconstructing a year of how projection actually
+behaved — what an agent was shown, and when it changed — costs everything,
+because it was never recorded anywhere else. **Cheap to undo, impossible to
+recover, so lean toward capture.**
+
+**Two of them have a second reason that does not depend on the argument above.**
+`routing.toml` is read at runtime by the permission gate, and a missing gate
+fails *open* — a rule that declares `block` and silently stops blocking is the
+one failure a gate cannot have. And a committed copy is what lets a bare clone
+with no tooling reproduce the project, which is the property that separates
+adoption from a package cache.
+
+**The cost is real and is accepted: they conflict on every parallel branch.**
+Two branches that both adopted something will both have rewritten all three.
+**The conflict is normal and the resolution is always to re-run `outfit`**,
+never to hand-merge — a hand-resolved generated file is wrong in a way nothing
+reports, and the next run discards it. That rule is published in
+`adopt-knowledge` so it reaches adopters rather than living here.
+
+**Re-open trigger:** the conflicts stop being an occasional nuisance and start
+costing real time, **or** somebody hand-resolves one and it reaches `main` — the
+failure this is betting will not happen. `.claude/skills/` is the first to go if
+so: it serves one harness and nothing reads it at runtime.
+
 ## A document says what makes it surface, not what it governs
 
 **Settled 2026-08-26.**
