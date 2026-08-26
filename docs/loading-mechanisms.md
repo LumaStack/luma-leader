@@ -44,6 +44,109 @@ design quietly becomes an incremental one.**
 earlier draft reached something that survives the test, it is restated as a
 requirement with its argument, not deferred to.
 
+## Where this landed — read this first
+
+**This document is long and argues its way forward, so the conclusion is here
+rather than at the end.** Everything below is the reasoning; this is the result.
+
+### What an author writes
+
+```yaml
+compliance:    required | recommended    # policies only; absent means required
+applies_to:    [ path | tool | command | event | topic ]
+on_violation:  allow | audit | warn | require_reason | require_approval | block
+```
+
+Three fields, three questions, and **nothing else is declared**:
+
+| field | the question it answers |
+| --- | --- |
+| `compliance` | **how much trouble am I in if I do not do this?** |
+| `applies_to` | **when does this even come up?** |
+| `on_violation` | **what does the system do when it is not complied with?** |
+
+**Nobody writes when a document loads.** That is computed:
+
+| | |
+| --- | --- |
+| has a trigger | **advertised** — named up front, body arrives on match |
+| no trigger, and it is a policy | **standing** — loaded unconditionally, the expensive outcome |
+| no trigger, anything else | **on-demand** — findable, not announced |
+
+**There is exactly one path to standing**, so it is something an author *falls
+into* by being unable to say when a rule applies, rather than something they
+select. After the catalog migration nothing takes it.
+
+### Which fields go on which kind
+
+- **A policy** carries `compliance`. It *is* the obligation, so it grades the
+  obligation. Absent means `required`, because a policy that binds nothing is a
+  concept.
+- **A workflow** carries none of it. Its steps bind by being steps — you needn't
+  run it, and once you do, step four is not negotiable. A field saying so was
+  identical across all forty-four workflows, which is how we knew it was noise.
+- **A concept** obliges nothing by definition, so `compliance` does not apply.
+- **`event`** covers what no other trigger can reach — `session-start`,
+  `session-end`, `before-commit`, `before-push`, `before-merge`,
+  `before-release`. Four of those overlap with `command` deliberately: a
+  `command` trigger fires on a literal invocation, an `event` fires at that
+  point **however it is reached**. Under OR semantics that is belt and braces,
+  not redundancy. Only the two session values are irreducible.
+- **A type definition** needs no trigger: it fires when a document declaring its
+  type is written, which is structural.
+
+### Why `preload` died
+
+`preload: mandatory | recommended | optional` asked *when should this be in
+front of a reader*. One field, one axis, and everything about **how strongly the
+content binds** lived only in prose.
+
+Splitting it turned out to separate two genuinely different questions —
+**when it arrives** and **how hard it binds** — and the second was never what
+`preload` meant. So `applies_to` is the honest successor to `preload`;
+`compliance` and `on_violation` are a second concern discovered on the way.
+
+**Watch for the misreading**, because it has caught two readers already:
+`compliance` sits in the slot `preload` occupied and uses similar words.
+**It does not grade loading. It grades obeying.**
+
+### The vocabulary is RFC 2119's, deliberately
+
+`REQUIRED / RECOMMENDED / OPTIONAL` is the adjectival set every specification
+uses, and the format's `field_presence` ladder is the same three words. One
+family across both scales, so a reader learns it once. `deprecated` sits beside
+the ladder rather than on it — it states a field's future, not its strength.
+
+The **enforcement** ladder is a different family and deliberately richer than the
+industry's: Kyverno has `Enforce/Audit`, Gatekeeper `deny/dryrun/warn`, linters
+`error/warn/off`. All of those name only what happens. `on_violation` covers the
+same ground with `require_reason` and `require_approval` in between, because a
+recorded reason and a third party's approval are distinct from both a warning
+and a refusal.
+
+### The two rules underneath all of it
+
+> **Data is what something checks. Prose is what a person or agent needs to
+> understand — and an agent should prefer the mechanical answer to the question
+> the data answers.**
+
+With a second class that also earns a field: **things an agent would otherwise
+have to infer unreliably.** Strength-of-obligation judged from tone is exactly
+that, which is why `compliance` is a field even though nothing mechanical
+consumes the `required` / `recommended` distinction today.
+
+And the counterweight, or every nuance becomes a field and the condition
+language arrives by the back door: **only mechanise questions asked routinely
+and answered the same way each time.**
+
+> **Frontmatter declares force and trigger. Prose says what complying means, and
+> may narrow further.** Triggers are coarse by design, so *"this does not apply
+> to merge commits"* may only be sayable in prose. **Prose that widens scope is a
+> rule that never arrives**, and prose that sets its own force is a mistake.
+
+A policy body **instructs** — that is the whole point of a policy. What it does
+not do is decide its own strength or its own reach.
+
 ## The three classes a document can land in
 
 **`preload: mandatory | optional` is a single axis hiding two.** Whether a
@@ -115,7 +218,7 @@ enough:
 | `path` | a file matching a glob is read or written |
 | `tool` | a named tool or capability is invoked |
 | `command` | a shell command of a given shape runs |
-| `moment` | a point in a lifecycle — session start, before commit, before release |
+| `event` | a lifecycle point — session start, before commit, before release |
 | `topic` | the work is *about* something — matched semantically, not mechanically |
 
 **The first five are mechanical and the last is not**, and that distinction
@@ -126,7 +229,7 @@ case: nothing mechanical knows the user is *thinking about* stylesheets before a
 file is touched, and no description reliably fires *at the moment of commit*.
 
 **A rule may carry more than one trigger.** *Never commit a credential* is
-`command` plus `path` plus `moment`, and wanting all three is normal rather than
+`command` plus `path` plus `event`, and wanting all three is normal rather than
 a modelling failure.
 
 **A type definition needs no trigger declaration.** Its applicability is
@@ -327,7 +430,7 @@ can do** — which class a document lands in, which mechanism delivers it, and w
 ```yaml
 compliance:   optional | recommended | mandatory | deprecated
 on_violation: allow | audit | warn | require_reason | require_approval | block
-applies_to:   [ path | tool | command | moment | topic ]
+applies_to:   [ path | tool | command | event | topic ]
 ```
 
 A real one:
@@ -337,7 +440,7 @@ compliance:   mandatory
 on_violation: block
 applies_to:
   - command: git commit
-  - moment: before-push
+  - event: before-push
 ```
 
 **The common case is one field.** `on_violation` defaults to `allow` and appears
@@ -531,19 +634,31 @@ freed with a note saying where it belongs.
 `applies_when` was the alternative and reads the triggers as *conditions* rather
 than *targets*. Both parse, but the recorded convention decides it.
 
-### `moment`, and why not the obvious words
+### `event`, and why not the obvious words
 
 `lifecycle` is the word that best explains why session-start, before-commit and
 before-release are one category — but the format already uses `lifecycle_status`
 for document maturity, so it is spent, and `lifecycle_event` with it.
 
-`event` is conventional and maps to what harnesses call these, but **a path write
-and a command are also events**, so it ends up meaning *the events that are not
-the other four* — a leftover category wearing a general name.
+**`moment` was chosen first and then lost to grammar.** A moment is a point in
+time, and `applies_to` takes nouns — *applies to moment before-push* does not
+read, where *applies to event before-push* does.
 
-`moment` collides with nothing, matches the noun shape of its siblings, and
-distinguishes itself honestly: the others are triggered by an artifact, this one
-by a point in time.
+**`event` also survived the objection raised against it**, which was that a path
+write and a command are events too, so it would mean *the events that are not
+the other four* — a leftover category under a general name. That is weaker in
+context than it sounds: the specific kinds are named alongside it in the same
+list, so nothing is ambiguous, and most vocabularies have exactly this shape.
+It is also what harnesses call these, and here the mechanism **is** the thing
+being named.
+
+**What no name captures is `event`'s actual distinction:** invocation
+independence. `command: git commit` fires on that literal invocation; `event:
+before-commit` fires at that point **however it is reached**. Four of the six
+values overlap with `command` for exactly that reason — belt and braces under
+OR semantics, not redundancy — and only `session-start` and `session-end` are
+irreducible. If the kind ever feels like it carries two ideas, that is the seam:
+strip what `command` already covers and what remains is session lifecycle.
 
 ### What disappears
 
@@ -593,7 +708,7 @@ somebody made.
 | kind | can it bind? | trigger | lands on |
 | --- | --- | --- | --- |
 | **`type_definition`** | `mandatory` | **mechanical, and exact** — the `type:` of the document being written | advertised |
-| **`workflow`** | usually `optional`; occasionally `mandatory` | semantic — *use when…* — or `command` / `moment` | advertised |
+| **`workflow`** | carries no `compliance` — its steps bind by being steps | semantic — *use when…* — or `command` / `event` | advertised |
 | **command** | `optional` | mechanical — its own invocation | advertised |
 | **`policy`** | `mandatory` or `recommended` | **varies — the hard kind** | advertised, or standing where no trigger exists |
 | **concept** | **never binds** | semantic | on-demand |
