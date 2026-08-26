@@ -2,6 +2,121 @@
 
 Settled positions and the reasoning that settled them. Recorded so they are not re-argued from scratch. A path not taken is recorded as deferred with a re-open trigger, never as rejected.
 
+## A document says what makes it surface, not what it governs
+
+**Settled 2026-08-26.**
+
+**The field is `matches`.** It was `applies_to`, and the name obliged an author
+to write a false sentence: `applies_to: everything` claims a rule governs
+everything, and none does. **What a rule governs is stated in its body**, where
+no frontmatter value reaches — `writing-style` governs prose whatever its
+frontmatter says. The field says what makes a document *surface*, which is a
+smaller claim and a true one.
+
+**The vocabulary had outgrown the old name independently.** `applies_to` was
+chosen on the convention that in policy languages it means enforcement scope —
+*this rule applies to these targets*. `path` is a target; **`event` is a
+moment**, and nothing about a moment is a resource a rule scopes over. The
+convention stopped applying the day `event` joined the list, and nobody noticed
+because the name still read plausibly.
+
+**`matches` was chosen on one test: does it read as a sentence in all three
+forms the field takes?** *Matches `git commit`. Matches always. Matches
+nothing.* Every alternative broke on at least one — `matches_on` and `fires_on`
+turn clumsy at `always`; `triggered_by` is the most internally consistent, since
+the entries are called triggers everywhere, and fails at *triggered by always*;
+`when` collapses at both scalars.
+
+**Deferred, not rejected:** renaming the entries from *triggers* to *matchers*,
+so the field and its contents share one word. **Re-open trigger:** the two-word
+seam causes a real misreading, rather than being noticed and shrugged at.
+
+## The expensive delivery mode is asked for, never fallen into
+
+**Settled 2026-08-26.**
+
+**A document that says nothing about what surfaces it is available on request.**
+It used to be loaded into every session — so forgetting a field bought the most
+expensive delivery mode in the system, silently.
+
+**The lazy path was the costly path**, and it broke a rule this estate had
+already written down: *failing by loading nothing is recoverable, failing by
+loading everything is a token bomb.* The default violated the direction the
+same design chose deliberately elsewhere.
+
+**The argument for the old default was that falling in makes the cost visible as
+a gap rather than as a decision somebody made.** That is weaker than it sounds,
+because the visibility depends on somebody running `inspect` and reading a
+low-severity finding. **Requiring `matches: always` makes the expensive outcome
+impossible by accident, which needs no tooling at all.** Structural beats
+diagnostic.
+
+**It cost nothing to change.** All thirty-two policies in the universal catalog
+already stated what surfaces them, so the reversal changed the behaviour of zero
+published documents. **That window closes on the first outside adopter.**
+
+**One casualty was not predicted.** `an-index-of-what-exists` justified its own
+permanent presence by *having no trigger* — the very property that, after the
+reversal, means nothing surfaces it. The one document that must always be
+present would have become the one nobody sees. **A rule stated in terms of a
+default breaks when the default moves.**
+
+**Re-open trigger:** a rule genuinely governs everything, its author writes
+`matches: always`, and the resulting cost is disputed rather than accepted.
+
+## `always` is a value, never a member of the trigger vocabulary
+
+**Settled 2026-08-26.**
+
+**`matches: always`, and never an entry inside the list.** Two reasons, and the
+second decides it.
+
+**Every trigger kind narrows; `always` refuses to.** It was never a peer of
+`path` and `command`, and giving it the same shape claimed a kinship it does not
+have.
+
+**As a list member the invalid combination is writable.** `[always, path:
+"src/**"]` parses and validates, and under OR semantics `always` swallows the
+entry beside it — the path is dead weight that does nothing, silently. As a
+value of the field, that combination cannot be typed. **Making an invalid state
+unrepresentable beats a rule forbidding it.**
+
+**It shipped as both, briefly, and the failure is the argument.** `always` sat
+in the tool's list of kinds while being unwritable: `matches: always` and
+`- always:` were silently discarded, and `- always: true` parsed into a trigger
+that classed the document as *cheap*. **A rule declaring itself ever-present was
+the one rule that would not be there** — and nothing failed. It published,
+validated, and lied.
+
+## Load classes are a printed column, not a vocabulary
+
+**Settled 2026-08-26.**
+
+**A document's body is *always loaded*, *delivered when matched*, or *available
+on request*.** Those are sentences, and they stay sentences.
+
+**This slot has been named five times** — `preload`, `standing`, `advertised`,
+`always-on`, `on-match` — and every one needed a paragraph underneath explaining
+it. Five failures at one word is the finding: **the meaning is a sentence, so
+naming it is the mistake.**
+
+**`standing` is the instructive failure.** It was chosen carefully, with a
+precedent already in use — `organizing-a-bundle` says *standing, kept present* —
+and a reader still took it to mean *left over from before*, which is close to
+the opposite. **A word chosen by argument lost to a word read on sight.**
+
+**The names survive in exactly one place: a derived column printed beside its
+input**, which `luma-foreman outfit --explain` produces. A lookup table printed
+with the answer already in it is not a glossary, and nobody has to learn it
+before writing a document.
+
+**Deferred:** whether *declared nothing* and *nobody looked* should be
+distinguishable. They are the same to every consumer today, and **a field
+nothing acts on is what `compliance` turned out to be.** The candidate answer is
+`verified` (§7.2), which carries the distinction for every document rather than
+as a special value in one field. **Re-open trigger:** a reviewer asks for it
+twice, or a consumer appears that would behave differently.
+
 ## A luma tool writes into `.luma/`, and anywhere else is opted into
 
 **Settled 2026-08-23.**
