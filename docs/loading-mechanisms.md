@@ -80,12 +80,22 @@ select. After the catalog migration nothing takes it.
 ### Which fields go on which kind
 
 - **A policy** carries `compliance`. It *is* the obligation, so it grades the
-  obligation. Absent means `required`, because a policy that binds nothing is a
-  concept.
-- **A workflow** carries none of it. Its steps bind by being steps — you needn't
-  run it, and once you do, step four is not negotiable. A field saying so was
-  identical across all forty-four workflows, which is how we knew it was noise.
-- **A concept** obliges nothing by definition, so `compliance` does not apply.
+  obligation. Absent means `required`, because a policy that binds nothing is
+  not a policy — it is an ordinary `document`.
+- **A workflow** may carry `compliance` too, and it grades something different:
+  **must you run this when its trigger fires.** *Configure your identity before
+  your first commit* is required; *leave a handoff note at session end* is
+  recommended, because skipping it loses something rather than breaking
+  something.
+  **It only means anything with a trigger.** *Must you run it* is unanswerable
+  alone — must you run it **when?** So a workflow with no `applies_to` carries
+  no compliance, which is most of them: you run them when you want, and there is
+  no moment to be obliged at.
+  Never about its *steps*, which bind by being steps. You needn't migrate
+  decisions; once you are, *never delete the original until the split is
+  verified* is not negotiable.
+- **An ordinary `document`** — background, rationale, the things filed under
+  `concepts/` — obliges nothing by definition, so `compliance` does not apply.
 - **`event`** covers what no other trigger can reach — `session-start`,
   `session-end`, `before-commit`, `before-push`, `before-merge`,
   `before-release`. Four of those overlap with `command` deliberately: a
@@ -445,7 +455,7 @@ applies_to:
 
 **The common case is one field.** `on_violation` defaults to `allow` and appears
 only when a rule gets teeth; `applies_to` is absent for anything that applies
-always. A typical concept carries `compliance: optional` and nothing else. The
+always. A typical background document carries none of the three. The
 space exists so the rare cases are expressible — it is not a form anybody fills
 out.
 
@@ -711,7 +721,7 @@ somebody made.
 | **`workflow`** | carries no `compliance` — its steps bind by being steps | semantic — *use when…* — or `command` / `event` | advertised |
 | **command** | `optional` | mechanical — its own invocation | advertised |
 | **`policy`** | `mandatory` or `recommended` | **varies — the hard kind** | advertised, or standing where no trigger exists |
-| **concept** | **never binds** | semantic | on-demand |
+| **`document`** — background, filed under `concepts/` | **never binds** | semantic | on-demand |
 | **template, asset** | n/a — cannot declare, no frontmatter | inherited | invisible |
 | **subordinate documents** — tutorial steps, quiz | n/a | inherited from the owning workflow | invisible |
 | **`bundle.md`** | n/a — it *is* the ring-2 index | arrives when the bundle loads | — |
@@ -818,7 +828,8 @@ specification has to say a directory can *be* a document. Small, additive, and
 the only piece here that is not purely local.
 
 **Misfiling becomes diagnosable rather than a matter of review taste.** *A
-concept that must always be loaded is a policy wearing the wrong type.* *A
+background `document` that must always be loaded is a policy wearing the wrong
+type.* *A
 workflow marked standing is confusing the trigger with the body* — what needs to
 be present is its name, never its procedure. Both are now mechanical checks.
 
@@ -1220,7 +1231,7 @@ committed index or the directory itself is still readable.
 
 ### 5 — Everything becomes a skill
 
-**How it works.** Project every document — policy, concept, type — as a skill
+**How it works.** Project every document — policy, background, type — as a skill
 whose description says when it matters. No new machinery at all.
 
 **What only it can do.** Skills are an open standard read by many agents, and the
@@ -1791,7 +1802,7 @@ Ranked by how much they would hurt.
 Smaller than the above, and each one surfaced while transcribing something that
 had felt settled in conversation.
 
-- **Where do the per-kind defaults live?** *A concept can never bind* and *a type
+- **Where do the per-kind defaults live?** *A background document can never bind* and *a type
   definition's trigger is structural* are stated as facts. Are they enforced by
   the tool, declared in each type definition, or convention a linter reports? The
   three have very different costs, and nothing chooses.
