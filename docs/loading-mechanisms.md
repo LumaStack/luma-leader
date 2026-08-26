@@ -131,111 +131,11 @@ a sentence. Nothing is defined here that a reader has to learn, and there is no
 mapping between what an author writes and what a tool reports.
 
 **The expensive outcome is asked for, never fallen into.** A policy that says
-nothing about what surfaces it is **available on request** — not loaded always.
-This reverses an earlier position and the reversal is the important part:
-
-> **the direction of failure has to be chosen deliberately: failing by loading
-> nothing is recoverable, failing by loading everything is a token bomb.**
-
-That rule is stated elsewhere in this document, and the old default broke it.
-Omitting `matches` used to buy the single most expensive delivery mode in the
-system — the lazy path was the costly path, silently. The earlier argument for
-it was that falling in makes the cost *"visible as a gap rather than as a
-decision somebody made"*, but that visibility depends on somebody running
-`inspect` and reading a low-severity finding. **Requiring `matches: always`
-makes the expensive outcome impossible by accident, which needs no tooling at
-all.** Structural beats diagnostic.
-
-**Nothing is silently absent under the new default**, which is the objection it
-has to answer. A document's *name* and description are in the index either way —
-existence is cheap, content is expensive — so an agent can always see what it is
-not loading. What changes is only whether the body arrives uninvited.
-
-**The catalog is already compatible.** All thirty-two policies state what
-matches them, so flipping the default changes the behaviour of exactly zero
-published documents. That is what makes now the cheapest moment this change will
-ever have.
-
-### `compliance` was invented here and removed the same day
-
-**It graded how strongly a rule binds** — `required` / `recommended` — and it
-does not appear above because it did not survive. Recorded because the reasoning
-matters more than the field did:
-
-- **`type` already said it.** A policy binds; declaring `compliance: required`
-  on one says *a policy is a policy*.
-- **`on_violation` already said the other half.** Blocking *is* the announcement
-  that something is serious; a companion field restating it adds nothing.
-- **It was mechanically inert.** It changed delivery for **zero** documents,
-  because everything in the catalog has a trigger. The derivation reads better
-  with one fewer input.
-- **Its one surviving value was a doubt.** `recommended` marked seven policies,
-  several of which read as guidance filed as `policy` — **a type error rather
-  than a strength setting.**
-
-**And the evidence I first offered against it was circular**, which is worth
-recording alongside: I argued the field was empty because all forty-four
-workflows carried the same value — having set all forty-four myself in one
-sweep. The same mistake happened twice more that day, against `develop` and
-against the `moment` naming. *A rule nobody followed because you did not read it
-is evidence about you, not about the rule.*
-
-**What went with it, and is now inexpressible:** *you must run this workflow when
-this moment arrives.* Eight workflows once carried `preload: mandatory`, so their
-authors were reaching for something. Whether that claim deserves a mechanism is
-open — see the questions at the end.
-
-### Why `preload` died
-
-`preload: mandatory | recommended | optional` asked *when should this be in
-front of a reader*. One field, one axis, and everything about **how strongly the
-content binds** lived only in prose.
-
-Splitting it turned out to separate two genuinely different questions —
-**when it arrives** and **how hard it binds** — and the second was never what
-`preload` meant. So `applies_to` is the honest successor to `preload`;
-`compliance` and `on_violation` are a second concern discovered on the way.
-
-**Watch for the misreading**, because it has caught two readers already:
-`compliance` sits in the slot `preload` occupied and uses similar words.
-**It does not grade loading. It grades obeying.**
-
-### The vocabulary is RFC 2119's, deliberately
-
-`REQUIRED / RECOMMENDED / OPTIONAL` is the adjectival set every specification
-uses, and the format's `field_presence` ladder is the same three words. One
-family across both scales, so a reader learns it once. `deprecated` sits beside
-the ladder rather than on it — it states a field's future, not its strength.
-
-The **enforcement** ladder is a different family and deliberately richer than the
-industry's: Kyverno has `Enforce/Audit`, Gatekeeper `deny/dryrun/warn`, linters
-`error/warn/off`. All of those name only what happens. `on_violation` covers the
-same ground with `require_reason` and `require_approval` in between, because a
-recorded reason and a third party's approval are distinct from both a warning
-and a refusal.
-
-### The two rules underneath all of it
-
-> **Data is what something checks. Prose is what a person or agent needs to
-> understand — and an agent should prefer the mechanical answer to the question
-> the data answers.**
-
-With a second class that also earns a field: **things an agent would otherwise
-have to infer unreliably.** Strength-of-obligation judged from tone is exactly
-that, which is why `compliance` is a field even though nothing mechanical
-consumes the `required` / `recommended` distinction today.
-
-And the counterweight, or every nuance becomes a field and the condition
-language arrives by the back door: **only mechanise questions asked routinely
-and answered the same way each time.**
-
-> **Frontmatter declares force and trigger. Prose says what complying means, and
-> may narrow further.** Triggers are coarse by design, so *"this does not apply
-> to merge commits"* may only be sayable in prose. **Prose that widens scope is a
-> rule that never arrives**, and prose that sets its own force is a mistake.
-
-A policy body **instructs** — that is the whole point of a policy. What it does
-not do is decide its own strength or its own reach.
+nothing about what surfaces it is **available on request**, not loaded always.
+The reasoning, the rule it restores, and what it cost to change are in
+*The expensive delivery mode is asked for, never fallen into* in
+[DECISIONS.md](DECISIONS.md) — along with the one document the reversal nearly
+broke.
 
 ## The three classes a document can land in
 
@@ -319,22 +219,10 @@ enough:
 | `event` | a lifecycle point — session start, before commit, before release |
 | `topic` | the work is *about* something — matched semantically, not mechanically |
 
-**`always` is not on this list, and was for a while.** It is a value of the
-field, never a member of the vocabulary — `matches: always` or a list of these,
-never one inside the other. Two reasons, and the second is the one that decides
-it. As a list member the combination `[always, path: src/**]` is writable, and
-under OR semantics `always` swallows the entry beside it: the path parses,
-validates, and does nothing, which is the silent no-op this whole design exists
-to eliminate, arriving inside the design's own vocabulary. And structurally it
-was never a peer — **every kind here narrows, and `always` refuses to narrow.**
-Giving it the same shape claimed a kinship it does not have.
-
-*It was briefly both, and that state shipped: `always` sat in the tool's list of
-kinds while being unwritable. `matches: always` and `- always:` were silently
-discarded, and `- always: true` parsed into a trigger that classed the document
-as cheap — a rule declaring itself ever-present was the one rule that would not
-be there. Worth recording because nothing failed: it published, validated, and
-lied.*
+**`always` is not on this list.** It is a value of the field, never a member of
+this vocabulary — see *`always` is a value, never a member of the trigger
+vocabulary* in [DECISIONS.md](DECISIONS.md), including the period when it was
+both and was unwritable.
 
 **The first four are mechanical and the last is not**, and that distinction
 decides push versus pull rather than taste. A mechanical trigger is something the
@@ -492,50 +380,17 @@ tolerant. **The first external adopter is when to revisit it**, because loud
 failure stops being a diagnostic and becomes an outage in somebody else's
 session.
 
-### Where this leaves the three classes: derived state, and not a vocabulary
+### Where this leaves the three classes
 
-They survive as **derived state**, which is the useful place for them.
+**Settled and moved out.** See *Load classes are a printed column, not a
+vocabulary* in [DECISIONS.md](DECISIONS.md) — why five names all failed, why
+`standing` is the instructive one, and where the names survive.
 
-| class | meaning |
-| --- | --- |
-| **always-on** | the body is present before work starts |
-| **advertised** | the name and description are present; the body arrives on match |
-| **on-demand** | the name is present; the body waits to be asked for |
-
-**This slot has now been named five times — `preload`, `standing`, `advertised`,
-`always-on`, `on-match` — and every one of them needed a paragraph underneath
-explaining it.** That is the finding, and it is worth more than any of the
-names: **the meaning is a sentence, so it should stay a sentence.** A tool says
-*always loaded*, *delivered when matched*, *available on request*, and nothing
-has to be learned before reading its output.
-
-**The class names survive in exactly one place: a derived column printed beside
-its input.**
-
-```
-document                        matches            derives to
-policy/writing-style            always             always-on
-policy/never-commit-credentials command, event     advertised
-concepts/why-this-exists        —                  on-demand
-```
-
-**A lookup table printed with the answer already in it is not a glossary**, which
-is what makes this different from asking an author to learn three words before
-writing a document. `luma-foreman outfit --explain` prints it.
-
-**Why `standing` failed, recorded because the failure is the evidence.** It was
-chosen carefully — `organizing-a-bundle` already used it for exactly this,
-*standing, kept present* — and a reader still took it to mean *left over from
-before*, which is close to the opposite. **A word chosen by argument lost to a
-word read on sight.** `always-on` was taken over plain `always` because the class
-is strictly larger than the trigger: documents can land in it without having said
-anything, so sharing one word would imply an equivalence that does not hold.
-
-**Open, and genuinely unsettled:**
+**What is still open here:**
 
 - **Can obligation and applicability be adopter-overridden separately?** See
-  *whose rule wins* below. `compliance` is gone, so the first half of that
-  question is now *may an adopter change `on_violation`*.
+  *whose rule wins* below. `compliance` is gone, so the first half is now *may
+  an adopter change `on_violation`*.
 - **What happens when two triggers fire at once and the rules conflict.** The
   contradiction failure, arriving through a new door.
 
@@ -761,52 +616,11 @@ that exists anyway is still conformant and still readable.
 
 ### `matches`, and why `applies_to` was overturned
 
-**`applies_to` held this slot first, on a precedent that turned out to argue for
-the wrong thing.** The format had vacated the name — `applies_to` on the `bundle`
-type became `consumers` — partly because *"in policy languages `applies_to`
-conventionally means enforcement scope — this rule applies to these targets."*
-The word was freed with a note saying where it belonged, and this looked like
-the place.
-
-**What defeated it is the sentence the name forces an author to write.**
-`applies_to: everything` claims a rule governs everything, and no rule does.
-`writing-style` governs prose; that bound lives in its body, and no frontmatter
-value widens it. **The field does not scope governance — it says what makes the
-document surface**, and every name implying otherwise produces a false reading
-in the one case that matters most.
-
-**The old name also mis-described its own contents.** The vocabulary is
-heterogeneous — `path: src/**` is a target, but `event: before-push` is a
-*moment*, and nothing about a moment is a resource a rule scopes over. A list
-holding both is a trigger list, so the enforcement-scope convention stopped
-applying the moment `event` joined.
-
-**`matches` was chosen on one test: does it read as a sentence in all three
-forms the field takes?** *Matches `git commit`.* *Matches always.* *Matches
-nothing.* Every alternative broke on at least one. `matches_on` and `fires_on`
-turn clumsy at `always`; `triggered_by` — the most internally consistent, since
-the entries are called triggers everywhere — fails at *triggered by always*;
-`relevant_when` and `applies_when` read the entries as conditions and go clumsy
-in the list form; `when` collapses at both scalars.
-
-**`applies_to` was removed rather than deprecated, and the reasoning generalises.**
-The rename shipped with the old name still readable, so that upgrading the tools
-could not drop a repository's triggers mid-migration — the expand step, and it
-was necessary for about four hours. Then it was deleted outright rather than left
-to age out. **Deprecation is a cost paid on behalf of adopters who exist**, and
-this estate has none outside itself; a dead name kept early buys nothing and
-charges every reader a second spelling for it. The window in which removal is
-free is exactly now, and it closes on the first outside adopter.
-
-*The general form, worth keeping: **expand, migrate, contract — and contract
-immediately when the adopter count is zero.** The three steps are about not
-requiring two things to ship together, not about waiting.*
-
-**The residue, stated so nobody re-opens it as a defect:** the field is
-`matches` and its entries are still called *triggers* in prose. Two words for
-one relationship, which English does constantly — the field says what happens,
-the noun names the thing. Renaming the entries to *matchers* would close it and
-costs more than the seam does.
+**Settled and moved out.** See *A document says what makes it surface, not what
+it governs* in [DECISIONS.md](DECISIONS.md) — the false sentence the old name
+forced, the enforcement-scope convention that stopped applying once `event`
+joined the vocabulary, the alternatives and the test that eliminated them, and
+the deferred question of renaming *triggers* to *matchers*.
 
 ### `event`, and why not the obvious words
 
