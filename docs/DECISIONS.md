@@ -55,12 +55,19 @@ reads it at runtime.
 **Three classes, and each one names the property that fails** rather than the
 subject it examines:
 
-| class | a failure means | who acts | blocks? |
+| class | a failure means | who acts | *recommended* default |
 | --- | --- | --- | --- |
-| **machinery** — adoption drift, broken bundles, stale generated output | the tooling does not work | whoever is landing the change; re-run a command | **yes** |
-| **safety** — credentials, personal information | harm has already been published | incident response; rotate the credential | **yes, hardest** |
-| **truth** — retired ideas, stale claims, anything asserting what is no longer so | a reader may be misled | whoever writes here, by judging it | **no** |
-| **obligation** — mandates unadopted, retirements unswept past their date, audits unanswered | something we were told to do is undone | the project that owes it — **reported to whoever issued it** | **on a deadline, not on a change** |
+| **machinery** — adoption drift, broken bundles, stale generated output | the tooling does not work | whoever is landing the change; re-run a command | fail |
+| **safety** — credentials, personal information | harm has already been published | incident response; rotate the credential | fail |
+| **truth** — retired ideas, stale claims, anything asserting what is no longer so | a reader may be misled | whoever writes here, by judging it | report |
+| **obligation** — mandates unadopted, retirements unswept past their date, audits unanswered | something we were told to do is undone | the project that owes it — **reported to whoever issued it** | report, until the date |
+
+**The last column is a recommendation, not a property of the class.** *What a
+failure means* is intrinsic; *what to do about it* is the project's call. An
+earlier draft of this record made blocking a column of the class, which quietly
+prescribed one policy for everybody — a documentation repository may well want
+`truth` to fail its build, and most projects will not. **Do not decide that
+here.**
 
 **A project with grey truth is not a broken project**, and must pass the
 machinery check. That is the whole point of separating them.
@@ -110,18 +117,48 @@ thirty-three false positives and had to be withdrawn because *noise teaches a
 reader to skim past notices.* The same mechanism destroys a check that mixes
 classes.
 
-**Truth may still block, but only where something earned it** — a retired idea in
-a binding `policy`, past its `enforced` date. The default is to report.
+### One command, selectable by class, and the project sets the policy
 
-**`luma-foreman inspect` answers machinery and safety, and nothing else.** Both
-are binary, both block, and both work in a bare clone with no configuration —
-which is `inspect`'s own stated contract.
+**`inspect` stays the umbrella and covers all four.** Splitting the command was
+considered and rejected: a second binary is a second thing nobody runs, and the
+separation that matters is in *reporting and exit policy*, not in the invocation.
 
-**The `vocabulary` rule does not belong in it**, and there is a second argument
-for that which arrived independently: it is the only rule requiring project
-configuration and the only one that can never pass on a bare clone, so it reports
-`SKIPPED` forever. **Two unrelated arguments landing on the same file** is the
-reason this is recorded rather than left as a preference.
+**Three things follow, and they are the substance of this section:**
+
+- **Every rule declares its class**, and a run can be scoped to one — the same way
+  `--rule` already scopes to a single check. Without that, a project cannot act on
+  the distinction this record draws.
+- **Which classes fail the run is configured, with a recommended default.** The
+  defaults above are a starting point and nothing more. **Do not prescribe how
+  people use this** — a docs-heavy repository may want `truth` to fail; a project
+  mid-migration may want `machinery` to warn for a week.
+- **Output groups by class regardless of exit policy**, so a reader can tell a
+  broken bundle from a stale claim without reading rule names.
+
+**`obligation` is the asymmetric one.** For the other three the project sets its
+own policy, because the audience is inside it. For an obligation the audience is
+outside — so **whoever issued it sets the escalation**, and `enforced` is how they
+say it. A project quietly configuring a mandate down to a warning has not met it;
+it has hidden it.
+
+**`safety` deserves friction rather than prohibition.** A project may turn it
+down, and that should be a visible, recorded choice rather than a silent config
+line, because it is the one class where a failure means harm has already
+happened.
+
+### The bare-clone guarantee belongs to two classes, not to the command
+
+`inspect`'s contract has been *"every check here works in a bare clone with no
+configuration."* That is true of `machinery` and `safety` and cannot be true of
+`truth` or `obligation`, which exist only because something was declared —
+retirements, mandates, deadlines. The `vocabulary` rule reporting `SKIPPED`
+forever on an unconfigured project is not a defect; it is that guarantee being
+correctly scoped.
+
+**So the guarantee is restated per class rather than dropped.** Machinery and
+safety answer on a bare clone. Truth and obligation answer on a configured one,
+and say plainly that they are skipped otherwise — **a skipped check is never a
+pass.**
 
 **Compliance reporting is `obligation`, and that is what the fourth class
 settles.** *"Adopted 0.5.0, last swept 0.3.0"* is not a machinery defect and not
