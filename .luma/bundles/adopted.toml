@@ -10,6 +10,12 @@ source   = "https://github.com/LumaStack/luma-catalog"
 commit   = "a48f0101354bebe13a196751bbee13375d0bfd1b"
 checksum = "sha256:31dbbe16026d3b2897f229a7f1946026aba9dda1c0263c12f19afd4d924fec26"
 
+["lumastack/luma-catalog/decision-records"]
+version  = "0.9.1"
+source   = "https://github.com/LumaStack/luma-catalog"
+commit   = "ff3c00a9695bcf15d5acabff44281adcb2fe4831"
+checksum = "sha256:33b96b715bf8a9e9b7d19a508818d695743c7aa2ffa0438c922a908a9cec332a"
+
 ["lumastack/luma-catalog/luma-maintainers"]
 version  = "0.10.3"
 source   = "https://github.com/LumaStack/luma-catalog"

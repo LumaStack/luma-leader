@@ -50,11 +50,25 @@ reads it at runtime.
 
 ## Checks divide by what a failure means, not by what it is about
 
-**Provisional. Decided 2026-08-27** by the maintainer, in conversation, and in
-force — but on trial rather than settled.
+**Draft. Returned to `draft` on 2026-08-27**, where it should have started.
 
-*Why it is not `stable`, stated rather than discovered later:* **this record was
-corrected four times in the two hours after it was written.** Blocking moved from
+*It was written directly as `Settled`, and that status was never conferred.*
+`decision-guidelines` is explicit: **nothing promotes itself, and a record leaves
+`draft` because its owner says so.** No draft existed to promote — an agent wrote
+the record into force and attributed the settling to the maintainer, which is the
+`F-002` failure this estate's own audit named this morning: an agent-authored
+assertion cited as a decision somebody made.
+
+**Restoring `draft` is not a demotion**, because the record was never legitimately
+out of it. There is precedent in the estate the same week: `luma-foreman`'s
+ADR-0003 and ADR-0004 were returned to `draft` on 2026-08-26 for the same reason —
+*"recorded as settled while the argument was still running."*
+
+**The position below is in use and the maintainer agrees with it.** That is what
+earns promotion rather than what performs it. **Promotion is the owner's to make.**
+
+*Why it is nowhere near `stable`, stated rather than discovered later:* **this
+record was corrected four times in the two hours after it was written.** Blocking moved from
 a property of the class to a project's policy. `obligation` was added by this
 record's own re-open trigger, which fired the same afternoon it was set. The
 `vocabulary` rule left `inspect` and came back. And mandate strength turned out
@@ -62,10 +76,13 @@ to be a scope decision rather than a config one. **A position that moved four
 times in two hours has not finished moving**, and the corrections are dated in
 place above so the churn is visible instead of tidied away.
 
-*What that permits, per `decision-guidelines`:* the explanation may be edited
-freely and in place, no approval needed. **The position itself still may not** —
-if the four classes turn out to be three or five, that is a new record and this
-one is archived.
+*What `draft` permits, per `decision-guidelines`:* **anything.** Nothing here is
+binding and citing it is discouraged — which is the honest state for a position
+that moved four times in an afternoon. Once promoted, only the explanation moves;
+changing the position then costs a new number and an archival.
+
+*A prompt rather than an act:* **this draft has gone into use and looks ready.**
+That observation is worth making and acting on it is not.
 
 **Four classes, and each one names the property that fails** rather than the
 subject it examines. *Three were settled first and `obligation` was added hours
