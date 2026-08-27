@@ -36,3 +36,19 @@ title = "What each luma tool does"
 path = ".luma/bundles/lumastack/luma-catalog/luma-tools/policy/what-each-tool-does.md"
 on_violation = "allow"
 matches = ["command:luma-foreman", "command:luma-catalog-curator", "topic:choosing which luma tool does a job"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/retirement-records"
+document = "policy/retiring-a-concept"
+title = "Retiring a concept"
+path = ".luma/bundles/lumastack/luma-catalog/retirement-records/policy/retiring-a-concept.md"
+on_violation = "allow"
+matches = ["topic:retiring an idea, a concept, a field or a word", "topic:deciding how widely a change should be enforced"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/retirement-records"
+document = "policy/what-we-retired"
+title = "What we retired"
+path = ".luma/bundles/lumastack/luma-catalog/retirement-records/policy/what-we-retired.md"
+on_violation = "allow"
+matches = ["always"]

@@ -21,3 +21,9 @@ version  = "0.9.2"
 source   = "https://github.com/LumaStack/luma-catalog"
 commit   = "a48f0101354bebe13a196751bbee13375d0bfd1b"
 checksum = "sha256:fcc4796456c965e67b23dd5cc25d8fb13eb81e684ea70abb86349307f41942b3"
+
+["lumastack/luma-catalog/retirement-records"]
+version  = "0.1.0"
+source   = "https://github.com/LumaStack/luma-catalog.git"
+commit   = "f57ae857416d348ccf62a32d121e094ecc58ecda"
+checksum = "sha256:08572d4c88f3600a8057c294b0dfb9ff713a2bfdf11f31299c5bac1e4d1aa43f"

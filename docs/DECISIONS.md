@@ -187,7 +187,10 @@ can predict.**
 
 **This is the third time the same shape has been chosen**, which is why it is
 recorded as a general position rather than a fact about the backlog. A catalog
-declares a namespace and an adopter may override it in committed config. A
+declares a namespace and an adopter may override it in committed config *(no
+longer true as of 2026-08-26 — a namespace now derives from where the catalog
+lives, RET-0005. The example lapsed; the general position it supports did not)*.
+A
 preclusion fails by default and is overridden in committed config. Now this.
 *One default, one written override, and the override is reviewable because it is
 in the repository.*
