@@ -238,9 +238,10 @@ standards wait.
 ## What enters context is unchanged by who pulled it in
 
 **A depending bundle does not decide what loads.** *Preload is declared by whoever
-holds the knowledge* — a settled decision in [DECISIONS.md](DECISIONS.md) — already
-covers this and needs no amendment: the bundle author declares document-level
-`preload`, and the adopter decides bundle-level `preload_default` outright. A
+holds the knowledge* — a settled decision in [DECISIONS.md](DECISIONS.md), whose
+title keeps a field the format has since released; the position is about delivery
+and still holds — already covers this and needs no amendment: the bundle author declares each document's
+`matches`, and the adopter decides a bundle-level default outright. A
 dependency changes what is *available*; it does not change what is *present*.
 
 **Adoption decides availability. Routing decides presence.** That is what keeps
@@ -250,10 +251,10 @@ genuinely unconditional content, and a bundle with a large unconditional
 footprint has a defect that is visible as a number.
 
 **Adoption would report its transitive context cost before it is accepted.**
-*"Adopting A also brings B and C; four documents become preloaded."* No package
+*"Adopting A also brings B and C; four documents load up front."* No package
 manager reports this because no package manager has a budget to spend. Without it,
 a dependency chain is a permanent context tax that nobody chose and nobody sees.
-`preload` is declarative, so the number is computable before anything is loaded.
+`matches` is declarative, so the number is computable before anything is loaded.
 
 ## Compatibility is recorded, not predicted
 
@@ -433,14 +434,14 @@ bundles become common enough that publication failures block ordinary work.*
 
 **A second kind of dependency** distinguishing *I need its content* from *I accept
 its rules*. It dissolves on inspection: obligation is declared by a catalog's
-mandate, not by a dependency, and what loads is decided by preload. A dependency
+mandate, not by a dependency, and what loads is derived from `matches`. A dependency
 that also bound you would be an obligation wearing a different name. *Revisit if a
 real bundle pair needs a distinction these two mechanisms cannot express.*
 
 **A depending bundle raising a specific document of its dependency into context.**
 It reaches into another bundle's internals by path, which breaks silently on
 rename. When it bites, the honest diagnosis is usually that the dependency's own
-preload is wrong — a fix that helps every adopter rather than one. *Revisit when a
+`matches` is wrong — a fix that helps every adopter rather than one. *Revisit when a
 real pair demonstrates otherwise.*
 
 ## The catalog still does not need a version of its own

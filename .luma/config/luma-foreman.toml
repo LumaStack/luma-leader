@@ -45,3 +45,46 @@ except = [
   "docs/loading-mechanisms.md", # as above
   "docs/DECISIONS.md",          # as above
 ]
+
+# The format's released names, from `luma-knowledge-format/SPEC.md` section 13.
+#
+# These are not this repository's decision and not foreman's — the format
+# retired them, and section 13 is the list a tool can read. It says so itself:
+# a released name in a published Document's prose is valid, so a consumer MAY
+# report it and MUST NOT reject for it. That is a notice, which is what this is.
+#
+# Hand-copied, which is the weakness. The durable version reads section 13
+# directly instead of each repository transcribing it; until that exists, this
+# goes stale the next time the format releases a name and nobody notices.
+
+[[retired]]
+term = "preload"
+use = "`matches` — and `matches: always` for the one route to being loaded up front"
+decided = ["SPEC.md section 13", "released in v0.0.12"]
+except = [
+  ".luma/records/",                                     # append-only
+  "docs/loading-mechanisms.md",                         # the document that argued preload out
+  "docs/DECISIONS.md",                                  # settled entries record what was true
+  ".luma/backlog/ideas/conditional-preload.md",         # the idea is about the field itself
+  ".luma/backlog/ideas/changing-many-moving-parts-at-once.md",  # its worked example is this migration
+]
+
+
+[[retired]]
+term = "applies_to"
+use = "`matches` (section 10.7)"
+decided = ["SPEC.md section 13", "released in v0.0.15"]
+except = [
+  ".luma/records/",
+  "docs/loading-mechanisms.md",
+  "docs/DECISIONS.md",
+  ".luma/backlog/ideas/changing-many-moving-parts-at-once.md",  # its worked example is this exact migration
+]
+
+# `compliance` and `obligation` were tried here and removed. Both are ordinary
+# English in this repository — "a compliance team", "the obligation ladder" —
+# and `obligation` also names a live concept of its own: how strongly a catalog
+# expects a project to adopt a bundle, which is not the Type Definition field
+# that was renamed. Retiring either trains a reader to skim past notices, which
+# costs more than the two stale field references they would have caught.
+

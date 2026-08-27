@@ -48,7 +48,7 @@ The queries that are currently painful are all structural:
   two fields, one a list of actors
 - *every document whose `lifecycle_status` is unset* — **absence**, which grep
   cannot express at all
-- *every bundle whose `preload: mandatory` documents exceed some size* — a
+- *every bundle whose `matches: always` documents exceed some size* — a
   computed property
 
 **Absence is the one that decides it.** `grep -L` finds files lacking a string,

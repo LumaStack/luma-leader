@@ -99,7 +99,7 @@ one field.** Two axes, where the estate currently reasons on one:
 
 | axis | the question | where it lives today |
 | --- | --- | --- |
-| **the claim** | how does this bind, *taken at face value* | `type`, `applies_to`, `on_violation` — every document states it |
+| **the claim** | how does this bind, *taken at face value* | `type`, `matches`, `on_violation` — every document states it |
 | **the confirmation** | is it trusted right now, is it ready, is it current with how we now think | **`verified`, and nothing reads it** |
 
 **A document written perfectly for the old world still states its claim with

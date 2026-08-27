@@ -19,7 +19,7 @@ where they can be found.**
 types: [{ name: "idea", source: "github.com/.../luma-types/.../_types/idea.md" }]
 ```
 
-**And this would not preload the types.** It would just **make them easy to find
+**And this would not load the types up front.** It would just **make them easy to find
 when the bundle needs them.**
 
 **But we may also need to solve for making it repeatable and predictable**, so

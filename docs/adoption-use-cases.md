@@ -96,7 +96,7 @@ comes later.
 | | |
 | --- | --- |
 | **UC22** | Adopt a bundle for one workflow, and not want its policies ambient |
-| **UC23** | Turn off a single over-eager `preload: mandatory` document |
+| **UC23** | Turn off a single over-eager `matches: always` document |
 | **UC24** | Turn *on* something the author marked optional |
 | **UC25** | Load a bundle only during a release, an incident, an audit |
 | **UC26** | The mandatory set across eight adopted bundles exceeds the budget |
@@ -147,7 +147,7 @@ Six, grouped by whether they govern content arriving or content behaving.
    catalog default with a consumer override
 5. **Contradiction handling** — nothing · structural prevention · imperfect
    detection · cost reporting
-6. **Who controls preload** — author only · adopter sets a bundle default ·
+6. **Who controls what loads up front** — author only · adopter sets a bundle default ·
    adopter overrides per document · conditional and routed
 
 ---
@@ -300,7 +300,7 @@ bundle (the filesystem holds one slot) and two bundles at one address (axis 4).
 
 **Cost reporting wins the saturation half outright, and it is cheap.**
 `bundle-dependencies` already specifies it — *"Adopting A also brings B and C;
-four documents become preloaded"* — and `preload` is declarative, so the number
+four documents load up front"* — and `matches` is declarative, so the number
 is computable before anything loads. **No package manager reports this because
 none has a budget to spend.** This is the single highest-value unbuilt item in
 this document, and it addresses UC26.
@@ -337,7 +337,7 @@ Unvalidated, and it inherits every failure mode of a controlled vocabulary —
 `git-workflow` versus `git-workflows` silently fails to collide, which is the
 same hazard `tags` already carries and answers by publishing the vocabulary.
 
-## Axis 6 — Who controls preload
+## Axis 6 — Who controls what loads up front
 
 | | UC22 not ambient | UC23 one doc off | UC24 one doc on | UC25 only during a release | UC26 budget |
 | --- | --- | --- | --- | --- | --- |
@@ -362,8 +362,8 @@ UC23, where one document in a bundle you otherwise want is the problem.
 
 **Per-document override loses on the reason it was already deferred**: it reaches
 into another bundle by path, the author renames a file, and the override silently
-stops applying. UC24 needs it least of all — raising a preload is already
-permitted.
+stops applying. UC24 needs it least of all — raising what an adopter loads is
+already permitted.
 
 **Conditional loading wins every column and is the only one nothing can build.**
 No harness has a *conditions changed, load these now* hook. Projection-time
@@ -413,20 +413,21 @@ of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
 | dependencies | none, until duplication is observed | settled |
 | namespace | catalog default, identity is the source; **override deferred** | **partly built** — default only |
 | contradiction | cost reporting + partial detection | unbuilt |
-| preload | adopter's bundle-level default | settled, unbuilt |
+| what loads up front | adopter's bundle-level default | settled, unbuilt |
 
 | failure | how well the stack answers it |
 | --- | --- |
 | **Silent absence** | **best covered.** The index pattern is built and running |
-| **Saturation** | **answerable and unanswered.** Cost reporting and `preload_default` are both specified and neither exists |
+| **Saturation** | **answerable and unanswered.** Cost reporting and an adopter-set default for what loads are both specified and neither exists |
 | **Contradiction** | **open.** Partly prevented by structure, undrafted for UC13 and UC14 |
 | **Silent presence** | **outside the stack entirely.** No axis here touches it — see [silent-presence.md](silent-presence.md) |
 
 ## What this suggests, in order
 
 1. **Report context cost at adopt time.** Specified, cheap, addresses the
-   failure with no other mitigation, and `preload` is already parsed.
-2. **Build `preload_default`.** Settled, unbuilt, and the adopter currently has
+   failure with no other mitigation, and `matches` is already parsed.
+2. **Build an adopter-set default for what loads.** Settled, unbuilt, and the
+   adopter currently has
    no say at all in what loads.
 3. **Make identity the source, not the name**, before two catalogs exist and the
    distinction has to be retrofitted. Failure only; no override.
