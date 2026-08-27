@@ -66,6 +66,7 @@ except = [
   "docs/loading-mechanisms.md",                         # the document that argued preload out
   "docs/DECISIONS.md",                                  # settled entries record what was true
   ".luma/backlog/ideas/conditional-preload.md",         # the idea is about the field itself
+  "docs/retiring-a-concept.md",                         # it proposes the framework, so it names the words
   ".luma/backlog/ideas/changing-many-moving-parts-at-once.md",  # its worked example is this migration
 ]
 
