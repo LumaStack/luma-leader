@@ -1,7 +1,7 @@
 ---
 type: bundle
-version: 0.5.0
-published: 2026-08-25
+version: 0.7.1
+published: 2026-08-26
 consumers: [project, organization]
 entry_point: policy/audit-layout
 description: Audits as records — findings written by one party, answered by another, closed by the first. The whole exchange lives in git.
@@ -45,11 +45,13 @@ the conversation.
 
 ## The four ideas worth knowing before reading further
 
-**Independence.** One party must not write two of the three documents. An
-auditor who writes the response is grading their own work; a respondent who
-writes the verification is closing their own findings. Where a swarm of agents
-does every step, that separation is arranged deliberately, because nothing
-enforces it.
+**Independence, and the unit it is measured in.** The respondent must not be the
+auditor and the verifier must not be the respondent — but the auditor returning
+to verify is the design, which is why they legitimately write two of the three.
+**The boundary is the session, not the model.** What compromises a record is
+carried context, so a fresh session of the same model is a real second party, a
+different model is better, and one session playing two parts is permitted,
+weakest, and has to be disclosed.
 
 **Any of the three may be a person, an agent, or a command.** They are recorded
 as actors — `human:fsmith`, `agent:opus-5`, `process:luma-foreman-inspect` — and
@@ -74,6 +76,66 @@ Both levels. A project audits its code and its own practice; an organization
 audits conformance across projects. The exchange is the same shape either way.
 
 ## Version
+
+`0.7.1` — **bundle IDs in this catalog gained their namespace.** A bundle here
+is `lumastack/luma-catalog/<name>` rather than `luma/<name>`, because the
+namespace now derives from where the catalog lives instead of being declared.
+Every reference in this bundle's prose is updated.
+
+**A fork can no longer publish under this catalog's name.** It lives somewhere
+else, so it is named something else, and its bundles sit beside these in a
+project rather than colliding with them.
+
+*Type names are unaffected.* `type: luma/catalog` and its siblings name the
+format, not this catalog, and resolve separately.
+
+Patch: nothing but the identifiers a reference points at.
+
+`0.7.0` — **independence is a session boundary, not a model boundary.** The rule
+said *one party must not write two of these*, which was wrong twice. It
+contradicted the table directly above it — the auditor writes rows 1 and 3 by
+design — and it pointed at the wrong axis.
+
+**What compromises a record is carried context, not identity.** An agent that
+argued a finding into existence defends it rather than re-deriving it. The model
+is not what does that; the retained working state is. So the old rule forbade
+something harmless — the same model appearing twice — and permitted the real
+failure, one continuous session playing two parts.
+
+**Three arrangements, ranked and all permitted**: a different model in its own
+session, the same model in a separate session, and one session doing both. The
+last is discouraged rather than forbidden, on the grounds that a rule nobody can
+satisfy gets ignored quietly instead of argued with — and it must be disclosed,
+with a named tell, a response that agrees with every finding.
+
+**This also unifies two ideas the bundle carried separately.** `0.6.0` said an
+auditor who has just worked on the subject cannot run an open-ended audit of it,
+because its own context is the anchor. That is the same boundary: anchoring and
+self-grading are one problem, and what carries between them is the session. The
+deterministic-command exception now rests on it too — a checker is exempt because
+it carries nothing between runs.
+
+Minor: no document changes shape, and every existing audit stays valid. What
+changed is which arrangements the workflows ask for and what they ask to be
+written down.
+
+`0.6.0` — **an audit starts by asking what it is for.** `conduct-audit` opens
+with three questions: is this targeted or open-ended, what problems is it aimed
+at, and what is the scope. **The shape is asked first, deliberately** — otherwise
+anybody with a complaint ready gets a targeted audit without having chosen one.
+
+**Both shapes are biased and the workflow says so.** Targeting is biased toward
+what is already suspected, and a problem is usually a symptom, so an audit aimed
+at one never looks at its cause. Open-ended is biased toward what is easy to
+notice — and an auditor who has just worked on the subject cannot run one, since
+its own context is the anchor whether or not anybody named one.
+
+**A targeted audit now owes an answer to what it was aimed at, including when
+the answer is *nothing found*.** A negative is a result, and an audit reporting
+only what it found cannot tell anybody to stop worrying.
+
+Minor: an existing audit stays valid and readable, and nothing about the finding
+or response format changes.
 
 `0.5.0` — **`applies_to` is now `matches`.** The old name obliged an author to
 write a false sentence: `applies_to: everything` claims a rule governs
@@ -119,7 +181,7 @@ breaking change: anything naming the old path by hand stops resolving.
 `0.1.1` — a heading no longer says how many things are beneath it. Wording only.
 
 Patch: no normative sentence moved and a reader who correctly understood
-`0.1.0` behaves identically. See `writing-style` in `luma/project-documentation`
+`0.1.0` behaves identically. See `writing-style` in `lumastack/luma-catalog/project-documentation`
 for the rule and the failure it prevents.
 
 `0.1.0`. The structure is borrowed from internal-audit practice, which is

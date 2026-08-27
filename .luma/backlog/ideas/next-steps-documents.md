@@ -54,7 +54,7 @@ not get to edit what was raised.*
 
 ### Half of this already exists, and it is the session half
 
-The `luma/session-manager` bundle has a **`session_note` type** (`kind:
+The `lumastack/luma-catalog/session-manager` bundle has a **`session_note` type** (`kind:
 checkpoint | handoff | close`, plus a `pinned` record of the branch and commit
 the note assumed), a template, and four workflows — `session-checkpoint`,
 `session-handoff`, `session-close`, and **`session-resume`**, which is *the way

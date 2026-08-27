@@ -76,7 +76,7 @@ content, not that it exists. An always-present index — a line per Document
 naming what it is and when it matters — means a consumer can never conclude
 *nothing applies* out of ignorance, and pulls the text when the work matches.
 Thirty Documents is thirty lines. Same shape as `find-decision` in the
-`luma/decision-records` bundle, where the procedure is `optional` and the
+`lumastack/luma-catalog/decision-records` bundle, where the procedure is `optional` and the
 three-line trigger lives in the document that is `mandatory`. **If that works,
 `preload` never has to learn what a condition is.**
 

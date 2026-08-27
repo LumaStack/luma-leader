@@ -9,6 +9,15 @@ modified: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 
 # Catalog namespaces
 
+> **Partly settled since, on 2026-08-26 — read this first.** A catalog no
+> longer *declares* its namespace. It **derives from where the catalog lives**,
+> so `github.com/LumaStack/luma-catalog` publishes
+> `lumastack/luma-catalog/<name>`, and a fork gets its own namespace without
+> anybody arranging it; a `CATALOG.md` declaration still wins where one exists.
+> **The first line of *The model, in four lines* below is superseded by that.**
+> The rest — collisions, consumer override, why catalogs do not survive to
+> session time — was not decided and still reads as draft.
+
 **Draft. Nothing here is settled.** Sixth companion to
 [bundle-dependencies.md](bundle-dependencies.md),
 [bundle-versioning.md](bundle-versioning.md),
@@ -19,8 +28,9 @@ cases it has to handle. Kept out of [DECISIONS.md](DECISIONS.md) on purpose.
 ## Which namespace this is about
 
 **The prefix a catalog publishes its bundles under**, and nothing else.
-`luma/decision-records` is *the `decision-records` published by the `luma`
-catalog* — so the namespace belongs to the **catalog**, not to the bundle, and
+`lumastack/luma-catalog/decision-records` is *the `decision-records` published by
+the `lumastack/luma-catalog` catalog* — so the namespace belongs to the
+**catalog**, not to the bundle, and
 the same bundle promoted into another organization's catalog is that
 organization's to name.
 
@@ -193,8 +203,8 @@ That is why conditional loading keeps being deferred.
 **Which makes the session boundary the only reload point that exists.** If
 nothing can change what is loaded mid-session, then selection has to happen at
 session start — and selection at session start is buildable today with the
-projection that already exists. A named mode chosen when a session begins, with
-the projection written to match, needs no new harness capability at all.
+adapters that already exist. A named mode chosen when a session begins, with
+the adapters written to match, needs no new harness capability at all.
 
 **That is the cheap version of routing**, and it is worth separating from the
 expensive version. It answers *which subset of what this project adopted is
@@ -219,5 +229,5 @@ failure mode that is currently well covered and would stop being.
   `recommended`.** It is recommended because an adopter can always name one
   explicitly, which is true and means a catalog can ship unaddressable by
   default.
-- **Session modes.** Where a mode is declared, how the projection knows which to
+- **Session modes.** Where a mode is declared, how `apply` knows which to
   write, and whether picking wrongly can be made noisy.

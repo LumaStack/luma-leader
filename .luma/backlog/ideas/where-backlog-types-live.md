@@ -90,7 +90,7 @@ between it and being the default an agent reaches for:
   directory is not one to adopt across the estate yet.
 - **The unit names are unresolved** — `deliverable` is recorded as probably
   wrong, and names published in a catalog bundle are expensive to change.
-- **Nothing projects it.** Until the bundle exists and `outfit` writes it, an
+- **Nothing projects it.** Until the bundle exists and `apply` writes it, an
   agent still has to be told.
 
 **None of those is a code change**, which is worth noticing: the tool is ahead

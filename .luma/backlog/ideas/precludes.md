@@ -157,7 +157,7 @@ time.
 ### What would settle whether to build it
 
 **A real pair.** The motivating example that produced this idea —
-`luma/luma-tools` and `luma/luma-maintainers` — turns out **not** to need it: a
+`lumastack/luma-catalog/luma-tools` and `lumastack/luma-catalog/luma-maintainers` — turns out **not** to need it: a
 maintainer is also a consumer, and the maintainer content is additive rather
 than contradictory. That is useful evidence rather than a disappointment.
 

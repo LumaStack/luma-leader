@@ -239,7 +239,7 @@ a modelling failure.
 structural: it fires when a document declaring that type is being written. That
 is the most exact trigger in the system, it requires no glob, no configuration
 and no semantics — and it is the one nothing currently uses, since `_types/` is
-skipped from projection entirely.
+skipped by `apply` entirely.
 
 ### Decided: triggers combine with OR, and there is no expression language
 
@@ -718,7 +718,7 @@ exactly.
 today.** Their trigger is exact and machine-derivable — a document declaring
 `type: X` is being written, so load X's contract. No glob, no configuration, no
 semantics, and no declaration: it follows from being a type definition at all.
-And today `_types/` is skipped from projection entirely, so **the cleanest
+And today `_types/` is skipped by `apply` entirely, so **the cleanest
 trigger in the system is the one nothing uses.**
 
 **Subordination is a structural rule, not a special case.** Anything that cannot
@@ -1020,7 +1020,7 @@ means two runs of the same task can load different things, and predictability wa
 supposed to be a feature.
 
 **So they are layers, not alternatives.** Declarations are the source of truth.
-**Compile-time projection is the floor** — not a safety net bolted on afterwards,
+**The compile-time pass is the floor** — not a safety net bolted on afterwards,
 but a second consumer of the same declarations, which is why it costs little to
 keep. **The runtime router is an accelerator** that uses what only it can see.
 Where the router runs you get good routing; where it does not, the floor holds.
@@ -1908,7 +1908,7 @@ was legible at seventeen.
 **And 40% of that index is redundant against the same harness.** Of 21,384
 characters, **8,451 are workflow lines** whose descriptions are byte-identical to
 the `description` in the skill frontmatter Claude Code already loads at session
-start. Two projections of the same facts, for the same harness, one paid for
+start. Two renderings of the same facts, for the same harness, one paid for
 twice — roughly 2,100 tokens a session.
 
 That is a fact about one harness rather than about the design, which is exactly
@@ -1967,6 +1967,13 @@ had felt settled in conversation.
   the list may repeat a kind.
 
 ## Separable: the verb for what `outfit` does
+
+> **Resolved 2026-08-26, and kept as written.** Foreman chose `apply`, and both
+> `outfit` and `projection` are retired words now — the record of that is above,
+> under *The verb was renamed independently, and landed outside the candidates.*
+> **What follows is the argument as it stood before the rename**, old names
+> included, because an argument about which word to use cannot be restated in the
+> word it settled on. Read it as history rather than as instruction.
 
 **Lifts out whole if this document is split.** Captured here because it surfaced
 in the same session.

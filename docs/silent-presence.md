@@ -41,9 +41,9 @@ applied sixty turns later, and a rule that never becomes salient at the moment
 it applies may as well not have been there.
 
 **It is the worst of the four to detect, and the reason is uncomfortable.** The
-other three leave evidence: a checksum, a missing file, a budget, a projection
+other three leave evidence: a checksum, a missing file, a budget, an `apply`
 that never ran. This one leaves none, because **every mechanical check passes.**
-The bundle is adopted, the copy is clean, the projection is current, the document
+The bundle is adopted, the copy is clean, the adapters are current, the document
 is present, and the rule was ignored anyway. `inspect` reports green and is
 right to.
 
@@ -51,7 +51,7 @@ right to.
 it.** Both assume that presence produces compliance. Presence is what they can
 buy; compliance is what they are for. If that implication is weak, then marking
 something mandatory is a weaker act than it reads as — which is the same doubt
-`preload-levels-collapse-into-emphasis` reaches from the projection side.
+`preload-levels-collapse-into-emphasis` reaches from the delivery side.
 
 **It argues *for* the index pattern rather than against it**, which is worth
 noticing because the index was chosen for budget reasons. If presence does not
@@ -73,7 +73,7 @@ weakest available enforcement.** Ranked, weakest first:
 | **a hook that blocks the action** | the rule executes rather than being read |
 
 **Two of these already exist and one was built by accident.** The adapters
-`outfit` writes re-state each bundle's standing context inside the skill that
+`apply` writes re-state each bundle's standing context inside the skill that
 fires — done for thin-adapter reasons, and it happens to be the second rung.
 `agent-permissions` is the fourth rung outright: it does not put a rule in
 context, it runs at the tool call.
@@ -209,7 +209,7 @@ Failures are rare, so the cost is small, and what is captured is proportionate t
 what went wrong rather than to how long somebody worked.
 
 **Most of the snapshot does not have to be captured, because it is derivable.**
-Foreman wrote the projection, so *what else was loaded* is reconstructible from
+Foreman wrote the adapters, so *what else was loaded* is reconstructible from
 the repository at that commit — the same trick `adopted.toml` already uses.
 **What actually has to be recorded is the volatile part**: the model and its
 version, how deep the session was, what the agent did, what rule it contradicted,

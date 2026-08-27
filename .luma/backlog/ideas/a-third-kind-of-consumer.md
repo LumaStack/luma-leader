@@ -22,7 +22,7 @@ global, personal, machine, whatever that turns out to be called.
 
 ### What forced it
 
-`luma/session-manager`. Its practice is identical in every repository, so
+`lumastack/luma-catalog/session-manager`. Its practice is identical in every repository, so
 adopting it once per repository means a copy to upgrade in each — and the
 alternative today is a hand-written `SKILL.md` in `~/.claude/skills/` that
 nothing generates, nothing versions and nothing checks.
@@ -86,11 +86,11 @@ It does not disturb §5.2, which singles out `consumers` as the field where
 **Where an operator-scoped bundle is vendored.** Not `.luma/bundles/` — the
 layout is emphatic that everything in `.luma/` is committed, and an operator's
 selection must not be. The machine-local tier is `~/.config/luma/`, and how a
-machine-local selection composes with a committed one at projection time is
+machine-local selection composes with a committed one at apply time is
 open.
 
 ## Related
 
-`personal-skill-selection-not-committed` in `luma-foreman` — the projection
+`personal-skill-selection-not-committed` in `luma-foreman` — the `apply`
 half, and the reason this may need no format change.
-`luma/luma-config` — the two homes, and the test for which is which.
+`lumastack/luma-catalog/luma-config` — the two homes, and the test for which is which.
