@@ -50,7 +50,22 @@ reads it at runtime.
 
 ## Checks divide by what a failure means, not by what it is about
 
-**Settled 2026-08-27** by the maintainer, in conversation. Recorded the same day.
+**Provisional. Decided 2026-08-27** by the maintainer, in conversation, and in
+force — but on trial rather than settled.
+
+*Why it is not `stable`, stated rather than discovered later:* **this record was
+corrected four times in the two hours after it was written.** Blocking moved from
+a property of the class to a project's policy. `obligation` was added by this
+record's own re-open trigger, which fired the same afternoon it was set. The
+`vocabulary` rule left `inspect` and came back. And mandate strength turned out
+to be a scope decision rather than a config one. **A position that moved four
+times in two hours has not finished moving**, and the corrections are dated in
+place above so the churn is visible instead of tidied away.
+
+*What that permits, per `decision-guidelines`:* the explanation may be edited
+freely and in place, no approval needed. **The position itself still may not** —
+if the four classes turn out to be three or five, that is a new record and this
+one is archived.
 
 **Four classes, and each one names the property that fails** rather than the
 subject it examines. *Three were settled first and `obligation` was added hours
