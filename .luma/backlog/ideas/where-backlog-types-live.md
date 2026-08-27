@@ -67,7 +67,7 @@ That is the gap in one paragraph: a real tracker existed, was never reached for,
 and an ephemeral one silently rotted in its place. It is also **silent
 presence** wearing work clothes — the tool was present in the estate and inert.
 
-**So the bundle needs a `preload: mandatory` policy**, not just workflows. An
+**So the bundle needs a `matches: always` policy**, not just workflows. An
 agent has to know the backlog exists *before* it starts a piece of work, because
 by the time it is tracking something it has already chosen how.
 

@@ -52,7 +52,7 @@ edit what was raised.*
 | | the question | where it is declared |
 | --- | --- | --- |
 | **obligation** | must a project *adopt* this bundle? | the publishing catalog's `catalog.md`, in `requires:` |
-| **preload** | should it be *loaded* ahead of work? | the bundle author, and the adopter |
+| **delivery** | should it be *loaded* ahead of work? | the bundle author, and the adopter |
 
 *"Mandating a bundle load is complicated"* is the **loading** question. The
 `mandate: { by: legal }` sketch is shaped like the **adoption** one. Both are
@@ -96,8 +96,9 @@ leadership and compliance are three parties inside it.
 
 ### The non-overridable mandate contradicts something settled
 
-*Preload is declared by whoever holds the knowledge* settles that for
-**bundle-level** loading **the adopter always wins** — because whether a bundle
+*Preload is declared by whoever holds the knowledge* — a decision whose title
+keeps a field the format has since released; read it as being about delivery —
+settles that for **bundle-level** loading **the adopter always wins** — because whether a bundle
 is relevant to a session is a fact about the adopter's work, which the author
 cannot know.
 
@@ -152,7 +153,8 @@ into an authoring problem, which is the better place for it.
 
 ## Notes
 
-**Captured 2026-08-22** from a conversation about `preload` in the
+**Captured 2026-08-22** from a conversation about `preload` — the field the
+format has since released — in the
 `decision-records` bundle, where only the entry point is `mandatory`.
 
 **Related, reached from the other direction:** [[conditional-preload]] asks the

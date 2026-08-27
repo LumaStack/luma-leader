@@ -193,7 +193,7 @@ what nobody sees.
 - every constraint narrower than a major line, with its stated reason —
   *"a catalog drifting toward tightness is a problem nobody would otherwise see,
   because each one was reasonable on its own"*
-- bundles whose unconditional `preload` weight is large, since that is a context
+- bundles whose unconditional `matches: always` weight is large, since that is a context
   tax every adopter pays and a number the catalog can compute
 - cross-bundle links that do not resolve at the versions the catalog holds
 

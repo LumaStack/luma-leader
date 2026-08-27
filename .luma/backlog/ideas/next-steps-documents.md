@@ -98,7 +98,7 @@ nothing has had to resolve it yet because nobody has written one.
 **Nothing existing covers it.** `lifecycle_status` is maturity —
 `archived` means *was in force, now retired*, not *never meant to last*.
 `stale_after` says recheck, which implies the content might still be right.
-`preload` is loading. **An ephemeral document is a durability claim, and the
+`matches` is delivery. **An ephemeral document is a durability claim, and the
 format has no vocabulary for durability.**
 
 **The strongest argument for it is that it makes a guardrail mechanical.** The

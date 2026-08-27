@@ -150,7 +150,7 @@ least surfaces as an outdated number.
 Precluding a specific document inside another bundle reaches into its internals
 by path, so the author renames a file and the preclusion silently stops
 applying. **That failure has now been the reason to reject three separate
-proposals** — per-document preload overrides, a depending bundle raising a
+proposals** — per-document overrides of what loads, a depending bundle raising a
 document of its dependency, and this. Worth noticing it is the same shape every
 time.
 

@@ -766,6 +766,13 @@ The general lesson is worth more than the fix: when a field has nowhere to be de
 
 **Settled 2026-08-18.**
 
+*Vocabulary moved 2026-08-26; the position did not.* `preload` and
+`preload_default` are both gone — the format released `preload` in `v0.0.12` and
+`preload_default` was never specified. **Read this as being about delivery**:
+what a document declares in `matches`, and whether an adopter may raise it. The
+heading keeps its original words so that citations of it stay accurate; every
+rule below still holds, under the current names.
+
 **There is only one kind of preload.** It applies to documents and to bundles alike — the same operation on different objects, each relative to whatever contains it. A document's preload is relative to its bundle; a bundle's is relative to whatever adopted it. What differs between the two is not the meaning but **who is entitled to declare it**, and that produces opposite override rules.
 
 | | the question | declared by | may the other side override? |

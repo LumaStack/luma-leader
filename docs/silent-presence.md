@@ -47,7 +47,7 @@ The bundle is adopted, the copy is clean, the adapters are current, the document
 is present, and the rule was ignored anyway. `inspect` reports green and is
 right to.
 
-**It puts a ceiling on `preload: mandatory`, and on the obligation ladder above
+**It puts a ceiling on `matches: always`, and on the obligation ladder above
 it.** Both assume that presence produces compliance. Presence is what they can
 buy; compliance is what they are for. If that implication is weak, then marking
 something mandatory is a weaker act than it reads as — which is the same doubt
