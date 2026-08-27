@@ -137,11 +137,30 @@ separation that matters is in *reporting and exit policy*, not in the invocation
   fail_on = ["machinery", "safety"]   # the recommended default
   ```
 
-  **`truth` and `obligation` report and do not fail.** A documentation repository
-  may want `fail_on = ["machinery", "safety", "truth"]`; a project mid-migration
-  may want `machinery` out of it for a week. **Both are legitimate and neither is
-  this record's business.** *The exact key is `luma-foreman`'s to name; what is
-  decided here is that the choice exists and what it defaults to.*
+  **`truth` and `obligation` report and do not fail.** *The exact key is
+  `luma-foreman`'s to name; what is decided here is that the choice exists and
+  what it defaults to.*
+
+#### Some projects want to release; others want to be correct
+
+**That is the tension the setting exists for, and both ends are legitimate.** A
+project shipping weekly can carry a stale draft for a fortnight; a specification
+cannot carry a stale sentence for an afternoon. Neither is being sloppy — they
+are paying different costs, and a tool that picks one for them is wrong for
+everybody else.
+
+**This estate is its own worked example, and it does not settle on one answer:**
+
+| | wants | because |
+| --- | --- | --- |
+| `luma-knowledge-format` | **fail on truth** | truth *is* the product. A wrong sentence in a specification is the defect |
+| `luma-catalog` | **fail on truth** | it is copied by every adopter, so a stale policy reaches everybody and keeps doing so |
+| `luma-leader` | **report only** | it is where arguments are held. Its drafts *deliberately* discuss retired ideas, and it has spent a day exempting them one by one |
+| `luma-foreman` | **report only** | an engine. Machinery is the product; its prose is downstream |
+
+**Four repositories in one estate, two answers.** If a single organization cannot
+agree with itself, a default that binds everyone is not a default — it is a
+mistake with good intentions.
 - **Output groups by class regardless of exit policy**, so a reader can tell a
   broken bundle from a stale claim without reading rule names.
 
