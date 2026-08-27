@@ -60,9 +60,22 @@ subject it examines:
 | **machinery** — adoption drift, broken bundles, stale generated output | the tooling does not work | whoever is landing the change; re-run a command | **yes** |
 | **safety** — credentials, personal information | harm has already been published | incident response; rotate the credential | **yes, hardest** |
 | **truth** — retired ideas, stale claims, anything asserting what is no longer so | a reader may be misled | whoever writes here, by judging it | **no** |
+| **obligation** — mandates unadopted, retirements unswept past their date, audits unanswered | something we were told to do is undone | the project that owes it — **reported to whoever issued it** | **on a deadline, not on a change** |
 
 **A project with grey truth is not a broken project**, and must pass the
 machinery check. That is the whole point of separating them.
+
+**`obligation` was added hours after the other three**, by the maintainer, which
+is this record's own re-open trigger firing. It is kept as an amendment rather
+than folded in silently, because a class that had to be added is evidence about
+how complete the other three are.
+
+**Two structural facts make it a class rather than a variety of the others.** It
+is the only one whose **audience is outside the project** — leadership, or
+compliance, or whoever issued the order, rather than the person about to commit.
+And it is the only one **triggered by time rather than by a diff**: nothing
+changed, a date passed. Neither of those is true of machinery, safety or truth,
+and either alone would be enough.
 
 ### Why not "tooling and content"
 
@@ -76,7 +89,14 @@ does not: *harm has been published* and *a reader may be misled* cannot be
 confused, and it is immediately obvious that a leaked credential is the first and
 a stale policy is the second.
 
-`machinery` is the weakest of the three names for exactly this reason — it names a
+**The class is named for the property that fails, so the name is `obligation`
+rather than `orders`, `mandates` or `directives`** — those name where it came
+from, and a rule about naming consequences should not make an exception for the
+class about being told what to do. It also has prior use here: `obligation`
+already answers *must a project adopt this bundle*, and this is that idea
+generalised rather than a second sense of the word.
+
+`machinery` is the weakest of the four names for exactly this reason — it names a
 thing rather than a property. It survives because it is guessable, and the test
 for a name here is whether somebody who has read nothing can guess it.
 
@@ -103,14 +123,21 @@ configuration and the only one that can never pass on a bare clone, so it report
 `SKIPPED` forever. **Two unrelated arguments landing on the same file** is the
 reason this is recorded rather than left as a preference.
 
-**Compliance reporting is none of the three.** *"Adopted 0.5.0, last swept
-0.3.0"* is not a defect: nothing is broken, nothing is dangerous, and the
-audience is an organization asking which projects complied rather than the person
-about to commit. It needs to reach across projects to be worth anything, which is
-the same contract break that keeps `bundle outdated` out of `inspect`.
+**Compliance reporting is `obligation`, and that is what the fourth class
+settles.** *"Adopted 0.5.0, last swept 0.3.0"* is not a machinery defect and not
+a truth defect — nothing is broken and nothing misleads. It is an obligation
+unmet. It needs to reach across projects to be worth anything, which is the same
+contract break that keeps `bundle outdated` out of `inspect`, so it is a
+reporting command rather than a rule inside one.
 
-**Re-open trigger:** a fourth class that fits none of these — a failure whose
-meaning is not *does not work*, *has caused harm*, or *misleads a reader*.
+*The estate is carrying an unmet obligation of this exact shape right now:* the
+2026-08-26 audit has seven findings and no response, which is the loop's second
+party overdue. Nothing reports it, which is the gap this class names.
+
+**Re-open trigger:** a fifth class that fits none of these — a failure whose
+meaning is not *does not work*, *has caused harm*, *misleads a reader*, or
+*something we were told to do is undone*. **The fourth arrived within hours of
+the first three**, so treat the set as incomplete rather than closed.
 
 ## A document says what makes it surface, not what it governs
 

@@ -426,6 +426,11 @@ rather than the hand-copied `[[retired]]` config.
 > — *adopted 0.5.0, last swept 0.3.0* — is not a check at all: nothing is broken
 > and the audience is the organization, so it belongs in a reporting command that
 > does not exist yet. **Better that it not exist than exist in `inspect`.**
+>
+> **Amended again the same day:** that reporting command has a class now —
+> `obligation`, the fourth in that record. `enforced`, `origin: organization` and
+> `swept.toml` are all obligation machinery, which means this plan was building
+> a class before the class had a name.
 
 Migrating this repo's four `[[retired]]` entries is the worked example of the
 split, and every decision already exists somewhere — none needs writing:
