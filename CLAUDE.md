@@ -44,7 +44,7 @@ In `.luma/bundles/lumastack/luma-catalog/luma-tools/` — **open one when the wo
 - `workflows/adopt-knowledge` (workflow) — Take bundles from a catalog into a repository and make an agent aware of them. Use when setting a project up, when adding a capability, or when an agent keeps needing to be told where to look.
 - `workflows/install-the-tools` (workflow) — Get foreman onto a machine and wired into a harness. Use on a new workstation, after an upgrade, or when a permission gate is not firing.
 
-### `lumastack/luma-catalog/retirement-records` 0.1.0
+### `lumastack/luma-catalog/retirement-records` 0.2.0
 
 Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
 

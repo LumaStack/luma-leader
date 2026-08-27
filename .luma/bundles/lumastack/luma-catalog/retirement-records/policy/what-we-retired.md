@@ -13,10 +13,14 @@ retired idea comes back by being *reinvented* — an author reaches for the natu
 word and it reads as a fresh choice rather than a revival, which no check running
 afterwards can prevent.
 
-**Generated from `retirements/` in this bundle.** Do not edit it by hand — a
-hand-maintained copy of a list is exactly how the last one went stale. Each row
-below is one record; open it for the recognizers, the exemptions, and where the
-decision that retired it lives.
+**Generated at publish time from wherever the retirement records live** —
+`.luma/records/retirements/` in the project that owns them, never in this bundle.
+Do not edit it by hand: a hand-maintained copy of a list is exactly how the last
+one went stale.
+
+**This is a projection, not the records.** It carries what a sweep needs — what
+died, what replaced it, and how to recognise the idea when the word survives. The
+reasoning, the exemptions and the evidence stay in the record.
 
 ## The list
 
@@ -29,9 +33,23 @@ decision that retired it lives.
 | `RET-0005` | a catalog **declares** its namespace | it **derives** from where the catalog lives; a fork gets its own |
 | `RET-0006` | audit independence means a different **party** or model | a different **session** — carried context is what compromises a record |
 
-**Six lines is the whole budget.** This document is loaded into every session
-that touches this bundle, so it earns that by staying a list. The reasoning lives
-in [[retiring-a-concept]] and in each record; **nothing here explains itself.**
+### The two with no word to search for
+
+**These are the ones a search cannot find**, so the recognizer travels with them:
+
+- **`RET-0005`** — *any document saying a catalog **declares**, sets, chooses or
+  owns its namespace as something it writes down.* "Namespace" is current
+  vocabulary and appears on both sides; the **verb** is the tell.
+- **`RET-0006`** — *any document grounding audit independence in who the actor
+  is — a different person, model or party — rather than in whether context
+  carried between the two acts.* Also: any claim that one party must not write
+  two of the three documents, which contradicts the auditor writing both the
+  audit and the verification by design.
+
+**This document is loaded into every session that touches this bundle**, so it
+earns that by staying a list. Everything else — why, the evidence, the
+exemptions — lives in [[retiring-a-concept]] and in the records themselves.
+**Nothing here explains itself.**
 
 ## If a line here surprises you
 

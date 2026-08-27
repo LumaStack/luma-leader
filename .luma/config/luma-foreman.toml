@@ -31,6 +31,7 @@ term = "projection"
 use = "what `apply` writes — the adapters — or `apply` itself"
 decided = ["ADR-0003", "ADR-0005"]
 except = [
+  ".luma/backlog/plans/retirement-framework.md",   # the plan proposing the framework names every word
   ".luma/records/",             # audits are append-only; they say what was true when filed
   "docs/loading-mechanisms.md", # its naming section IS the record of this retirement
   "docs/DECISIONS.md",          # the four-verbs argument cannot be made without the old verbs
@@ -41,6 +42,7 @@ term = "outfit"
 use = "`apply`"
 decided = ["ADR-0003", "ADR-0004", "ADR-0005"]
 except = [
+  ".luma/backlog/plans/retirement-framework.md",   # the plan proposing the framework names every word
   ".luma/records/",             # as above
   "docs/loading-mechanisms.md", # as above
   "docs/DECISIONS.md",          # as above
@@ -62,6 +64,7 @@ term = "preload"
 use = "`matches` — and `matches: always` for the one route to being loaded up front"
 decided = ["SPEC.md section 13", "released in v0.0.12"]
 except = [
+  ".luma/backlog/plans/retirement-framework.md",   # the plan proposing the framework names every word
   ".luma/records/",                                     # append-only
   "docs/loading-mechanisms.md",                         # the document that argued preload out
   "docs/DECISIONS.md",                                  # settled entries record what was true
@@ -76,6 +79,7 @@ term = "applies_to"
 use = "`matches` (section 10.7)"
 decided = ["SPEC.md section 13", "released in v0.0.15"]
 except = [
+  ".luma/backlog/plans/retirement-framework.md",   # the plan proposing the framework names every word
   ".luma/records/",
   "docs/loading-mechanisms.md",
   "docs/DECISIONS.md",
