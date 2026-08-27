@@ -46,7 +46,7 @@ produce a document nobody can act on.
 
 | | |
 | --- | --- |
-| **a catalog declares `namespace`** | the **default local alias** for everything it publishes |
+| ~~**a catalog declares `namespace`**~~ **superseded — it derives from where the catalog lives** (RET-0005) | the **default local alias** for everything it publishes |
 | **a consumer may override it** | the **actual local alias**. Deferred — see below |
 | **`source` + `commit` in `adopted.toml`** | the **identity** |
 | **collision is detected against `source`** | never against the name |

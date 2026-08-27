@@ -1,0 +1,20 @@
+# Written after running `sweep-retirements`. What this repository was checked
+# against, and when. Without it nobody can tell a clean repository from an
+# unswept one, which are the two states the sweep exists to distinguish.
+
+[sweep]
+against  = "lumastack/luma-catalog/retirement-records"
+version  = "0.1.0"
+swept    = 2026-08-27
+by       = "agent:claude-opus-5"
+
+# Two hits, both tier 3 — no retired word in either, so no search would have
+# found them. Both corrected in place rather than filed as an audit, because
+# this sweep was the bundle's own first run and its author is the respondent.
+#
+#   docs/DECISIONS.md          a settled position resting on "a catalog declares
+#                              a namespace" as a worked example (RET-0005)
+#   docs/catalog-namespaces.md the model table asserted it at the point of use,
+#                              though the section note above already superseded it
+#
+# Overlays: none.

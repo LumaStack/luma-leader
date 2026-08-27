@@ -4,6 +4,10 @@
 
 Everything below is vendored under `.luma/bundles/` and is part of this repository.
 
+**These are in force here and are loaded with this file.** Each one declares `matches: always`, so nothing gates when it governs — which means everything done in this repository.
+
+@.luma/bundles/lumastack/luma-catalog/retirement-records/policy/what-we-retired.md
+
 ### `lumastack/luma-catalog/audit-records` 0.7.1
 
 Audits as records — findings written by one party, answered by another, closed by the first. The whole exchange lives in git.
@@ -39,6 +43,18 @@ In `.luma/bundles/lumastack/luma-catalog/luma-tools/` — **open one when the wo
   - matches: command:luma-foreman, command:luma-catalog-curator, topic:choosing which luma tool does a job
 - `workflows/adopt-knowledge` (workflow) — Take bundles from a catalog into a repository and make an agent aware of them. Use when setting a project up, when adding a capability, or when an agent keeps needing to be told where to look.
 - `workflows/install-the-tools` (workflow) — Get foreman onto a machine and wired into a harness. Use on a new workstation, after an upgrade, or when a permission gate is not firing.
+
+### `lumastack/luma-catalog/retirement-records` 0.1.0
+
+Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
+
+In `.luma/bundles/lumastack/luma-catalog/retirement-records/` — **open one when the work matches its line**, and not before:
+
+- `policy/retiring-a-concept` (policy) — What may be retired, how far it reaches, and why a word is the cheapest recognizer rather than the important one. Read before retiring anything.
+  - matches: topic:retiring an idea, a concept, a field or a word, topic:deciding how widely a change should be enforced
+- `workflows/release-a-retirement` (workflow) — Decide that a retired idea no longer needs watching, and archive its strategy. Use when a retirement's count has been zero for a while and somebody wants to remove it.
+- `workflows/retire-a-concept` (workflow) — Settle how far a retired idea reaches, record the decision where it was made, and publish the strategy that finds it everywhere else. Use when an idea, field, concept or word stops being how we do things.
+- `workflows/sweep-retirements` (workflow) — Check this repository against every retirement it has adopted — including the ones no search can find — and file what turns up. Use after adopting retirements, after they move, or before publishing anything.
 
 Workflows here are also installed as skills, so they can be invoked by name. Everything under `.luma/bundles/` is a copy — change it upstream and take it again, never in place.
 
