@@ -415,9 +415,17 @@ honestly from the start — they cost nothing to write and cannot be backfilled
 later — but nothing enforces `enforced` until Phase 2 has a receipt to compare
 against.
 
-**Phase 2 — tracking.** `swept.toml`, and a `luma-foreman inspect` rule that
-reads adopted retirements (replacing the hand-copied `[[retired]]` config) and
-reports unswept versions.
+**Phase 2 — tracking.** `swept.toml`, and a rule that reads adopted retirements
+rather than the hand-copied `[[retired]]` config.
+
+> **Amended 2026-08-27**, before it was built. *Checks divide by what a failure
+> means, not by what it is about* (`DECISIONS.md`) puts this in three places
+> rather than one. **The term and shape recognizers are `truth`, not machinery,
+> so the `vocabulary` rule moves *out* of `inspect` rather than growing inside
+> it** — `inspect` answers machinery and safety only. And the receipt comparison
+> — *adopted 0.5.0, last swept 0.3.0* — is not a check at all: nothing is broken
+> and the audience is the organization, so it belongs in a reporting command that
+> does not exist yet. **Better that it not exist than exist in `inspect`.**
 
 Migrating this repo's four `[[retired]]` entries is the worked example of the
 split, and every decision already exists somewhere — none needs writing:

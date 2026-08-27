@@ -48,6 +48,70 @@ reaches `main` — the failure this practice is betting will not happen.
 `.claude/skills/` is the first to go if so: it serves one harness and nothing
 reads it at runtime.
 
+## Checks divide by what a failure means, not by what it is about
+
+**Settled 2026-08-27** by the maintainer, in conversation. Recorded the same day.
+
+**Three classes, and each one names the property that fails** rather than the
+subject it examines:
+
+| class | a failure means | who acts | blocks? |
+| --- | --- | --- | --- |
+| **machinery** — adoption drift, broken bundles, stale generated output | the tooling does not work | whoever is landing the change; re-run a command | **yes** |
+| **safety** — credentials, personal information | harm has already been published | incident response; rotate the credential | **yes, hardest** |
+| **truth** — retired ideas, stale claims, anything asserting what is no longer so | a reader may be misled | whoever writes here, by judging it | **no** |
+
+**A project with grey truth is not a broken project**, and must pass the
+machinery check. That is the whole point of separating them.
+
+### Why not "tooling and content"
+
+**Because the two overlap and the overlap is the tell.** A credential is content —
+it lives in a file like everything else — so a class called *content* swallows
+`safety`, which is the one class that must block hardest. **If two categories
+overlap, at least one is named after the wrong thing.**
+
+Naming the *subject* produces that collision every time. Naming the **consequence**
+does not: *harm has been published* and *a reader may be misled* cannot be
+confused, and it is immediately obvious that a leaked credential is the first and
+a stale policy is the second.
+
+`machinery` is the weakest of the three names for exactly this reason — it names a
+thing rather than a property. It survives because it is guessable, and the test
+for a name here is whether somebody who has read nothing can guess it.
+
+### What follows from it
+
+**Grey findings must not share an exit code with broken machinery.** Truth
+findings are frequent and mostly low severity; machinery findings are rare and
+mean something is actually wrong. **A combined signal is trained away** — this
+estate paid that lesson on 2026-08-27, when two retired words produced about
+thirty-three false positives and had to be withdrawn because *noise teaches a
+reader to skim past notices.* The same mechanism destroys a check that mixes
+classes.
+
+**Truth may still block, but only where something earned it** — a retired idea in
+a binding `policy`, past its `enforced` date. The default is to report.
+
+**`luma-foreman inspect` answers machinery and safety, and nothing else.** Both
+are binary, both block, and both work in a bare clone with no configuration —
+which is `inspect`'s own stated contract.
+
+**The `vocabulary` rule does not belong in it**, and there is a second argument
+for that which arrived independently: it is the only rule requiring project
+configuration and the only one that can never pass on a bare clone, so it reports
+`SKIPPED` forever. **Two unrelated arguments landing on the same file** is the
+reason this is recorded rather than left as a preference.
+
+**Compliance reporting is none of the three.** *"Adopted 0.5.0, last swept
+0.3.0"* is not a defect: nothing is broken, nothing is dangerous, and the
+audience is an organization asking which projects complied rather than the person
+about to commit. It needs to reach across projects to be worth anything, which is
+the same contract break that keeps `bundle outdated` out of `inspect`.
+
+**Re-open trigger:** a fourth class that fits none of these — a failure whose
+meaning is not *does not work*, *has caused harm*, or *misleads a reader*.
+
 ## A document says what makes it surface, not what it governs
 
 **Settled 2026-08-26.**
