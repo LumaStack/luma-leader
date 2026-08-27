@@ -1874,6 +1874,70 @@ Ranked by how much they would hurt.
 6. **What the evidence log records.** The daily reconciliation job is invoked
    repeatedly; nothing specifies what it captures.
 
+### Reported back from foreman, 2026-08-26
+
+**Added after a day's work in `luma-foreman` produced things this document was
+waiting for, and one thing it records as unbuilt that is built.** Placed here
+rather than woven in, so what was written before that day stays legible as what
+was known before that day.
+
+**Never discussed #1 is built.** *A trigger that matches nothing is silently
+inert* is implemented in `inspect --rule bundles` — a `path:` glob matching
+nothing in the adopting project is reported, with almost the wording used above:
+*"parses, publishes, and never fires, which is indistinguishable from a rule
+whose moment has not come."* It is a `high` finding. The item is still worth
+keeping for the part that is **not** built — a trigger inert because the
+*situation* has not arisen cannot be told from one inert because the project has
+no such situation at all, and only the second is detectable at rest.
+
+**Duty 4 has its measurement.** *Budget — what fits in the context available —
+derivable, but only by measuring.* Foreman adopted seventeen of the nineteen
+published bundles and measured what the index costs:
+
+| | |
+| --- | --- |
+| `CLAUDE.md` | **21,384 characters, about 5,300 tokens**, every session |
+| skills generated | 40 |
+| bundles indexed | 17 |
+
+**Two of the five pressures are already binding at seventeen bundles.** *Scale*
+kills *anything flat, anything with per-document standing cost* — the index is
+flat and costs per document. Nobody has reached two hundred bundles; the cost
+was legible at seventeen.
+
+**And 40% of that index is redundant against the same harness.** Of 21,384
+characters, **8,451 are workflow lines** whose descriptions are byte-identical to
+the `description` in the skill frontmatter Claude Code already loads at session
+start. Two projections of the same facts, for the same harness, one paid for
+twice — roughly 2,100 tokens a session.
+
+That is a fact about one harness rather than about the design, which is exactly
+the distinction this document draws at the top. It belongs to whichever adapter
+knows what its harness already carries, and it is an argument for the adapter
+knowing that at all — nothing in the current shape lets a projector ask *has
+this already arrived by another route*.
+
+**The three outcome classes survived contact.** `always-on`, `advertised` and
+`on-demand` are what foreman reports, and at seventeen bundles they still
+describe where a document landed without anybody having to learn them. The
+concern that the first word is not self-explanatory did not bite; nobody had to
+look one up.
+
+**The verb was renamed independently, and landed outside the candidates.**
+*Separable: the verb for what `outfit` does*, below, lists `outfit`, `equip` and
+`brief`. Foreman reached the same conclusion from the same collision without
+seeing this document, and chose **`apply`** — which fills the imperative, state
+and re-run slots, gives `unapplied` for the failure slot, and leaves the artifact
+slot to be named descriptively rather than with a noun. `outfit` became `apply`,
+`projection` was retired as a word, and `inspect` now reports `unapplied`.
+
+The cost estimate here was accurate: roughly twenty-five occurrences in foreman
+and nineteen across six bundles. `install` was ruled out in foreman for the same
+reason given here, recorded independently as ADR-0002.
+
+**None of this reached hq by any mechanism.** It is here because somebody went
+looking. See [[no-channel-for-what-a-project-learns]].
+
 ### Questions raised by writing this down
 
 Smaller than the above, and each one surfaced while transcribing something that
