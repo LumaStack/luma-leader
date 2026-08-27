@@ -164,13 +164,34 @@ mistake with good intentions.
 - **Output groups by class regardless of exit policy**, so a reader can tell a
   broken bundle from a stale claim without reading rule names.
 
-**`obligation` is the asymmetric one, and it is the exception to `fail_on`.** For
-the other three the project sets its own policy, because the audience is inside
-it. For an obligation the audience is outside — so **whoever issued it sets the
-escalation**, and `enforced` is how they say it. That is why the recommended
-default reads *report, until the date*: it is the issuer's date, not the
-project's. **A project configuring a mandate down to a warning has not met it; it
-has hidden it**, and that should be as visible as turning `safety` down.
+**`obligation` is the asymmetric one**, because its audience is outside the
+project. **Whoever issued it sets the escalation**, and `enforced` is how they say
+it — which is why the recommended default reads *report, until the date*: the
+date is theirs, not the project's.
+
+#### But some projects should comply less, and that is a scope decision
+
+**An internal tool that touches no end user genuinely need not carry what a
+customer-facing service carries.** That is legitimate, and the estate already has
+the vocabulary for it: an obligation says **how strongly** it expects to be met,
+the same way a catalog already grades whether a project must adopt a bundle.
+
+| the mandate is | who decides `fail_on` for it |
+| --- | --- |
+| **binding** | the **issuer**. A project configuring it down has not met it — it has hidden it, and that should be as visible as turning `safety` down |
+| **advisory** | the **project**. Declining is a real answer, and low-risk work is exactly where it is the right one |
+
+**The lever for caring less is on the issuing side, not the receiving side.** An
+organization that wants internal tools to run lighter issues most mandates as
+advisory, or scopes the binding ones to the projects they actually bind — see
+`scope` in the retirement framework, which is the same field doing the same job.
+**What it should not do is issue everything as binding and expect projects to
+quietly configure their way out**, because then nobody can tell a project that
+complied from one that opted out.
+
+*Either way the answer is recorded rather than silent.* A project declining an
+advisory obligation has made a decision, and a decision nobody can see is
+indistinguishable from an oversight.
 
 **`safety` deserves friction rather than prohibition.** A project may turn it
 down, and that should be a visible, recorded choice rather than a silent config
