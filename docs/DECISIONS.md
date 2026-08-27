@@ -52,8 +52,9 @@ reads it at runtime.
 
 **Settled 2026-08-27** by the maintainer, in conversation. Recorded the same day.
 
-**Three classes, and each one names the property that fails** rather than the
-subject it examines:
+**Four classes, and each one names the property that fails** rather than the
+subject it examines. *Three were settled first and `obligation` was added hours
+later — see below, because that matters for how complete this looks.*
 
 | class | a failure means | who acts | *recommended* default |
 | --- | --- | --- | --- |
@@ -129,17 +130,28 @@ separation that matters is in *reporting and exit policy*, not in the invocation
   `--rule` already scopes to a single check. Without that, a project cannot act on
   the distinction this record draws.
 - **Which classes fail the run is configured, with a recommended default.** The
-  defaults above are a starting point and nothing more. **Do not prescribe how
-  people use this** — a docs-heavy repository may want `truth` to fail; a project
-  mid-migration may want `machinery` to warn for a week.
+  recommendation is one line, and leaving it is one line:
+
+  ```toml
+  [inspect]
+  fail_on = ["machinery", "safety"]   # the recommended default
+  ```
+
+  **`truth` and `obligation` report and do not fail.** A documentation repository
+  may want `fail_on = ["machinery", "safety", "truth"]`; a project mid-migration
+  may want `machinery` out of it for a week. **Both are legitimate and neither is
+  this record's business.** *The exact key is `luma-foreman`'s to name; what is
+  decided here is that the choice exists and what it defaults to.*
 - **Output groups by class regardless of exit policy**, so a reader can tell a
   broken bundle from a stale claim without reading rule names.
 
-**`obligation` is the asymmetric one.** For the other three the project sets its
-own policy, because the audience is inside it. For an obligation the audience is
-outside — so **whoever issued it sets the escalation**, and `enforced` is how they
-say it. A project quietly configuring a mandate down to a warning has not met it;
-it has hidden it.
+**`obligation` is the asymmetric one, and it is the exception to `fail_on`.** For
+the other three the project sets its own policy, because the audience is inside
+it. For an obligation the audience is outside — so **whoever issued it sets the
+escalation**, and `enforced` is how they say it. That is why the recommended
+default reads *report, until the date*: it is the issuer's date, not the
+project's. **A project configuring a mandate down to a warning has not met it; it
+has hidden it**, and that should be as visible as turning `safety` down.
 
 **`safety` deserves friction rather than prohibition.** A project may turn it
 down, and that should be a visible, recorded choice rather than a silent config
