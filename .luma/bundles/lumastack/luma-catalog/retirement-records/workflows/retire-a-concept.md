@@ -47,8 +47,14 @@ section or a pull request is sometimes the whole account. Cite what exists.
 
 ## 3. Write the strategy
 
-[The retirement template](../templates/retirement.md). The parts that take
-thought:
+[The retirement template](../templates/retirement.md).
+
+**It goes in this project's records** — `.luma/records/retirements/`, or wherever
+records are configured to live. **Not in a bundle**: a vendored copy cannot be
+edited by the project holding it, so a record placed there can never be corrected
+and is reverted on the next adoption.
+
+The parts that take thought:
 
 **`was` and `now`, one line each.** These are the *distributed payload* — they
 land in [[what-we-retired]] and are loaded into every session. A paragraph here

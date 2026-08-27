@@ -4,7 +4,7 @@
 
 [sweep]
 against  = "lumastack/luma-catalog/retirement-records"
-version  = "0.1.0"
+version  = "0.2.0"
 swept    = 2026-08-27
 by       = "agent:claude-opus-5"
 
@@ -18,3 +18,8 @@ by       = "agent:claude-opus-5"
 #                              though the section note above already superseded it
 #
 # Overlays: none.
+#
+# The six records themselves live beside this file. They shipped inside the
+# bundle in 0.1.0, which was wrong — a vendored copy cannot be edited by the
+# project holding it, so a record there can never be corrected. 0.2.0 moved
+# them out and distributes what-we-retired as their projection instead.

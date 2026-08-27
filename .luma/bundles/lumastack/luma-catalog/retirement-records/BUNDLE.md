@@ -1,6 +1,6 @@
 ---
 type: bundle
-version: 0.1.0
+version: 0.2.0
 published: 2026-08-27
 consumers: [project, organization]
 entry_point: policy/retiring-a-concept
@@ -27,15 +27,11 @@ This bundle exists because the defence has to run in two directions at once.
 - [[sweep-retirements]] — check this repository against everything it adopted,
   including what no search can find, and file what turns up.
 - [[release-a-retirement]] — decide an idea no longer needs watching.
-- **`retirements/`** — the estate's six retirements, as records. This is the
-  content the bundle exists to distribute; everything above is machinery.
 - [the retirement template](templates/retirement.md)
 
-**A bundle carrying instances is unusual here** — `audit-records` and
-`decision-records` ship the machinery and leave the records in each project. The
-difference is that a retirement has to *travel*: a strategy nobody else holds
-cannot be swept against. Directories group and the `type` identifies, so
-`retirements/` needs no new mechanism.
+**No retirements are in here, and that is deliberate** — see *Records do not live
+in bundles* below. What travels is [[what-we-retired]], generated from wherever
+the records actually live.
 
 ## The four ideas worth knowing before reading further
 
@@ -65,12 +61,56 @@ concept and narrow on a common word — the two mistakes are not symmetric, and
 retiring ordinary English produces noise that teaches readers to skim past
 notices, which disables the check everywhere.
 
+## Records do not live in bundles
+
+**A bundle is machinery. Records live where the project keeps records** —
+`.luma/records/` by default, or wherever it has configured them. This bundle
+holds a type, two policies, three workflows and a template, and not one
+retirement.
+
+**The reason is stronger than symmetry with `audit-records` and
+`decision-records`.** A bundle is *copied* into every adopter, and a vendored
+copy must never be edited in place — change it upstream and re-adopt. So a record
+inside a bundle is a record that:
+
+- exists N times, once per adopter, with no single owner
+- **cannot be corrected by the project holding it**, because editing a vendored
+  file is the one thing adoption forbids
+- gets silently reverted on the next `get`
+
+**So what travels instead?** [[what-we-retired]] — generated from the records at
+publish time, carrying each retirement's `was`, `now` and its `claim`
+recognizers. That is enough to sweep against and short enough to load in every
+session. **The record stays home; a projection of it travels**, which is the same
+split the bundle applies to decisions and strategies one level up.
+
 ## Consumers
 
 Both levels. A project retires its own ideas and sweeps against what it adopted;
 an organization hands retirements down and needs to know which projects complied.
 
 ## Version
+
+`0.2.0` — **the retirements come out of this bundle.** `0.1.0` shipped six
+records inside it, which was wrong for a reason worth stating: a bundle is copied
+into every adopter and **a vendored copy must never be edited in place**, so a
+record living there exists once per adopter, cannot be corrected by the project
+holding it, and is reverted on the next `get`.
+
+**Records live where the project keeps records.** What travels is
+[[what-we-retired]], now carrying the `claim` recognizers as well as `was` and
+`now` — enough to sweep against without the records being present.
+
+**Six documents are removed, and the curator is right to flag it.** Its test is
+whether an adopter has to do something to keep the result they had. **They do:**
+the six records move to the project that owns them, and an adopter who was
+reading them out of `.luma/bundles/…/retirements/` has to look in
+`.luma/records/retirements/` instead.
+
+*Minor rather than major because it is pre-`1.0` and the only adopter of `0.1.0`
+is the repository the records move into* — the same change that removes them
+places them. A second reader should still see the removal, which is why it is
+named here rather than left to the diff.
 
 `0.1.0` — first release.
 

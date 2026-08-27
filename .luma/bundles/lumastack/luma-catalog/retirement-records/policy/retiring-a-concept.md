@@ -121,6 +121,22 @@ document earns.
 schedule is decoration. It is surfaced whenever a sweep runs, and nothing here
 makes a sweep run.
 
+## A retirement is a record, and records do not live in bundles
+
+**Write it where this project keeps records** — `.luma/records/retirements/` by
+default, or wherever it has configured them. **Never inside a bundle.**
+
+A bundle is copied into every adopter, and **a vendored copy must never be edited
+in place**. A record inside one therefore exists N times with no owner, cannot be
+corrected by the project holding it, and is silently reverted on the next
+adoption. That is not a style rule; it is the difference between a record and a
+copy of one.
+
+**What travels is [[what-we-retired]]**, generated from the records at publish
+time and carrying what a sweep needs: `was`, `now`, and the `claim` recognizers
+for the ideas no search can find. The record stays home; a projection of it
+travels.
+
 ## Severity comes from the document carrying the idea
 
 **Not from the retirement, and not from a reader's judgement.**
