@@ -420,9 +420,12 @@ rather than the hand-copied `[[retired]]` config.
 
 > **Amended 2026-08-27**, before it was built. *Checks divide by what a failure
 > means, not by what it is about* (`DECISIONS.md`) puts this in three places
-> rather than one. **The term and shape recognizers are `truth`, not machinery,
-> so the `vocabulary` rule moves *out* of `inspect` rather than growing inside
-> it** — `inspect` answers machinery and safety only. And the receipt comparison
+> rather than one. **The term and shape recognizers are `truth`, not machinery** —
+> so the `vocabulary` rule stays in `inspect`, declares its class, becomes
+> selectable, and stops sharing an exit code with a broken bundle. `inspect`
+> remains the umbrella; the separation is in reporting and exit policy rather
+> than in the invocation, and which classes fail is the project's choice with a
+> recommended default. And the receipt comparison
 > — *adopted 0.5.0, last swept 0.3.0* — is not a check at all: nothing is broken
 > and the audience is the organization, so it belongs in a reporting command that
 > does not exist yet. **Better that it not exist than exist in `inspect`.**
