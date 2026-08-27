@@ -14,11 +14,11 @@ read as the record of what was decided. Corrected the same day. What follows is
 an argument worth keeping, not a decision to cite.*
 
 **`CLAUDE.md`, `.claude/skills/` and `.luma/bundles/routing.toml` are committed**,
-though every one of them is written by `luma-foreman outfit` and could be
+though every one of them is written by `luma-foreman apply` and could be
 rebuilt in seconds.
 
 **The argument is asymmetry rather than conviction.** Removing them from the
-index later costs one commit. Reconstructing a year of how projection actually
+index later costs one commit. Reconstructing a year of how delivery actually
 behaved — what an agent was shown, and when it changed — costs everything,
 because it was never recorded anywhere else. **Cheap to undo, impossible to
 recover, so lean toward capture.**
@@ -32,7 +32,7 @@ adoption from a package cache.
 
 **The cost is real and is accepted: they conflict on every parallel branch.**
 Two branches that both adopted something will both have rewritten all three.
-**The conflict is normal and the resolution is always to re-run `outfit`**,
+**The conflict is normal and the resolution is always to re-run `apply`**,
 never to hand-merge — a hand-resolved generated file is wrong in a way nothing
 reports, and the next run discards it. That rule is published in
 `adopt-knowledge` so it reaches adopters rather than living here.
@@ -152,7 +152,7 @@ and a reader still took it to mean *left over from before*, which is close to
 the opposite. **A word chosen by argument lost to a word read on sight.**
 
 **The names survive in exactly one place: a derived column printed beside its
-input**, which `luma-foreman outfit --explain` produces. A lookup table printed
+input**, which `luma-foreman apply --explain` produces. A lookup table printed
 with the answer already in it is not a glossary, and nobody has to learn it
 before writing a document.
 
@@ -849,7 +849,7 @@ An earlier objection — that a glossary or an architecture map cannot be policy
 
 - Two items lose a suffix the container now supplies: *verification policy* → **verification**, *secrets policy* → **data handling**.
 - Configuration stays **in the tier**, not at the root — `.luma/config/foreman.toml`, named for the tool that reads it. That part of the superseded entry survives untouched: configuration is a declaration with the same lifecycle as everything else in force.
-- Generated projections — `.claude/`, `AGENTS.md`, `CLAUDE.md` — stay outside `.luma/`, live wherever their tool looks, are generated from `policy/`, and are disposable. Nothing generated is ever the source.
+- Generated adapters — `.claude/`, `AGENTS.md`, `CLAUDE.md` — stay outside `.luma/`, live wherever their tool looks, are generated from `policy/`, and are disposable. Nothing generated is ever the source.
 
 ### Deferred
 
@@ -894,7 +894,7 @@ An earlier objection — that a glossary or an architecture map cannot be policy
 
 The realization that forced it: bundles turned out to fit *everything* — rules, procedures, types, templates, scripts — so the tier that was supposed to hold what is in force was left holding only the residue.
 
-**A project's own content becomes a small local bundle.** It costs four lines of manifest and buys three things: the audit rule checks it, the projection finds its workflows, and **promotion becomes a directory copy rather than a packaging step** — which is the entire first leg of the promotion path.
+**A project's own content becomes a small local bundle.** It costs four lines of manifest and buys three things: the audit rule checks it, `apply` finds its workflows, and **promotion becomes a directory copy rather than a packaging step** — which is the entire first leg of the promotion path.
 
 *The friction is real at the smallest scale.* One house rule now needs a `bundle.md`, and that is the part worth disagreeing with later if it grates.
 
@@ -931,7 +931,7 @@ A directory also keeps `.luma/` to four entries with no loose files, and **mirro
 
 For content that is **definitionally never distributed** — an architecture invariant, glue describing how two adopted bundles interact here, a rule that dies when a migration lands. Wrapping something undistributable in the unit of distribution is a category error, if a cheap one.
 
-Not taken now because **the direction is asymmetric**: adding a tier later moves nothing and breaks nothing, while removing one means migrating everything in it. It also costs no design debt to leave open — a loose document is an ordinary Document, so projection reads it the same way, the audit skips it for having no `bundle.md`, and drift-checking ignores it for having no checksum.
+Not taken now because **the direction is asymmetric**: adding a tier later moves nothing and breaks nothing, while removing one means migrating everything in it. It also costs no design debt to leave open — a loose document is an ordinary Document, so `apply` reads it the same way, the audit skips it for having no `bundle.md`, and drift-checking ignores it for having no checksum.
 
 *Re-open when someone writes local content and the manifest is visibly ceremony.* Somebody complaining about writing a manifest for one sentence is the observable trigger.
 

@@ -14,7 +14,7 @@ modified: { by: agent:claude-opus-5, at: 2026-08-22T00:00:00Z }
 [bundle-versioning.md](bundle-versioning.md) and [curator.md](curator.md).
 Kept out of [DECISIONS.md](DECISIONS.md) on purpose.
 
-**This is the reasoning. The operating instructions are in the `luma/luma-types`
+**This is the reasoning. The operating instructions are in the `lumastack/luma-catalog/luma-types`
 bundle itself** — how to vendor, what to record, what breaks. This document says
 why the design is shaped that way, so the arguments survive somewhere other than
 commit messages.
@@ -29,7 +29,7 @@ independently), **not governance** (the layer organizations replace wholesale),
 making domain claims"*). It named the residual case — cross-cutting types with
 no natural owner — and said those *"earn a foundation bundle."*
 
-`luma/luma-types` is that foundation bundle. **This document adds what that
+`lumastack/luma-catalog/luma-types` is that foundation bundle. **This document adds what that
 decision could not have known**, because it was reasoning about `person` and
 `decision` rather than about the types that describe the distribution machinery
 itself.

@@ -1,0 +1,47 @@
+# How luma-foreman behaves in this project. Committed, and shared by everyone.
+#
+# Kept minimal by design. What you leave out follows the tool and improves with
+# it; what you set here is frozen, and every frozen value is one more thing to
+# reconcile at upgrade.
+
+[catalog]
+# Where `luma-foreman get` takes bundles from when no --from is given.
+source = "https://github.com/LumaStack/luma-catalog"
+
+# Words this project retired. `luma-foreman inspect` reports each use as a
+# notice — never a finding, because a grep cannot tell a revival from an
+# ordinary use of the same word, and the reader has to decide.
+#
+# These two were retired in `luma-foreman`, by ADR-0003 and ADR-0005 there.
+# This repository does not own that decision; it documents the tool, so its
+# prose is downstream of it. Renaming a command was already a two-repository
+# change — this is the third.
+#
+# An entry is removed when the thing the word named no longer exists, not after
+# a number of releases. `refit` reached that state on 2026-08-26 and is absent
+# here for the same reason it is absent there: the command was removed rather
+# than renamed, so nothing is left to reach for a word about. `outfit` and
+# `projection` both still name things in the product, under other names.
+#
+# Vendored bundles under `.luma/bundles/` are skipped by the rule itself —
+# somebody else's prose, fixed upstream and re-adopted, never in place.
+
+[[retired]]
+term = "projection"
+use = "what `apply` writes — the adapters — or `apply` itself"
+decided = ["ADR-0003", "ADR-0005"]
+except = [
+  ".luma/records/",             # audits are append-only; they say what was true when filed
+  "docs/loading-mechanisms.md", # its naming section IS the record of this retirement
+  "docs/DECISIONS.md",          # the four-verbs argument cannot be made without the old verbs
+]
+
+[[retired]]
+term = "outfit"
+use = "`apply`"
+decided = ["ADR-0003", "ADR-0004", "ADR-0005"]
+except = [
+  ".luma/records/",             # as above
+  "docs/loading-mechanisms.md", # as above
+  "docs/DECISIONS.md",          # as above
+]

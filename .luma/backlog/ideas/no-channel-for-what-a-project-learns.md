@@ -37,7 +37,7 @@ but only by measuring.* Seventeen bundles adopted, index measured at about 5,300
 tokens a session, 40% of it redundant against the same harness. The number
 existed for hours before anything connected it to the duty that asked for it.
 
-**A decision re-derived from scratch.** The verb for what `outfit` does was
+**A decision re-derived from scratch.** The verb for what `apply` does was
 argued out in foreman across an afternoon — the collision with `project` as a
 noun, the candidates, `install` ruled out for the reason ADR-0002 gives. This
 repository had already done that work, listed three candidates and estimated the

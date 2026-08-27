@@ -45,7 +45,7 @@ edit what was raised.*
 | **progress that survives the session** | what has been taught, remembered outside the repository | **nothing. This is the whole build** |
 
 **So the idea is smaller than it sounds and its centre of gravity is the
-record**, not the content. `luma/luma-tools` is already a *start here* for the
+record**, not the content. `lumastack/luma-catalog/luma-tools` is already a *start here* for the
 toolchain; what it cannot do is know it is talking to somebody who read it last
 week.
 
@@ -175,4 +175,4 @@ agent where a curriculum serves the human.
 tension this inherits.
 [silent presence](../../../docs/silent-presence.md) — just-in-time over
 up-front, reached from the attention side.
-`luma/luma-tools` — the existing *start here*, missing only its memory.
+`lumastack/luma-catalog/luma-tools` — the existing *start here*, missing only its memory.

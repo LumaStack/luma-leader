@@ -374,7 +374,7 @@ that is UC38, and it turns the expensive half of this axis into something
 buildable. If nothing can change what is loaded mid-session, selection has to
 happen at session start, and selection at session start needs no harness
 capability that does not already exist. A named mode, chosen when a session
-begins, with the projection written to match. It answers UC37 and gives up on
+begins, with the adapters written to match. It answers UC37 and gives up on
 mid-flight conditions, which nothing can deliver anyway. See the closing section
 of [catalog-namespaces.md](catalog-namespaces.md), where the idea came from.
 

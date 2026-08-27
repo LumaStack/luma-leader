@@ -50,7 +50,7 @@ trouble:
 | `SPEC.md`, and foreman's `TRIGGER_KINDS` | `always` is one of six trigger kinds |
 | `loading-mechanisms.md`, final scoping | there are five, and `always` is not among them |
 | curator `catalog.py` / `report.py` | the headline cost column counts `preload: mandatory` |
-| foreman `outfit.py` | a `legacy_preload` path nothing can set any more |
+| foreman `apply.py` | a `legacy_preload` path nothing can set any more |
 | `loading-mechanisms.md`, what it owes | asks whether seven policies are misfiled; PR #80 answered it |
 | `create-bundle.md` | tells a bundle author to write `compliance: recommended` |
 
@@ -145,7 +145,7 @@ being interrogated is worth more than its cost.
 
 **They are the same layering the loading design already settled**, arriving a
 third time: the change record is the declaration and the source of truth,
-stamping is the projection, and the floor when no tool is present is whatever
+stamping is what `apply` writes, and the floor when no tool is present is whatever
 was committed. Derive first, stamp when the document should carry its own truth.
 
 ### What `invalid_at` changes, precisely
