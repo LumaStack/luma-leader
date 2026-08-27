@@ -66,16 +66,54 @@ as actors (§7.4), so `human:fsmith`, `agent:opus-5`, and
 a reader. Record the most specific one available — a report attributed to
 `unknown:unknown` cannot be weighed against anything.
 
-**One party must not write two of these.** An auditor who writes the response is
-grading their own work; a respondent who writes the verification is closing their
-own findings. Where a swarm of agents is doing every step, that separation has to
-be arranged deliberately, because nothing enforces it.
+**The separation that must hold is around row 2.** An auditor who writes the
+response is grading their own work; a respondent who writes the verification is
+closing their own findings. **The auditor writing rows 1 and 3 is the design, not
+an exception to it** — the party that raised a finding is the one entitled to say
+whether the answer resolved it, and that is what makes row 3 follow-up rather
+than a second opinion.
+
+### The unit of independence is the session, not the model
+
+**What compromises a record is carried context, not identity.** An agent that
+argued a finding into existence will defend it rather than re-derive it, and one
+that already knows what it wrote does not read it as a stranger would. **The
+model is not what does that — the retained working state is.**
+
+So *the same model must not do two of these* is the wrong rule. It forbids
+something harmless and permits the actual failure, which is one continuous
+session playing two parts.
+
+**Three arrangements, best first.** All are permitted. They are not equally good,
+and the record should say which one it got.
+
+| | arrangement | what it buys |
+| --- | --- | --- |
+| **best** | a **different model, in its own session** | independent priors *and* a clean context. It does not share the habits that produced the subject, which makes it the only tier that can be surprised by it |
+| **good enough** | the **same model, a separate session** | the ordinary case, and genuinely sufficient. The thing that mattered is gone — nothing is carried, and the reasoning has to be rebuilt from the record |
+| **discouraged** | **one session doing both** | permitted, because a rule nobody can satisfy gets ignored quietly rather than argued with. It is the weakest form and it must be disclosed |
+
+*One model auditing and another responding beats two sessions of the same model,
+which beats one session doing both — and none of the three is a violation.*
+
+**When one session does both, say so in the document**, the way an anchor is
+disclosed. A reader can discount a stated weakness; an undisclosed one is the
+harder problem, because nothing tells them to look. **The tell is a response that
+agrees with everything.** A separate reader disputes something eventually, and a
+clean sweep of agreements is more often a session recognising its own reasoning
+than a respondent who found it all correct.
+
+*Nothing in the frontmatter records this.* `auditor:` and `respondent:` name a
+model, not a session, and inventing a field for it in passing would be worse than
+the gap — so it belongs in the prose of the document until somebody needs it
+enough to specify it.
 
 *The exception is a deterministic command.* A checker that produced a finding can
 legitimately verify it, because re-running it is evidence rather than an opinion
-about its own work — it will report the same thing whoever is watching. That is
-not true of an agent, which is why the exception is narrow and worth naming
-rather than generalising.
+about its own work — it will report the same thing whoever is watching, and it
+carries nothing between runs. **That last clause is why the exception is narrow**:
+it is exempt for precisely the reason the session boundary exists, rather than
+despite it.
 
 That is also why this shape is worth the ceremony. **The exchange is the record**
 — an auditor can see whether a finding was genuinely addressed, a respondent can

@@ -27,7 +27,7 @@ adopters never publish anything.
 
 | | one job | state |
 | --- | --- | --- |
-| **`luma-foreman`** | adopts bundles into a repository and projects them at agents | **working** |
+| **`luma-foreman`** | takes bundles into a repository and writes them where agents read | **working** |
 | **`luma-clarify`** | resolves ambiguity in written requirements | working |
 | **`luma-backlog`** | keeps a project's intended work | working |
 | **`luma-catalog-curator`** | checks a catalog for what only a catalog can see, and reports what it costs | **working** |
@@ -81,6 +81,6 @@ runs it against theirs.
 
 What maintainers additionally need is context about the estate — its layout,
 its release process, its conventions — and that is a **separate bundle**
-(`luma/luma-maintainers`) rather than a mode of this one. **The two are
+(`lumastack/luma-catalog/luma-maintainers`) rather than a mode of this one. **The two are
 additive.** Adopt both in a repository that builds the tools; adopt only this
 one everywhere else.

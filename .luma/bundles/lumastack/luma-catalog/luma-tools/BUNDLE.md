@@ -1,10 +1,10 @@
 ---
 type: bundle
-version: 0.7.0
-published: 2026-08-25
+version: 0.9.2
+published: 2026-08-26
 consumers: [project, organization]
 entry_point: workflows/adopt-knowledge
-description: Using the luma tools — which one does what, getting them onto a machine, and the adopt-then-project loop that puts knowledge in front of an agent.
+description: Using the luma tools — which one does what, getting them onto a machine, and the get-then-apply loop that puts knowledge in front of an agent.
 ---
 
 # Luma tools
@@ -14,7 +14,7 @@ about consuming: installing an engine, adopting bundles into a repository, and
 making an agent aware of what was adopted.
 
 **It carries no knowledge about building the tools.** That is
-`luma/luma-maintainers`, and the two are additive rather than alternatives — a
+`lumastack/luma-catalog/luma-maintainers`, and the two are additive rather than alternatives — a
 repository that builds a tool adopts both, everywhere else adopts only this.
 
 ## What is here
@@ -26,14 +26,15 @@ repository that builds a tool adopts both, everywhere else adopts only this.
 
 **Workflows**
 
-- [[adopt-knowledge]] — the loop that matters: adopt, project, verify.
+- [[adopt-knowledge]] — the loop that matters: get, apply, verify.
 - [[install-the-tools]] — getting an engine onto a machine and wired up.
 
 ## Loading
 
 Two documents are `mandatory` and that is one more than usual. [[adopt-knowledge]]
-earns it because **the failure it prevents is silent**: a project that adopts and
-never projects looks correct from every angle and reaches no agent at all. An
+earns it because **the failure it prevents is silent**: a project that takes a
+bundle and never applies it looks correct from every angle and reaches no agent
+at all. An
 adopter who never reads that workflow finds out months later, or not at all.
 
 [[install-the-tools]] is `optional` deliberately, though it is the first thing
@@ -54,6 +55,53 @@ which is the same gap adoption exists to close, left open in the one place it is
 most embarrassing.
 
 ## Version
+
+`0.9.2` — **bundle IDs in this catalog gained their namespace.** A bundle here
+is `lumastack/luma-catalog/<name>` rather than `luma/<name>`, because the
+namespace now derives from where the catalog lives instead of being declared.
+Every reference in this bundle's prose is updated.
+
+**A fork can no longer publish under this catalog's name.** It lives somewhere
+else, so it is named something else, and its bundles sit beside these in a
+project rather than colliding with them.
+
+*Type names are unaffected.* `type: luma/catalog` and its siblings name the
+format, not this catalog, and resolve separately.
+
+Patch: nothing but the identifiers a reference points at.
+
+`0.9.1` — **the description named two commands that no longer exist.** It
+called this the *adopt-then-project loop*; both words were renamed in 0.9.0 and
+the description was missed. It is now the *get-then-apply loop*.
+
+That line is the one an adopter reads first — it is what `catalog show` prints
+and what a browser would index — so it was the worst remaining place for it.
+*Projected* is also gone from `adopt-knowledge`, where foreman now reports the
+same state as `unapplied`.
+
+Patch: no instruction changed. Every command in this bundle already said `get`
+and `apply`.
+
+`0.9.0` — **the foreman commands were renamed.** `adopt` is now `get` and
+`outfit` is now `apply`. Every command in this bundle is written the new way.
+
+**The old names are a hard error, not an alias.** `luma-foreman adopt` prints
+`unknown command: adopt (renamed to: get)` and exits 1. Aliasing them would have
+let this bundle keep working while still being wrong, which is exactly the
+pressure that gets text like this corrected.
+
+Breaking, which below 1.0 the minor position carries: following this text needs
+`luma-foreman` at or past the rename. An older engine rejects every command
+here, and the error names the replacement rather than leaving you guessing.
+
+`0.8.0` — **what to do when a generated file conflicts.** Two branches that
+both adopted something will both have rewritten `CLAUDE.md`, the skills and
+`routing.toml`. Resolving that by hand produces a file that is wrong in a way
+nothing reports, and the next `outfit` discards it — so the answer is always to
+re-run the tool rather than to merge its output.
+
+Minor: an adopter following the old text was not told what to do at the one
+moment it matters.
 
 `0.7.0` — **`applies_to` is now `matches`.** The old name obliged an author to
 write a false sentence: `applies_to: everything` claims a rule governs

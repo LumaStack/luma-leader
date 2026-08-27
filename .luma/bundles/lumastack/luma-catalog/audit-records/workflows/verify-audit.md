@@ -8,12 +8,24 @@ description: Check whether each finding is genuinely resolved and record a dispo
 
 ## 1. This is the auditor's job, not the respondent's
 
-Whoever wrote the findings verifies the answers. **Marking your own work closed
-is the failure the whole shape exists to prevent.**
+Whoever wrote the findings verifies the answers, and the respondent must not
+write this file. **Marking your own work closed is the failure the whole shape
+exists to prevent.**
+
+**The auditor coming back is the design, not a breach of independence.** The
+party that raised a finding is the one entitled to say whether the answer
+resolved it — that is what makes this follow-up rather than a second opinion, and
+it is why the auditor legitimately writes two of the three documents.
+
+**Come back in a fresh session.** You are verifying against the record, and a
+session still holding its own reasoning checks its memory rather than the file —
+which is how a finding gets closed on what the auditor meant instead of on what
+the response actually did. See [[audit-layout]].
 
 *One exception:* a deterministic command may verify findings it produced, because
-re-running it is evidence rather than an opinion about its own work. That does
-not extend to agents.
+re-running it is evidence rather than an opinion about its own work — it carries
+nothing between runs. **That is the same reason the session boundary exists**,
+which is why the exception is narrow and does not extend to agents.
 
 ## 2. Check, do not accept
 
