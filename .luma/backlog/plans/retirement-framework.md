@@ -28,8 +28,9 @@ modified: { by: agent:claude-opus-5, at: 2026-08-27T00:00:00Z }
 > order**, so this plan carries no parent reference and should gain one when the
 > unit is settled.
 >
-> **Approved 2026-08-27.** Phase 1 is being built in `luma-catalog` as
-> `retirement-records`.
+> **Approved 2026-08-27. Phase 1 is done** — `retirement-records` 0.1.0 is
+> published in `luma-catalog` and adopted here. Its first sweep found two
+> tier-3 hits, neither containing a retired word. Phases 2 and 3 are unstarted.
 
 
 ## Context
