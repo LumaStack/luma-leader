@@ -45,11 +45,29 @@ fourth is describing an implementation, not a transport.
 
 **A ring is one level of knowledge. An entrypoint fires a ring.**
 
-| ring | holds |
-| --- | --- |
-| **project** | what this repository knows |
-| **bundle** | what one bundle holds |
-| **document** | sections within one document — later, and the same rule again |
+**Each ring is named with its number, as one token**, because the whole point of
+a ring is that it is ordered and a bare name loses that. Write `2-bundle`, never
+*the bundle ring*.
+
+| ring | holds | fired by |
+| --- | --- | --- |
+| **`0-catalog`** | bundles you have **not** adopted | asking what else is out there — *not built* |
+| **`1-project`** | what this repository knows | the harness, at session start |
+| **`2-bundle`** | what one bundle holds | reaching for that bundle |
+| **`3-document`** | what one document holds | opening that document — *not built* |
+| **`4-section`** | content. The leaf, with no map of its own | reading it |
+
+**Numbers go inward**, so what is outside everything you have is `0`.
+
+**The rule that makes the sequence self-checking: a ring's map names the members
+of the next ring in.** `1-project` names bundles, `2-bundle` names documents,
+`3-document` names sections. Nothing to memorise beyond that.
+
+**`0-catalog` is the one you do not own**, and it is different in kind rather
+than merely in position: its contents live somewhere else, change without you,
+and reaching it may need the network. It is also the only ring that answers *you
+cannot ask for a bundle you have never heard of* — every other ring assumes the
+thing is already in your repository. That gap is real and nothing addresses it.
 
 **Firing a ring delivers two things and only two:**
 
@@ -57,10 +75,10 @@ fourth is describing an implementation, not a transport.
 - **the map of the next ring down** — every item's name, what it is for, and what
   fires it. Names and reasons, never bodies.
 
-That is the whole mechanism, and **it is identical at every level.** The project
-entrypoint gives you the rules that hold everywhere plus a map of bundles. A
-bundle's entrypoint gives you the rules that hold throughout that bundle plus a
-map of its documents. Nothing new is learned going down a level.
+That is the whole mechanism, and **it is identical at every level.** `1-project`'s
+entrypoint gives you the rules that hold everywhere plus a map of bundles.
+`2-bundle`'s gives you the rules that hold throughout that bundle plus a map of
+its documents. Nothing new is learned going down a level.
 
 ### `matches` decides which of the three a document gets
 
@@ -74,10 +92,10 @@ computed from it rather than named separately:
 | `nothing`, or absent | **asked for** — on the map, body waits |
 
 **`always` is scoped to its ring, and that is the point.** A rule declared
-`always` inside a CSS bundle is present the moment that bundle's ring is fired
+`always` inside a CSS bundle is present the moment that `2-bundle` ring is fired
 and not before. It is not a permanent seat in every session — only what is
-`always` in the *project* ring gets that, which is why the project ring must stay
-small and why nothing else can inflate it.
+`always` in `1-project` gets that, which is why `1-project` must stay small and
+why nothing else can inflate it.
 
 **This is what makes depth cheap.** Standing cost is one line per item on a map,
 paid once per ring you actually open. Bodies are paid only where you went.
@@ -136,8 +154,8 @@ Named for scope, not planned — the migration is its own pass.
 - **`always` becomes ring-scoped** rather than session-scoped.
 - **Bundles gain a real map of their own contents**, which is what a bundle's
   entrypoint fires.
-- **The project ring moves out of any single harness's file** so more than one
-  adapter can point at it.
+- **`1-project` moves out of any single harness's file** so more than one adapter
+  can point at it.
 - **The reachability check gets built**, because the integrity rule is worthless
   unannounced.
 - **`starters` comes out** of the catalog type and the live catalog.
