@@ -5,31 +5,31 @@
 # passing silently, which is the one failure it exists to prevent.
 
 ["lumastack/luma-catalog/audit-records"]
-version  = "0.7.1"
+version  = "0.7.2"
 source   = "https://github.com/LumaStack/luma-catalog"
-commit   = "a48f0101354bebe13a196751bbee13375d0bfd1b"
-checksum = "sha256:31dbbe16026d3b2897f229a7f1946026aba9dda1c0263c12f19afd4d924fec26"
+commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
+checksum = "sha256:2a980d0ec32665420f602a07ea2a24784b8b6182cc8471bd182212a3b78146b5"
 
 ["lumastack/luma-catalog/decision-records"]
-version  = "0.9.1"
-source   = "https://github.com/LumaStack/luma-catalog"
-commit   = "ff3c00a9695bcf15d5acabff44281adcb2fe4831"
-checksum = "sha256:33b96b715bf8a9e9b7d19a508818d695743c7aa2ffa0438c922a908a9cec332a"
-
-["lumastack/luma-catalog/luma-maintainers"]
-version  = "0.10.3"
-source   = "https://github.com/LumaStack/luma-catalog"
-commit   = "a48f0101354bebe13a196751bbee13375d0bfd1b"
-checksum = "sha256:1457a85c2142895cc37dfc9e7bcb4c63059907845d5a9799aba831144ffe0c9f"
-
-["lumastack/luma-catalog/luma-tools"]
 version  = "0.9.2"
 source   = "https://github.com/LumaStack/luma-catalog"
-commit   = "a48f0101354bebe13a196751bbee13375d0bfd1b"
-checksum = "sha256:fcc4796456c965e67b23dd5cc25d8fb13eb81e684ea70abb86349307f41942b3"
+commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
+checksum = "sha256:5a25c1de099855c23ee613759cd263f88a9848f584a325389ca38a2eb2df6e0c"
+
+["lumastack/luma-catalog/luma-maintainers"]
+version  = "0.11.1"
+source   = "https://github.com/LumaStack/luma-catalog"
+commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
+checksum = "sha256:01dabf134172f81a617ec6cdc8e1de22d7f3f6ebfa6432ce67396b58cff3c8a0"
+
+["lumastack/luma-catalog/luma-tools"]
+version  = "0.10.1"
+source   = "https://github.com/LumaStack/luma-catalog"
+commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
+checksum = "sha256:de0d7d6eed4454249d7a2c101b13fb63e98a623857255d49ca8be794798b4f04"
 
 ["lumastack/luma-catalog/retirement-records"]
-version  = "0.2.0"
+version  = "0.2.1"
 source   = "https://github.com/LumaStack/luma-catalog"
-commit   = "ff3c00a9695bcf15d5acabff44281adcb2fe4831"
-checksum = "sha256:2dcbb55b1226f1b825e3eb5825d5a1f663c3e9de63dabc51836c4c128d5a1c3c"
+commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
+checksum = "sha256:52ae31c7ad1b45772c99af19f664df6f58da495cb483721b1d287488635d11a1"

@@ -1,9 +1,9 @@
 ---
 type: bundle
-version: 0.2.0
+version: 0.2.1
 published: 2026-08-27
 consumers: [project, organization]
-entry_point: policy/retiring-a-concept
+entrypoint: policy/retiring-a-concept
 description: Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
 ---
 
@@ -90,6 +90,10 @@ Both levels. A project retires its own ideas and sweeps against what it adopted;
 an organization hands retirements down and needs to know which projects complied.
 
 ## Version
+
+`0.2.1` — **`entry_point` is now `entrypoint`.** One word, per LKF §11.1, so the same word names the same thing at every level it appears.
+
+Patch: one key renamed. Same value, same meaning, same `optional` presence, and `luma-foreman` reads both spellings while the rename lands.
 
 `0.2.0` — **the retirements come out of this bundle.** `0.1.0` shipped six
 records inside it, which was wrong for a reason worth stating: a bundle is copied
