@@ -2,73 +2,10 @@
 
 ## Knowledge this project has adopted
 
-Everything below is vendored under `.luma/bundles/` and is part of this repository.
+**Read `.luma/bundles/entrypoint.md` now.** It lists what this project knows, what each part is for, and what brings it into play. Nothing below repeats it.
 
-**These are in force here and are loaded with this file.** Each one declares `matches: always`, so nothing gates when it governs — which means everything done in this repository.
+@.luma/bundles/entrypoint.md
 
-@.luma/bundles/lumastack/luma-catalog/retirement-records/policy/what-we-retired.md
-
-### `lumastack/luma-catalog/audit-records` 0.7.1
-
-Audits as records — findings written by one party, answered by another, closed by the first. The whole exchange lives in git.
-
-In `.luma/bundles/lumastack/luma-catalog/audit-records/` — **open one when the work matches its line**, and not before:
-
-- `policy/audit-layout` (policy) — Where an audit lives, how it is named, and the three-party loop — auditor, respondent, auditor again — that makes the record settle rather than accumulate.
-  - matches: topic:conducting an audit, or recording one
-- `policy/writing-findings` (policy) — What makes a finding actionable rather than an opinion — the five parts, how to rate severity, and the failures that make audits get ignored.
-  - matches: topic:writing a finding in an audit
-- `workflows/conduct-audit` (workflow) — Examine something, record what is wrong and why, and leave a record somebody else can act on. Use when auditing a codebase, a process, or any artifact that has a commit.
-- `workflows/respond-to-audit` (workflow) — Take a position on every finding — agreed, partially agreed, disagreed, or accepted — and point at the evidence. Use when an audit has been filed against something you are accountable for.
-- `workflows/verify-audit` (workflow) — Check whether each finding is genuinely resolved and record a disposition. Use after a response is filed — this is what closes the loop.
-
-### `lumastack/luma-catalog/decision-records` 0.9.1
-
-Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
-
-In `.luma/bundles/lumastack/luma-catalog/decision-records/` — **open one when the work matches its line**, and not before:
-
-- `policy/decision-guidelines` (policy) — When to record a decision, what makes one worth reading years later, and what you may edit once it is settled.
-  - matches: topic:recording a decision, or deciding whether one is worth recording
-- `workflows/find-decision` (workflow) — Locate a decision record from a number, a title, or a link that no longer resolves. Use whenever a citation points at nothing, or before concluding that something was never decided.
-- `workflows/migrate-decisions` (workflow) — Split a single DECISIONS.md into individual records, reconstruct what supersedes what, repoint everything that linked to the file, and only then remove it. Use once per project that has one.
-- `workflows/prune-archived-decisions` (workflow) — Permanently remove decision records that have been archived longer than the retention period. Only reaches `archived/`, never a live decision. Rarely the right call.
-- `workflows/record-decision` (workflow) — Find or establish where this project keeps decisions, then write one. Use when a position is settled, when an irreversible change is proposed, or when asked where decisions live.
-
-### `lumastack/luma-catalog/luma-maintainers` 0.10.3
-
-Working on the luma tools themselves — the repositories and the boundary each defends, publishing to the universal catalog, and changing a type without making every tool upgrade at once.
-
-In `.luma/bundles/lumastack/luma-catalog/luma-maintainers/` — **open one when the work matches its line**, and not before:
-
-- `policy/the-estate` (policy) — The six repositories, the boundary each one defends, and the rule that decides where a new thing goes. Read before adding anything to any of them.
-  - matches: topic:deciding which repository a new thing belongs in
-- `workflows/change-a-shared-type` (workflow) — Alter a shared type without making every tool upgrade at once. Use before touching anything in lumastack/luma-catalog/luma-types, or any type a second consumer already reads.
-- `workflows/publish-to-the-catalog` (workflow) — Add or change a bundle in luma-catalog and get the version honest. Use when promoting something out of a project, or changing anything already published.
-
-### `lumastack/luma-catalog/luma-tools` 0.9.2
-
-Using the luma tools — which one does what, getting them onto a machine, and the get-then-apply loop that puts knowledge in front of an agent.
-
-In `.luma/bundles/lumastack/luma-catalog/luma-tools/` — **open one when the work matches its line**, and not before:
-
-- `policy/what-each-tool-does` (policy) — The tools, the one job each performs, and when to use them. Read before installing or invoking any of them.
-  - matches: command:luma-foreman, command:luma-catalog-curator, topic:choosing which luma tool does a job
-- `workflows/adopt-knowledge` (workflow) — Take bundles from a catalog into a repository and make an agent aware of them. Use when setting a project up, when adding a capability, or when an agent keeps needing to be told where to look.
-- `workflows/install-the-tools` (workflow) — Get foreman onto a machine and wired into a harness. Use on a new workstation, after an upgrade, or when a permission gate is not firing.
-
-### `lumastack/luma-catalog/retirement-records` 0.2.0
-
-Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
-
-In `.luma/bundles/lumastack/luma-catalog/retirement-records/` — **open one when the work matches its line**, and not before:
-
-- `policy/retiring-a-concept` (policy) — What may be retired, how far it reaches, and why a word is the cheapest recognizer rather than the important one. Read before retiring anything.
-  - matches: topic:retiring an idea, a concept, a field or a word, topic:deciding how widely a change should be enforced
-- `workflows/release-a-retirement` (workflow) — Decide that a retired idea no longer needs watching, and archive its strategy. Use when a retirement's count has been zero for a while and somebody wants to remove it.
-- `workflows/retire-a-concept` (workflow) — Settle how far a retired idea reaches, record the decision where it was made, and publish the strategy that finds it everywhere else. Use when an idea, field, concept or word stops being how we do things.
-- `workflows/sweep-retirements` (workflow) — Check this repository against every retirement it has adopted — including the ones no search can find — and file what turns up. Use after adopting retirements, after they move, or before publishing anything.
-
-Workflows here are also installed as skills, so they can be invoked by name. Everything under `.luma/bundles/` is a copy — change it upstream and take it again, never in place.
+Generated by `luma-foreman apply`. Edits between the markers are lost; everything outside them is yours.
 
 <!-- luma:end -->
