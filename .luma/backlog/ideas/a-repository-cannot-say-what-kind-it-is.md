@@ -53,6 +53,22 @@ Bundle cannot exclude anything unless the repository declares what it is, at
 which point the declaration is doing the work and the prefix is redundant with
 it.
 
+## What `consumers` means, stated plainly
+
+Worth writing down because it is nowhere, and every misuse below comes from not
+having it:
+
+- **`organization`** — bundles a headquarters uses to **run an organization**:
+  managing people, overseeing many projects, holding organization-wide policy.
+- **`project`** — bundles a repository uses to **run a project**.
+- More later, but that is the whole vocabulary today. See
+  [[a-third-kind-of-consumer]].
+
+**It is a floor, not a preference.** The question is whether a bundle would
+function in a repository of that kind at all — a governance bundle does not work
+in a project because there is no organization to govern. It is not *is this
+useful to me*, and it is not *is this mine*.
+
 ## Three questions currently wearing one field
 
 | | question | mechanism |
