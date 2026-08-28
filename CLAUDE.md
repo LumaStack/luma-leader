@@ -22,6 +22,19 @@ In `.luma/bundles/lumastack/luma-catalog/audit-records/` — **open one when the
 - `workflows/respond-to-audit` (workflow) — Take a position on every finding — agreed, partially agreed, disagreed, or accepted — and point at the evidence. Use when an audit has been filed against something you are accountable for.
 - `workflows/verify-audit` (workflow) — Check whether each finding is genuinely resolved and record a disposition. Use after a response is filed — this is what closes the loop.
 
+### `lumastack/luma-catalog/decision-records` 0.9.1
+
+Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
+
+In `.luma/bundles/lumastack/luma-catalog/decision-records/` — **open one when the work matches its line**, and not before:
+
+- `policy/decision-guidelines` (policy) — When to record a decision, what makes one worth reading years later, and what you may edit once it is settled.
+  - matches: topic:recording a decision, or deciding whether one is worth recording
+- `workflows/find-decision` (workflow) — Locate a decision record from a number, a title, or a link that no longer resolves. Use whenever a citation points at nothing, or before concluding that something was never decided.
+- `workflows/migrate-decisions` (workflow) — Split a single DECISIONS.md into individual records, reconstruct what supersedes what, repoint everything that linked to the file, and only then remove it. Use once per project that has one.
+- `workflows/prune-archived-decisions` (workflow) — Permanently remove decision records that have been archived longer than the retention period. Only reaches `archived/`, never a live decision. Rarely the right call.
+- `workflows/record-decision` (workflow) — Find or establish where this project keeps decisions, then write one. Use when a position is settled, when an irreversible change is proposed, or when asked where decisions live.
+
 ### `lumastack/luma-catalog/luma-maintainers` 0.10.3
 
 Working on the luma tools themselves — the repositories and the boundary each defends, publishing to the universal catalog, and changing a type without making every tool upgrade at once.

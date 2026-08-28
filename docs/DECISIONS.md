@@ -48,6 +48,218 @@ reaches `main` — the failure this practice is betting will not happen.
 `.claude/skills/` is the first to go if so: it serves one harness and nothing
 reads it at runtime.
 
+## Checks divide by what a failure means, not by what it is about
+
+**Draft. Returned to `draft` on 2026-08-27**, where it should have started.
+
+*It was written directly as `Settled`, and that status was never conferred.*
+`decision-guidelines` is explicit: **nothing promotes itself, and a record leaves
+`draft` because its owner says so.** No draft existed to promote — an agent wrote
+the record into force and attributed the settling to the maintainer, which is the
+`F-002` failure this estate's own audit named this morning: an agent-authored
+assertion cited as a decision somebody made.
+
+**Restoring `draft` is not a demotion**, because the record was never legitimately
+out of it. There is precedent in the estate the same week: `luma-foreman`'s
+ADR-0003 and ADR-0004 were returned to `draft` on 2026-08-26 for the same reason —
+*"recorded as settled while the argument was still running."*
+
+**The position below is in use and the maintainer agrees with it.** That is what
+earns promotion rather than what performs it. **Promotion is the owner's to make.**
+
+*Why it is nowhere near `stable`, stated rather than discovered later:* **this
+record was corrected four times in the two hours after it was written.** Blocking moved from
+a property of the class to a project's policy. `obligation` was added by this
+record's own re-open trigger, which fired the same afternoon it was set. The
+`vocabulary` rule left `inspect` and came back. And mandate strength turned out
+to be a scope decision rather than a config one. **A position that moved four
+times in two hours has not finished moving**, and the corrections are dated in
+place above so the churn is visible instead of tidied away.
+
+*What `draft` permits, per `decision-guidelines`:* **anything.** Nothing here is
+binding and citing it is discouraged — which is the honest state for a position
+that moved four times in an afternoon. Once promoted, only the explanation moves;
+changing the position then costs a new number and an archival.
+
+*A prompt rather than an act:* **this draft has gone into use and looks ready.**
+That observation is worth making and acting on it is not.
+
+**Four classes, and each one names the property that fails** rather than the
+subject it examines. *Three were settled first and `obligation` was added hours
+later — see below, because that matters for how complete this looks.*
+
+| class | a failure means | who acts | *recommended* default |
+| --- | --- | --- | --- |
+| **machinery** — adoption drift, broken bundles, stale generated output | the tooling does not work | whoever is landing the change; re-run a command | fail |
+| **safety** — credentials, personal information | harm has already been published | incident response; rotate the credential | fail |
+| **truth** — retired ideas, stale claims, anything asserting what is no longer so | a reader may be misled | whoever writes here, by judging it | report |
+| **obligation** — mandates unadopted, retirements unswept past their date, audits unanswered | something we were told to do is undone | the project that owes it — **reported to whoever issued it** | report, until the date |
+
+**The last column is a recommendation, not a property of the class.** *What a
+failure means* is intrinsic; *what to do about it* is the project's call. An
+earlier draft of this record made blocking a column of the class, which quietly
+prescribed one policy for everybody — a documentation repository may well want
+`truth` to fail its build, and most projects will not. **Do not decide that
+here.**
+
+**A project with grey truth is not a broken project**, and must pass the
+machinery check. That is the whole point of separating them.
+
+**`obligation` was added hours after the other three**, by the maintainer, which
+is this record's own re-open trigger firing. It is kept as an amendment rather
+than folded in silently, because a class that had to be added is evidence about
+how complete the other three are.
+
+**Two structural facts make it a class rather than a variety of the others.** It
+is the only one whose **audience is outside the project** — leadership, or
+compliance, or whoever issued the order, rather than the person about to commit.
+And it is the only one **triggered by time rather than by a diff**: nothing
+changed, a date passed. Neither of those is true of machinery, safety or truth,
+and either alone would be enough.
+
+### Why not "tooling and content"
+
+**Because the two overlap and the overlap is the tell.** A credential is content —
+it lives in a file like everything else — so a class called *content* swallows
+`safety`, which is the one class that must block hardest. **If two categories
+overlap, at least one is named after the wrong thing.**
+
+Naming the *subject* produces that collision every time. Naming the **consequence**
+does not: *harm has been published* and *a reader may be misled* cannot be
+confused, and it is immediately obvious that a leaked credential is the first and
+a stale policy is the second.
+
+**The class is named for the property that fails, so the name is `obligation`
+rather than `orders`, `mandates` or `directives`** — those name where it came
+from, and a rule about naming consequences should not make an exception for the
+class about being told what to do. It also has prior use here: `obligation`
+already answers *must a project adopt this bundle*, and this is that idea
+generalised rather than a second sense of the word.
+
+`machinery` is the weakest of the four names for exactly this reason — it names a
+thing rather than a property. It survives because it is guessable, and the test
+for a name here is whether somebody who has read nothing can guess it.
+
+### What follows from it
+
+**Grey findings must not share an exit code with broken machinery.** Truth
+findings are frequent and mostly low severity; machinery findings are rare and
+mean something is actually wrong. **A combined signal is trained away** — this
+estate paid that lesson on 2026-08-27, when two retired words produced about
+thirty-three false positives and had to be withdrawn because *noise teaches a
+reader to skim past notices.* The same mechanism destroys a check that mixes
+classes.
+
+### One command, selectable by class, and the project sets the policy
+
+**`inspect` stays the umbrella and covers all four.** Splitting the command was
+considered and rejected: a second binary is a second thing nobody runs, and the
+separation that matters is in *reporting and exit policy*, not in the invocation.
+
+**Three things follow, and they are the substance of this section:**
+
+- **Every rule declares its class**, and a run can be scoped to one — the same way
+  `--rule` already scopes to a single check. Without that, a project cannot act on
+  the distinction this record draws.
+- **Which classes fail the run is configured, with a recommended default.** The
+  recommendation is one line, and leaving it is one line:
+
+  ```toml
+  [inspect]
+  fail_on = ["machinery", "safety"]   # the recommended default
+  ```
+
+  **`truth` and `obligation` report and do not fail.** *The exact key is
+  `luma-foreman`'s to name; what is decided here is that the choice exists and
+  what it defaults to.*
+
+#### Some projects want to release; others want to be correct
+
+**That is the tension the setting exists for, and both ends are legitimate.** A
+project shipping weekly can carry a stale draft for a fortnight; a specification
+cannot carry a stale sentence for an afternoon. Neither is being sloppy — they
+are paying different costs, and a tool that picks one for them is wrong for
+everybody else.
+
+**This estate is its own worked example, and it does not settle on one answer:**
+
+| | wants | because |
+| --- | --- | --- |
+| `luma-knowledge-format` | **fail on truth** | truth *is* the product. A wrong sentence in a specification is the defect |
+| `luma-catalog` | **fail on truth** | it is copied by every adopter, so a stale policy reaches everybody and keeps doing so |
+| `luma-leader` | **report only** | it is where arguments are held. Its drafts *deliberately* discuss retired ideas, and it has spent a day exempting them one by one |
+| `luma-foreman` | **report only** | an engine. Machinery is the product; its prose is downstream |
+
+**Four repositories in one estate, two answers.** If a single organization cannot
+agree with itself, a default that binds everyone is not a default — it is a
+mistake with good intentions.
+- **Output groups by class regardless of exit policy**, so a reader can tell a
+  broken bundle from a stale claim without reading rule names.
+
+**`obligation` is the asymmetric one**, because its audience is outside the
+project. **Whoever issued it sets the escalation**, and `enforced` is how they say
+it — which is why the recommended default reads *report, until the date*: the
+date is theirs, not the project's.
+
+#### But some projects should comply less, and that is a scope decision
+
+**An internal tool that touches no end user genuinely need not carry what a
+customer-facing service carries.** That is legitimate, and the estate already has
+the vocabulary for it: an obligation says **how strongly** it expects to be met,
+the same way a catalog already grades whether a project must adopt a bundle.
+
+| the mandate is | who decides `fail_on` for it |
+| --- | --- |
+| **binding** | the **issuer**. A project configuring it down has not met it — it has hidden it, and that should be as visible as turning `safety` down |
+| **advisory** | the **project**. Declining is a real answer, and low-risk work is exactly where it is the right one |
+
+**The lever for caring less is on the issuing side, not the receiving side.** An
+organization that wants internal tools to run lighter issues most mandates as
+advisory, or scopes the binding ones to the projects they actually bind — see
+`scope` in the retirement framework, which is the same field doing the same job.
+**What it should not do is issue everything as binding and expect projects to
+quietly configure their way out**, because then nobody can tell a project that
+complied from one that opted out.
+
+*Either way the answer is recorded rather than silent.* A project declining an
+advisory obligation has made a decision, and a decision nobody can see is
+indistinguishable from an oversight.
+
+**`safety` deserves friction rather than prohibition.** A project may turn it
+down, and that should be a visible, recorded choice rather than a silent config
+line, because it is the one class where a failure means harm has already
+happened.
+
+### The bare-clone guarantee belongs to two classes, not to the command
+
+`inspect`'s contract has been *"every check here works in a bare clone with no
+configuration."* That is true of `machinery` and `safety` and cannot be true of
+`truth` or `obligation`, which exist only because something was declared —
+retirements, mandates, deadlines. The `vocabulary` rule reporting `SKIPPED`
+forever on an unconfigured project is not a defect; it is that guarantee being
+correctly scoped.
+
+**So the guarantee is restated per class rather than dropped.** Machinery and
+safety answer on a bare clone. Truth and obligation answer on a configured one,
+and say plainly that they are skipped otherwise — **a skipped check is never a
+pass.**
+
+**Compliance reporting is `obligation`, and that is what the fourth class
+settles.** *"Adopted 0.5.0, last swept 0.3.0"* is not a machinery defect and not
+a truth defect — nothing is broken and nothing misleads. It is an obligation
+unmet. It needs to reach across projects to be worth anything, which is the same
+contract break that keeps `bundle outdated` out of `inspect`, so it is a
+reporting command rather than a rule inside one.
+
+*The estate is carrying an unmet obligation of this exact shape right now:* the
+2026-08-26 audit has seven findings and no response, which is the loop's second
+party overdue. Nothing reports it, which is the gap this class names.
+
+**Re-open trigger:** a fifth class that fits none of these — a failure whose
+meaning is not *does not work*, *has caused harm*, *misleads a reader*, or
+*something we were told to do is undone*. **The fourth arrived within hours of
+the first three**, so treat the set as incomplete rather than closed.
+
 ## A document says what makes it surface, not what it governs
 
 **Settled 2026-08-26.**

@@ -22,6 +22,14 @@ on_violation = "allow"
 matches = ["topic:writing a finding in an audit"]
 
 [[rule]]
+bundle = "lumastack/luma-catalog/decision-records"
+document = "policy/decision-guidelines"
+title = "Writing a decision record"
+path = ".luma/bundles/lumastack/luma-catalog/decision-records/policy/decision-guidelines.md"
+on_violation = "allow"
+matches = ["topic:recording a decision, or deciding whether one is worth recording"]
+
+[[rule]]
 bundle = "lumastack/luma-catalog/luma-maintainers"
 document = "policy/the-estate"
 title = "The estate, and what each repository owns"
