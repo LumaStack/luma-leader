@@ -99,8 +99,14 @@ one in passing would be worse than the gap.
 2. **A mismatch check.** An engine reports an adopted Bundle whose `consumers`
    excludes this repository's kind. Cheap, needs no catalog round-trip, and would
    have caught the case above.
-3. **`starters` and `requires`**, keyed on kind and tags. Already designed, wholly
-   unbuilt.
+3. **`starters` and `requires`**, keyed on kind and tags — **if they survive.**
+   Both are declared in `_types/catalog.md` and in the live `CATALOG.md`, and
+   neither is read by anything. `starters` in particular is a sketch that may not
+   have legs.
+
+**Step 1 is worth doing whether or not step 3 ever happens**, which is the point
+of the ordering. A repository saying what it is has value the moment a mismatch
+check exists; it does not wait on a mechanism nobody has committed to.
 
 **Only after 1 can a fence be designed**, if one is wanted. The minimal shape
 would be one optional field on a Bundle keyed on tags the repository declares —
@@ -118,9 +124,11 @@ and *one of two kinds* — real, small, a rename across published Bundles, and
 worth leaving until the mechanism exists and it has actually tripped somebody.
 
 **This is the prerequisite for more than it looks like.** It blocks
-[[a-third-kind-of-consumer]], it blocks `starters` being offered at `init`, and
-it is what would let a catalog rather than an engine decide what a new repository
-begins with — which is the alternative to compiling a default Bundle into a tool.
+[[a-third-kind-of-consumer]] outright. It is also what would let a catalog rather
+than an engine decide what a new repository begins with — the alternative to
+compiling a default Bundle into a tool — **whatever mechanism ends up carrying
+that.** `starters` is the current sketch and may not be the answer; the
+declaration is needed either way, because every candidate mechanism keys on it.
 
 **Reported from `luma-foreman`, 2026-08-27**, where the mismatch was found while
 auditing which Bundles that project should carry. It reached here because
