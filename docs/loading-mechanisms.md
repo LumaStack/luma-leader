@@ -9,6 +9,12 @@ modified: { by: agent:claude-opus-5, at: 2026-08-24T00:00:00Z }
 
 # Loading mechanisms
 
+> **Superseded by [how-knowledge-arrives.md](how-knowledge-arrives.md), which
+> states the target.** This is kept as the reasoning that produced it — read it
+> for *why*, never as a description of what is being built. It explores a space
+> rather than settling one, and several mechanisms it takes seriously are being
+> deleted rather than migrated.
+
 **Draft, and no longer uniformly so.** Much of this began as half-baked options
 and a good deal of it has since been decided. **What is settled, what is deferred
 with a re-open trigger, and what this document still owes are listed at the end**
