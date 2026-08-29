@@ -5,7 +5,7 @@ created: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 contributors: [agent:claude-opus-5, human:benlinton]
 horizon: next
 scope: organization
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # Two type-namespacing conventions, neither aware of the other

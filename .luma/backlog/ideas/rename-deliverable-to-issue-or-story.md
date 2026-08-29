@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: next
 scope: organization
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # `deliverable` is probably wrong — reopen the naming

@@ -37,7 +37,7 @@ to a person.
 as actor events; §7.2 defines `verified` as independent confirmation, with trust
 tiers derived from it — *no `verified` ⇒ unverified*, *verified by any
 `human:<id>` ⇒ human-reviewed* — and states that trust tier is orthogonal to
-`lifecycle_status`.
+`lifecycle`.
 
 **The actor convention exists for exactly this.** §7.4 defines
 `<kind>:<producer>` with `human:` and `agent:` as distinct kinds. The vocabulary

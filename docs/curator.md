@@ -2,7 +2,7 @@
 type: document
 title: The curator
 description: What a tool that tends a catalog does — the checks only a catalog can run, why it is not foreman, and what publication turned out to be.
-lifecycle_status: draft
+lifecycle: draft
 created: { by: human:benlinton, at: 2026-08-22T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 ---

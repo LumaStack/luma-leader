@@ -2,7 +2,7 @@
 type: document
 title: Loading mechanisms
 description: By what mechanism knowledge reaches a reader — the three fields an author writes and everything derived from them, the six candidates for delivering it, when the routing decision gets made, and why five of the six readers are not models.
-lifecycle_status: draft
+lifecycle: draft
 created: { by: human:benlinton, at: 2026-08-24T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-24T00:00:00Z }
 ---
@@ -631,7 +631,7 @@ the deferred question of renaming *triggers* to *matchers*.
 ### `event`, and why not the obvious words
 
 `lifecycle` is the word that best explains why session-start, before-commit and
-before-release are one category — but the format already uses `lifecycle_status`
+before-release are one category — but the format already uses `lifecycle`
 for document maturity, so it is spent, and `lifecycle_event` with it.
 
 **`moment` was chosen first and then lost to grammar.** A moment is a point in
@@ -1814,7 +1814,7 @@ this too.
 **The candidate answer is already written down elsewhere**, which is the reason
 to wait rather than invent: `verified` (§7.2 of the format) records that somebody
 confirmed a document at a moment, independent of `modified`, and it is explicitly
-orthogonal to `lifecycle_status`. A policy with no `matches` **and** a live
+orthogonal to `lifecycle`. A policy with no `matches` **and** a live
 confirmation is one somebody looked at; one with neither is one nobody has. That
 carries the distinction for every document rather than as a special value in one
 field, and it needs no new vocabulary. See

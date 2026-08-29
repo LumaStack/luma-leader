@@ -16,7 +16,7 @@ recognizers:
     value: "any statement that one party must not write two of the three audit documents, which also contradicts the auditor writing both the audit and the verification"
 except:
   - ".luma/records/"
-lifecycle_status: stable
+lifecycle: stable
 ---
 
 # RET-0006: independence means a different party

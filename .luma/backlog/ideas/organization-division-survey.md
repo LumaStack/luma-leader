@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-19T00:00:00Z }
 contributors: [human:benlinton]
 horizon: someday
 scope: project
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # A survey of how an organization is divided

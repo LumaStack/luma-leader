@@ -23,7 +23,7 @@ recognizers:
     value: <what to look for>
 except:
   - <path where a hit is correct as it stands>
-lifecycle_status: provisional
+lifecycle: draft
 ---
 ```
 

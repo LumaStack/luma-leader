@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: later
 scope: organization
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # A human-friendly way to query frontmatter
@@ -46,13 +46,13 @@ The queries that are currently painful are all structural:
 - *every document where `created.by` is an agent* — nested field, prefix match
 - *every idea with `horizon: next` and no `contributors` containing a human* —
   two fields, one a list of actors
-- *every document whose `lifecycle_status` is unset* — **absence**, which grep
+- *every document whose `lifecycle` is unset* — **absence**, which grep
   cannot express at all
 - *every bundle whose `matches: always` documents exceed some size* — a
   computed property
 
 **Absence is the one that decides it.** `grep -L` finds files lacking a string,
-which is not the same as a field being unset, and it gets `lifecycle_status:` in
+which is not the same as a field being unset, and it gets `lifecycle:` in
 a code fence wrong. Now that `unknown` is the default, *what has nobody
 declared* is a question people will actually ask.
 

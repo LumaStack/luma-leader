@@ -5,7 +5,7 @@ created: { by: agent:claude-opus-5, at: 2026-08-26T00:00:00Z }
 contributors: [agent:claude-opus-5, human:benlinton]
 horizon: next
 scope: organization
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # Nothing carries what a project learned back up

@@ -2,7 +2,7 @@
 type: document
 title: A retirement framework
 description: How a retired idea comes back, and the framework that has to defend both directions — the decision that stays home, the strategy that travels, and the three tiers that decide who can detect it.
-lifecycle_status: provisional
+lifecycle: provisional
 created: { by: human:benlinton, at: 2026-08-27T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-27T00:00:00Z }
 ---
@@ -248,7 +248,7 @@ recognizers:
     value: "any document telling an author to declare when their document loads"
 except:
   - ".luma/records/"     # append-only; they say what was true when filed
-lifecycle_status: stable # `archived` == released, per luma-foreman ADR-0005
+lifecycle: stable # `archived` == released, per luma-foreman ADR-0005
 ---
 ```
 
