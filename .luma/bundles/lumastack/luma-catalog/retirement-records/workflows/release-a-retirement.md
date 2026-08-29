@@ -44,7 +44,7 @@ re-open this.*
 
 ## 4. Archive rather than delete
 
-`lifecycle_status: archived`. **The record stays.** Somebody will ask why the word
+`lifecycle: archived`. **The record stays.** Somebody will ask why the word
 is absent, and *"we decided against it in 2026"* is a better answer than silence
 — which is how a retired idea returns as a fresh proposal.
 

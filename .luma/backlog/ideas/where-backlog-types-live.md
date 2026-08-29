@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: next
 scope: organization
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # Where the backlog types live
@@ -132,7 +132,7 @@ a bundle or refuse, which makes a standalone tool depend on a catalog.
 
 It is pinned at `lkf_version: 0.0.2` — **nine format versions behind**, from
 before `concept` was dropped, before namespaced shared types, before
-`lifecycle_status: unknown`. Its README also says *"no implementation yet"*
+`lifecycle: unknown`. Its README also says *"no implementation yet"*
 while a working binary sits in the repository with eight commands. Anything
 touching that repository meets both first.
 

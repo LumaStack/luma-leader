@@ -1,7 +1,7 @@
 ---
 type: bundle
-version: 0.2.1
-published: 2026-08-27
+version: 0.3.0
+published: 2026-08-28
 consumers: [project, organization]
 entrypoint: policy/retiring-a-concept
 description: Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
@@ -91,7 +91,33 @@ an organization hands retirements down and needs to know which projects complied
 
 ## Version
 
-`0.2.1` — **`entry_point` is now `entrypoint`.** One word, per LKF §11.1, so the same word names the same thing at every level it appears.
+`0.3.0` — **`lifecycle_status` is now `lifecycle`.**
+
+**Same values, same meaning, shorter name**, renamed in the knowledge format
+and carried here. The old name was chosen against `status` — so it never
+collided with a tool's own `todo | in-progress | done` — and **`lifecycle`
+avoids that collision equally well**, because the word at risk was `status` and
+this name does not contain it.
+
+**Breaking for an adopter**, shipped as minor under the pre-1.0 allowance:
+**every Document declaring the old key has to be renamed.** It fails visibly
+rather than quietly — `lifecycle` is unrecognised where `lifecycle_status` was
+expected, and an unrenamed Document reads as having no lifecycle declared at
+all.
+
+`0.2.3` — **the template starts a new Document at `draft`, not `provisional`.**
+
+**The example value in a template becomes the estate's default**, and this one
+was teaching every new Document to be born promoted. **The lifecycle ladder
+measures what a reader is owed when a Document changes**, and use by its own
+authors does not promote it — `provisional` begins when somebody who did not
+write it can rely on it, and promoting is the author's explicit act.
+
+`0.2.2` — **references to the knowledge format name sections instead of numbering them.** The format removed section numbers, so every `§n` here pointed at a position that no longer exists — and a stale number resolves to the wrong section rather than to nothing, which is why none of them were reported. Decorative citations are dropped; the rest name what they meant.
+
+Patch: wording only. No rule, field or procedure changed.
+
+`0.2.1` — **`entry_point` is now `entrypoint`.** One word, so the same word names the same thing at every level it appears.
 
 Patch: one key renamed. Same value, same meaning, same `optional` presence, and `luma-foreman` reads both spellings while the rename lands.
 
@@ -125,7 +151,7 @@ author writes, so nothing reachable only on demand can address it.
 [[what-we-retired]] is capped at one line per retirement for that reason — it is
 a list, and the reasoning lives elsewhere.
 
-**`field_type: timestamp` is a new name in an open vocabulary** (§10.2), declared
+**`field_type: timestamp` is a new name in an open vocabulary**, declared
 on `retired_at`. The estate's date fields cannot order two renames that landed in
 the same afternoon, and this week they did. `enforced` stays a plain date,
 because nobody complies at 14:32.

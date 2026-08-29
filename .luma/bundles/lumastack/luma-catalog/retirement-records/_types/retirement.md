@@ -46,7 +46,7 @@ fields:
     desc: "when non-compliance stops being a notice and becomes a finding. Absent means immediate, which is the house default — a grace period is the deliberate opt-in"
   recognizers:
     field_presence: required
-    desc: "how to spot the retired idea, one or more. No field_type: a list of records, which §10.2 cannot yet express. See below"
+    desc: "how to spot the retired idea, one or more. No field_type: a list of records, which the format's field declarations cannot yet express. See below"
   except:
     field_presence: optional
     desc: "paths where a hit is correct as it stands. No field_type, same reason"
@@ -69,7 +69,7 @@ and distributed**, and it **must stay revisable for as long as it binds** — yo
 find a fourth disguise, you exempt a document that legitimately argues about the
 word, you narrow after false positives.
 
-**How much a document may be edited follows its `lifecycle_status`**, and that is
+**How much a document may be edited follows its `lifecycle`**, and that is
 what separates these two rather than any blanket rule:
 
 | | `draft` | `provisional` | `stable` |
@@ -111,12 +111,12 @@ survived intact.
 
 ## `field_type: timestamp` is new
 
-`field_type` is an open vocabulary (§10.2), so this adds a name rather than a
+`field_type` is an open vocabulary, so this adds a name rather than a
 mechanism. `retired_at` needs one because the estate's date fields — `decided`,
 `audited`, `archived` — cannot order two renames that landed in the same
 afternoon. **`enforced` is deliberately a plain date**: nobody complies at 14:32.
 
-## `lifecycle_status` carries release
+## `lifecycle` carries release
 
 From the root type. `archived` means **released** — the entry no longer binds,
 because nothing in the product still needs a name for what the word named. The

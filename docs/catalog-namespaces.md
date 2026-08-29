@@ -2,7 +2,7 @@
 type: document
 title: Catalog namespaces
 description: The prefix a catalog publishes its bundles under — why it is a name rather than an identity, when two adoptions collide, and why catalogs do not survive to session time.
-lifecycle_status: draft
+lifecycle: draft
 created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 ---

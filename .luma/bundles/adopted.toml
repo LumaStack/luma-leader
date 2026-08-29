@@ -11,10 +11,10 @@ commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
 checksum = "sha256:2a980d0ec32665420f602a07ea2a24784b8b6182cc8471bd182212a3b78146b5"
 
 ["lumastack/luma-catalog/decision-records"]
-version  = "0.9.2"
+version  = "0.10.0"
 source   = "https://github.com/LumaStack/luma-catalog"
-commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
-checksum = "sha256:5a25c1de099855c23ee613759cd263f88a9848f584a325389ca38a2eb2df6e0c"
+commit   = "7b2a0f6f29f29155092a7e5a92023a09bd419cbd"
+checksum = "sha256:477bb273012c27fc8244aec8f50c66c0fe443b49e78aa94cd0749005784f4bde"
 
 ["lumastack/luma-catalog/luma-maintainers"]
 version  = "0.11.1"
@@ -29,7 +29,7 @@ commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
 checksum = "sha256:de0d7d6eed4454249d7a2c101b13fb63e98a623857255d49ca8be794798b4f04"
 
 ["lumastack/luma-catalog/retirement-records"]
-version  = "0.2.1"
+version  = "0.3.0"
 source   = "https://github.com/LumaStack/luma-catalog"
-commit   = "9aeb0ca147e360fb45409868dedb00470bf612bd"
-checksum = "sha256:52ae31c7ad1b45772c99af19f664df6f58da495cb483721b1d287488635d11a1"
+commit   = "7b2a0f6f29f29155092a7e5a92023a09bd419cbd"
+checksum = "sha256:5970ec14a37d43917832ddd6d2a5ef4069503324fc31008e7c94fd9e67ee8348"

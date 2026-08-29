@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-27T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: next
 scope: organization
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # Committed derived material has no tier

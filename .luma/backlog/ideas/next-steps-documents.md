@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: next
 scope: organization
-lifecycle_status: draft
+lifecycle: draft
 ---
 
 # Next-steps documents
@@ -95,7 +95,7 @@ nothing has had to resolve it yet because nobody has written one.
 
 ### On marking files ephemeral in the format
 
-**Nothing existing covers it.** `lifecycle_status` is maturity —
+**Nothing existing covers it.** `lifecycle` is maturity —
 `archived` means *was in force, now retired*, not *never meant to last*.
 `stale_after` says recheck, which implies the content might still be right.
 `matches` is delivery. **An ephemeral document is a durability claim, and the

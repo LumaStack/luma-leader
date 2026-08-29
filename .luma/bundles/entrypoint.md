@@ -8,13 +8,13 @@ Everything here is vendored under `.luma/bundles/` and is part of this repositor
 
 - **`lumastack/luma-catalog/audit-records`** 0.7.2 — Audits as records — findings written by one party, answered by another, closed by the first. The whole exchange lives in git.
   - ring: `.luma/bundles/rings/lumastack/luma-catalog/audit-records.md`
-- **`lumastack/luma-catalog/decision-records`** 0.9.2 — Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
+- **`lumastack/luma-catalog/decision-records`** 0.10.0 — Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
   - ring: `.luma/bundles/rings/lumastack/luma-catalog/decision-records.md`
 - **`lumastack/luma-catalog/luma-maintainers`** 0.11.1 — Working on the luma tools themselves — the repositories and the boundary each defends, publishing to the universal catalog, and changing a type without making every tool upgrade at once.
   - ring: `.luma/bundles/rings/lumastack/luma-catalog/luma-maintainers.md`
 - **`lumastack/luma-catalog/luma-tools`** 0.10.1 — Using the luma tools — which one does what, getting them onto a machine, standing a project up, and the get-then-apply loop that puts knowledge in front of an agent.
   - ring: `.luma/bundles/rings/lumastack/luma-catalog/luma-tools.md`
-- **`lumastack/luma-catalog/retirement-records`** 0.2.1 — Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
+- **`lumastack/luma-catalog/retirement-records`** 0.3.0 — Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
   - ring: `.luma/bundles/rings/lumastack/luma-catalog/retirement-records.md`
 
 Every workflow in these bundles is installed as a skill and can be invoked by name. They are not named here or in a bundle's ring, because this harness already loads their names and descriptions.

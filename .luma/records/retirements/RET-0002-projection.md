@@ -16,7 +16,7 @@ recognizers:
     value: "naming the generated output with a noun of its own rather than describing it as what `apply` writes"
 except:
   - ".luma/records/"
-lifecycle_status: stable
+lifecycle: stable
 ---
 
 # RET-0002: `projection`
