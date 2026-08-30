@@ -3,14 +3,6 @@ type: luma/project
 title: luma-leader
 disclosure_level: public
 description: The general engine any organization can use to decide how it works — the shape of the job, the conventions for arguing a standard into existence, and defaults worth starting from. Not any particular organization's headquarters.
-owns:
-  - the general engine, and every command in it
-  - the conventions for arguing a standard into existence
-  - example configuration, with no real values
-must_not_own:
-  - any organization's own standards, decisions or boundaries
-  - configuration values, secrets, or references to them
-  - anything naming a customer, competitor, internal system or person
 ---
 
 ## Why it exists
