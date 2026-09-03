@@ -2,7 +2,7 @@
 type: document
 title: Loading mechanisms
 description: By what mechanism knowledge reaches a reader — the three fields an author writes and everything derived from them, the six candidates for delivering it, when the routing decision gets made, and why five of the six readers are not models.
-lifecycle: draft
+stage: draft
 created: { by: human:benlinton, at: 2026-08-24T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-24T00:00:00Z }
 ---
@@ -1814,7 +1814,7 @@ this too.
 **The candidate answer is already written down elsewhere**, which is the reason
 to wait rather than invent: `verified` (§7.2 of the format) records that somebody
 confirmed a document at a moment, independent of `modified`, and it is explicitly
-orthogonal to `lifecycle`. A policy with no `matches` **and** a live
+orthogonal to `stage`. A policy with no `matches` **and** a live
 confirmation is one somebody looked at; one with neither is one nobody has. That
 carries the distinction for every document rather than as a special value in one
 field, and it needs no new vocabulary. See

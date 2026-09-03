@@ -2,7 +2,7 @@
 type: document
 title: Bundle versioning
 description: What major, minor and patch mean for a bundle whose content is prose — the test for each tier, the one part that can be checked mechanically, and why patch is the dangerous one here.
-lifecycle: draft
+stage: draft
 created: { by: human:benlinton, at: 2026-08-22T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-22T00:00:00Z }
 ---

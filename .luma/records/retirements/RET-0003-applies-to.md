@@ -16,7 +16,7 @@ recognizers:
     value: "a frontmatter key `applies_to:` on a policy or workflow"
 except:
   - ".luma/records/"
-lifecycle: stable
+stage: stable
 ---
 
 # RET-0003: `applies_to`

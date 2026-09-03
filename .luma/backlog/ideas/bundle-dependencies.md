@@ -2,7 +2,7 @@
 type: document
 title: Bundle dependencies
 description: How a bundle depending on another bundle should work — flat resolution, one version per project, and why context rather than convenience decides it.
-lifecycle: draft
+stage: draft
 created: { by: human:benlinton, at: 2026-08-21T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-22T00:00:00Z }
 ---
@@ -298,7 +298,7 @@ claim is a promise nobody verifies.
 - Report the transitive set and its unconditional context cost before writing
   anything.
 - Record in the manifest, per entry: version, and asked-for versus required-by.
-- `lifecycle` already carries readiness. Experimental is not a version
+- `stage` already carries readiness. Experimental is not a version
   question and must not become one.
 
 ## Proposal for consideration: resolve at a catalog snapshot

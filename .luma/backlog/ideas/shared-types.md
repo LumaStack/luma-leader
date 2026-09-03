@@ -2,7 +2,7 @@
 type: document
 title: Shared types
 description: Where a type used by several tools lives, why it is not a knowledge-format built-in, and how one changes without making every tool upgrade at once.
-lifecycle: draft
+stage: draft
 created: { by: human:benlinton, at: 2026-08-22T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-22T00:00:00Z }
 ---

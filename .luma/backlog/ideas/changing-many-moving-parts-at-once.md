@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-26T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: next
 scope: organization
-lifecycle: draft
+stage: draft
 ---
 
 # Changing many moving parts at once
@@ -60,7 +60,7 @@ ended.
 
 ### The mechanism underneath: authority does not decay
 
-A Document can say how mature it is — `lifecycle: draft | provisional |
+A Document can say how mature it is — `stage: draft | provisional |
 stable | archived | unknown` — and a `decision` can name what replaced it via
 `superseded_by`. **Neither says what this idea needs**, for two reasons:
 
@@ -115,7 +115,7 @@ verified:
 
 A list of independent confirmation events, **explicitly independent of
 `modified`** — *"content can change without re-confirmation, and be re-confirmed
-without changing"* — and trust tier is **orthogonal to `lifecycle`**. That
+without changing"* — and trust tier is **orthogonal to `stage`**. That
 orthogonality is exactly the one this idea needs, written down before anybody
 needed it.
 

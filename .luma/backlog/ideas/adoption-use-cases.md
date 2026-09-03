@@ -2,7 +2,7 @@
 type: document
 title: Adoption use cases
 description: Everything somebody will try to do with bundles and catalogs, scored against the designs on the table — which option wins each axis, which lose, and what the winners still cost.
-lifecycle: draft
+stage: draft
 created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 ---

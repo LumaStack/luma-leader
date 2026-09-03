@@ -18,7 +18,7 @@ recognizers:
     value: "any instruction to re-run the projection step that names it as a crew being outfitted"
 except:
   - ".luma/records/"
-lifecycle: stable
+stage: stable
 ---
 
 # RET-0001: the command `outfit`
