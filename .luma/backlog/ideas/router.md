@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-09-02T00:00:00Z }
 contributors: [human:benlinton, agent:claude-fable-5]
 horizon: later
 scope: organization
-lifecycle: draft
+stage: draft
 ---
 
 # The router

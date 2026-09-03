@@ -6,7 +6,7 @@ archived: 2026-08-27
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: someday
 scope: organization
-lifecycle: archived
+stage: archived
 ---
 
 # Starters

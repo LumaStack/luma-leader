@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-22T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: later
 scope: project
-lifecycle: draft
+stage: draft
 ---
 
 # A mandate is a record, not a value

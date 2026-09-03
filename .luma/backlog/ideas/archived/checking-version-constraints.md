@@ -6,7 +6,7 @@ archived: 2026-08-28
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: later
 scope: organization
-lifecycle: archived
+stage: archived
 ---
 
 # Checking that a version constraint is actually satisfied

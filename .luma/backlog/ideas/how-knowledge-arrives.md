@@ -2,7 +2,7 @@
 type: document
 title: How knowledge arrives
 description: The target state for getting knowledge in front of an agent — three transports, rings fired by entrypoints, and one integrity rule. Designed from the requirement rather than from what exists.
-lifecycle: draft
+stage: draft
 created: { by: human:benlinton, at: 2026-08-27T00:00:00Z }
 modified: { by: agent:claude-opus-5, at: 2026-08-27T00:00:00Z }
 ---

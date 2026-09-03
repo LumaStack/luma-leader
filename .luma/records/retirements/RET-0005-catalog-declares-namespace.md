@@ -16,7 +16,7 @@ recognizers:
     value: "any document stating that a catalog declares, sets, chooses or owns its namespace as a thing it writes down"
 except:
   - ".luma/records/"
-lifecycle: stable
+stage: stable
 ---
 
 # RET-0005: a catalog declares its namespace

@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-09T00:00:00Z }
 contributors: [human:benlinton]
 horizon: someday
 scope: project
-lifecycle: draft
+stage: draft
 ---
 
 # Decide what to build next, and say why

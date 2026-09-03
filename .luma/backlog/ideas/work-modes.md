@@ -5,7 +5,7 @@ created: { by: human:benlinton, at: 2026-08-31T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
 horizon: later
 scope: organization
-lifecycle: draft
+stage: draft
 ---
 
 # Work modes

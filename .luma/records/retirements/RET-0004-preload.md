@@ -18,7 +18,7 @@ recognizers:
     value: "any document telling an author to declare when their own document loads, or treating loading as a tier the author files into"
 except:
   - ".luma/records/"
-lifecycle: stable
+stage: stable
 ---
 
 # RET-0004: `preload`

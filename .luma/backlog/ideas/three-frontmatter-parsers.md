@@ -5,7 +5,7 @@ created: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 contributors: [agent:claude-opus-5, human:benlinton]
 horizon: next
 scope: organization
-lifecycle: draft
+stage: draft
 ---
 
 # Three frontmatter parsers, and nothing makes them agree
@@ -62,7 +62,7 @@ to the Python pair regardless.
 normally ship: a directory of fixture documents with expected parse results, each
 implementation running it in its own language. Unquoted wikilinks, unknown keys
 surviving a rewrite, absent-versus-empty, an `actor_event` in flow style, a
-`lifecycle` nobody declared.
+`stage` nobody declared.
 
 **It also has a home already implied.** The format's roadmap makes *"it has been
 exercised, more than once"* a condition for `v0.1.0` and warns that **resolution
