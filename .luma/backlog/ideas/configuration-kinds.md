@@ -151,5 +151,10 @@ taste.
 
 ## Next
 
-Write up the options for each kind against those criteria, then choose. Nothing
-above is a decision, and the sketch is a starting point rather than a proposal.
+**The location options are written up in [[configuration-locations]]**, against
+the criteria above. Nothing there is chosen either.
+
+What that plan does not reach, because it is about locations only: what a reader
+does with an unrecognised key, whether a bundle declares its settings at all,
+and how precedence resolves when a bundle and an application both speak. The
+middle one is the criterion above with no option attached to it yet.
