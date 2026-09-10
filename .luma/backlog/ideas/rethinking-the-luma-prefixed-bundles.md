@@ -96,6 +96,9 @@ This is probably where guides and tutorials should live. **But I'm not sure if
 that should be `luma-help`.** That is another debate: does luma help live in
 luma core, luma ecosystem, or on its own?
 
+**Naming — the top three choices should be `luma-ecosystem`, `luma-tools` and
+`luma-estate`.**
+
 ### On maintainers
 
 `luma-maintainers` is things that help us work and run the tools from a
@@ -429,7 +432,43 @@ prompts you to look it up, so definitions are lookup. **A dead word prompts
 nothing**, which is why the register has to be present before use — the same
 reason cross-tool awareness cannot be triggered.
 
-### Naming: not `luma-types`, not `luma-schemas`, not `luma-data`
+### Naming the integration bundle — and one collision to weigh
+
+The three candidates, against the criteria the rest of this design uses:
+
+| candidate | spans the job | collides with estate vocabulary | says what you are buying |
+| --- | --- | --- | --- |
+| **`luma-ecosystem`** | yes — the tools *and* how they relate | no | **yes** — you are opting into the whole thing |
+| **`luma-tools`** | names the subject, not the relationships | no | no |
+| **`luma-estate`** | yes, in principle | **yes — see below** | partly |
+
+**`luma-estate` has a live collision, and it is the same shape as `luma-data`.**
+`luma-maintainers/policy/the-estate` already defines *the estate* as **the six
+repositories that build the tools, and the boundary each defends.** That is
+maintainer vocabulary meaning *where the source lives*, and it is close to the
+opposite of what this bundle is for — a user-facing map of tools that work
+together. A reader who met `the-estate` first would read `luma-estate` as *the
+repositories*.
+
+**Recorded rather than ruled out.** It is a point against, not an elimination,
+and the author may decide the word is worth reclaiming — but reclaiming it means
+retiring the maintainer sense, which is a retirement record rather than a
+rename.
+
+**`luma-tools` is the safest and the flattest.** It describes the contents and
+says nothing about the relationships, which is precisely the part that makes
+this bundle worth having — *"it should feel like magic when that bundle is
+loaded"* is not a claim `tools` makes.
+
+**A pattern worth noticing.** This is the second naming candidate in one
+discussion to collide with a word the estate has already defined — `luma-data`
+against `luma-config`'s XDG sense, now `luma-estate` against `the-estate`. **The
+vocabulary pipeline would make that a mechanical check** rather than something
+somebody happens to remember: a proposed bundle name checked against the
+canonical term list. That is a second customer for the same machinery, and an
+argument for building it.
+
+### Naming the definitions bundle: not `luma-types`, not `luma-schemas`, not `luma-data`
 
 **The bundle name should not track a name being renamed downstream.**
 `type_definition` is under active debate in two ideas at once —
