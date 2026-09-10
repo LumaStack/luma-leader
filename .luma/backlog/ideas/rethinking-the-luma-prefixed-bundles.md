@@ -179,6 +179,16 @@ stuff.**
 **Maybe the vocabulary is one piece of the architecture. Maybe
 `luma-architecture`.**
 
+### On why we split at all
+
+I want to capture **why we split things, and how the division earns its keep.**
+We should always have good reasons why we aren't combining it all.
+
+**The more we split things, the harder it is to know what's present and what's
+missing** — so there are more surface areas to test.
+
+**So we should have good reason for stuff splitting.**
+
 ---
 
 ## Open questions, carried deliberately
@@ -243,6 +253,51 @@ drawing a boundary somewhere else.
 never want them.** That is a real cost and a real reason to split. It is just
 not the context cost, and keeping the two apart is what stops the design being
 argued in the wrong currency.
+
+### Combining is the default; splitting carries the burden of proof
+
+**The question is never "should these be separate." It is "what does the
+separation buy, and is it worth what it costs."** A split that cannot name which
+of the five criteria it satisfies is a split that has not earned its keep.
+
+That inverts the usual instinct, which is to start separate and merge if it
+hurts. Here the costs of separating are permanent and the cost of combining is
+recoverable — **you can always split later; you can rarely un-drift two copies.**
+
+**Three costs, all paid forever, none of them obvious at the moment of
+splitting:**
+
+**1. Every boundary is a duplication boundary.** Bundles have no dependencies,
+so a rule needed on both sides has to be copied. `organizing-a-bundle` concedes
+it directly: *"where several bundles need the same rule, each carries its own
+copy… copies that drift are a finding, not a merge."* More bundles, more copies,
+more drift.
+
+**2. Every bundle raises the context floor.** Each adds an unconditional line to
+every adopter's index — about 57 tokens measured — while the documents inside
+were already free until triggered. **Splitting to reduce context cost increases
+it.**
+
+**3. Presence becomes unknowable, and nothing can check it.** This is the one
+that compounds worst. **N bundles produce 2^N possible adoption states**, and
+because nothing declares a dependency, **nothing can refuse an incoherent one**.
+Ecosystem adopted without core does not error; it simply reads oddly, forever,
+and no tool reports it.
+
+So every reference across a boundary becomes a question — *is that bundle here?*
+— that a reader cannot answer from inside a document, and a writer cannot answer
+at all. **`organizing-a-bundle` asks that a reader be able to tell a boundary
+from a gap, and that only works while the reader knows which boundaries exist.**
+Past a handful of bundles, they do not.
+
+**This is the same failure as *defined is not present*, one level up.** A term
+that names a capability does not tell you the capability is installed; a bundle
+that names another bundle does not tell you it was adopted. Both are silent, and
+both get worse with every additional piece.
+
+**It is also why the vocabulary decision came out the way it did.** One source
+generated outward beats distributed sources for exactly this reason — it
+collapses the states rather than multiplying them.
 
 ### The entry-point document: the rule, not the roster
 
