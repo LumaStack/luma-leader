@@ -48,9 +48,14 @@ the thinking, including the parts still unresolved.*
 ### The lens
 
 We need to think of different use cases for `luma-` bundles, and how we can
-minimize progressive disclosure and loading things into context that you will
-never need. We don't want the core bundles to be bloated, or to become a junk
-drawer of stuff you might need.
+**optimize progressive disclosure** and **minimize loading things into context
+that you will never need**. We don't want the core bundles to be bloated, or to
+become a junk drawer of stuff you might need.
+
+*Corrected by the author from "minimize progressive disclosure": the verb
+belonged to the second clause. We want as much progressive disclosure as is
+useful — optimized rather than maximized, since each additional layer is also a
+layer somebody can fail to descend.*
 
 That is the exercise we must do. We need to look for the perfect design, not
 anchor on what we have. Think green field.
@@ -82,6 +87,10 @@ that could go in core it gets huge — help, guides, tutorials, etc, etc, etc.
 **Ecosystem unlocks you from using one tool to using all of them, and how they
 should interact with each other** — how the tools can chain together, workflows
 for using the tools in sequence.
+
+**`luma-ecosystem` is what will make the tools feel like they are aware of each
+other, and then know when and how to use each other correctly. It should feel
+like magic when that bundle is loaded.**
 
 This is probably where guides and tutorials should live. **But I'm not sure if
 that should be `luma-help`.** That is another debate: does luma help live in
@@ -221,6 +230,35 @@ easiest to leave un-eager. Help that never loads until asked for costs one line
 in the bundle index. So the pressure it puts on core is about vendored bytes and
 findability, not context — which is the distinction above, and probably means
 this is a smaller problem than it feels.
+
+### "It should feel like magic" is a loading requirement, and it costs something
+
+**Cross-tool awareness cannot be triggered.** A rule you might break has a
+trigger — the action that would break it. **A capability you do not know exists
+has none**, because nothing you do points at it. An agent finishing a piece of
+work has no reason to look up whether a tool exists for the next step, so the
+integration never fires and the magic never happens.
+
+That is the same shape as the one exception `organizing-a-bundle` already
+allows: a register of retired words, *"useless unless it is present before
+somebody uses one."* So there are **two** legitimate reasons to spend always-on
+tokens, not one:
+
+1. **A violation that cannot be undone** — a published credential.
+2. **A capability nobody would think to look for** — this.
+
+**The cheap way to buy it is the index line, not an eager document.** The line is
+always on and costs about fifty tokens, so an ecosystem description that *names
+the capabilities* — rather than describing the bundle — may create the awareness
+on its own, with every detail still triggered. Something closer to *"foreman
+adopts knowledge, backlog holds intended work, clarify resolves ambiguous
+requirements — and how each feeds the next"* than to *"knowledge about the luma
+ecosystem."*
+
+**If that is not enough, the fallback is a deliberately thin map** — the tools,
+one line each, and when each becomes relevant — and nothing else eager. What must
+not happen is the whole integration story going eager to buy an awareness that a
+sentence would have bought.
 
 ### The structural risk, stated once
 
