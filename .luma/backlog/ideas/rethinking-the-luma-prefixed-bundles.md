@@ -177,7 +177,7 @@ should also include design principles and all that — maybe even the vision and
 stuff.**
 
 **Maybe the vocabulary is one piece of the architecture. Maybe
-`luma-architecture`.**
+`luma-architecture` or `luma-approach`.**
 
 ### On why we split at all
 

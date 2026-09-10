@@ -164,3 +164,12 @@ the ones offered.
 **The mechanism was left open at the maintainer's explicit instruction.** The
 options above are recorded as options and are known to be incomplete; picking one
 is the work, not the preamble to it.
+
+**Mode use cases.**
+- Tell me - I want you to show me what to do, do not do it for me, you can read but do not write
+- Walk me through - Step by step
+- Interview me
+
+# Learning
+- When closing a work item we should check to see if there are any work items it should create
+- Like things it noticed that aren't fixed yet but were out of scope, for example
