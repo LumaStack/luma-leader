@@ -244,6 +244,70 @@ never want them.** That is a real cost and a real reason to split. It is just
 not the context cost, and keeping the two apart is what stops the design being
 argued in the wrong currency.
 
+### The entry-point document: the rule, not the roster
+
+**`luma-architecture`'s first document should be what becomes a bundle and what
+does not — not a list of the bundles that currently exist.**
+
+**A roster is derivable and rots.** The bundles and their descriptions already
+live in two generated places: a project's `INDEX.md`, loaded every session, and
+`CATALOG.md`. A hand-written third copy drifts the moment a bundle is added,
+renamed or merged — and renaming is this estate's most expensive operation. It
+is also the same rot as counting things in a heading: *"three categories"* fails
+when there is a fourth, and a table of five bundles fails when there is a sixth.
+
+**The rationale is what is not derivable** — *split off for change rate*,
+*strictly additive*, *the substrate one tool needs*. No tool can compute those.
+That is the architecture.
+
+**The division, using machinery that already exists:** the index says *what
+exists*; architecture says *why it is cut that way*. And the criteria answer the
+question a reader actually arrives with, which is **where does a new thing go** —
+a roster cannot answer that at all.
+
+**Two constraints on writing it.** Bundles are named in prose, never linked —
+*"a wikilink or a path into another bundle breaks self-containment and will be
+reported."* And if a roster is wanted anyway, **generate it**: same pipeline as
+the vocabulary, banner-marked, which makes it a second customer for that
+machinery.
+
+### The five criteria, and the one that is not a criterion
+
+**Split a bundle for one of these five. Name which one.**
+
+1. **Adoption** — *would anyone want half of it?* The bytes get vendored into
+   every adopting repository, so material some adopters will never want is a
+   real cost paid by them. `create-bundle` already carries the test: *if
+   adopting half would leave someone with rules and no procedure for following
+   them, it is one bundle.*
+
+2. **Change rate** — *do these move at different speeds?* Version numbers are
+   per bundle, so slow material bound to fast material makes every adopter read
+   changelogs about things they do not use. **This is what separates the schemas
+   from everything else**, and it is an argument neither adoption nor loading
+   can make.
+
+3. **Ownership** — *do different people edit these?* Separate bundles let each
+   move without contending with the other. Weakest of the five here, since the
+   estate has one maintainer, but real in an organization.
+
+4. **Lifecycle** — *does one half need to promise more than the other?* `stage`
+   is a single value per bundle, so **you cannot promise stability for half of
+   one.** Material heading for `stable` cannot share a bundle with material that
+   will be `draft` indefinitely — which is why a forming vocabulary and a
+   versioned schema pull apart.
+
+5. **Trust** — *do these carry different provenance or licence?* A bundle is the
+   unit of adoption, so it is also the unit of vouching and of licensing. See
+   `what-a-bundle-may-carry` in `bundle-manager` for what a carried licence does
+   to every adopter downstream.
+
+**And the one that is not a reason: "it would get too big to load."** That is
+`matches`, not a boundary. Splitting for context cost **raises** the floor — each
+new bundle adds an unconditional index line, while the documents inside were
+already free until triggered. Bloat is a loading failure and cannot be fixed by
+drawing the boundary somewhere else.
+
 ### Change rate is a third axis, and it is the strongest argument in the thread
 
 **The version-noise argument for keeping `luma-types` separate is the best
