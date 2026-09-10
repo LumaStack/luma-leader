@@ -170,6 +170,15 @@ into the places it belongs, as a pipeline. So we get the best of both.**
 these things won't be present. Defined vocabulary does not tell you whether
 something is present and available.**
 
+### On what the vocabulary bundle should hold
+
+**If we are going to create a new bundle for it, then I think luma vocabulary
+should also include design principles and all that — maybe even the vision and
+stuff.**
+
+**Maybe the vocabulary is one piece of the architecture. Maybe
+`luma-architecture`.**
+
 ---
 
 ## Open questions, carried deliberately
@@ -398,6 +407,60 @@ nothing reminds anyone about.
   estate has no established place for that. Probably the sharpest open question
   this design creates.
 - **A `term` type** carrying the word, the definition and the owning layer.
+
+### `luma-architecture`, and what it may hold
+
+**A bundle can be both a deliverable and a generation source** — `luma-types`
+already is, adopted as a bundle *and* the master others vendor from. So the
+source-versus-bundle tension resolves: the architecture bundle is adoptable
+whole by anyone wanting the full picture, and is what the vocabulary pipeline
+generates filtered subsets from.
+
+**Vision, principles and vocabulary pass the rise-and-fall test.** Vision
+justifies the principles; the principles shape the vocabulary — `consumer`,
+`catalog` and `bundle` mean what they mean *because* of vendored-not-resolved
+and no-dependencies. Change the vision and the terms move. That is one thing
+rather than three.
+
+**`luma-architecture` beats `luma-foundations`, and specificity is the reason.**
+`foundations` could hold anything, which was the objection to `luma-definitions`
+too. Three checks pass:
+
+- **No collision.** *Architecture* appears in the catalog only as an ordinary
+  noun and is defined nowhere — unlike `estate` and `data`, both of which failed
+  this.
+- **It answers a filed gap.** [[no-format-for-non-procedural-knowledge]] names
+  *"an architecture description"* as one of the artifacts with no home. The name
+  is an answer to a recorded problem rather than an invention.
+- **Vocabulary inside architecture is conventional.** Architecture documents
+  routinely carry a glossary, so a reader is not surprised to find terms there.
+
+**The caveat: vision sits upstream of architecture.** Architecture describes how
+a thing is shaped *given* a goal; vision is the goal. In practice architecture
+documents open with context and goals, so it is a small stretch rather than a
+wrong one — **but check whether vision already has a home first.**
+`project-documentation` governs published prose, and positioning currently lives
+in READMEs. Pulling it into a bundle either duplicates it or moves published
+positioning, which is a larger decision than filing a design document.
+
+**Principles, structure and vocabulary are unambiguously architecture. Vision is
+adjacent** — include it if homeless, reference it if not.
+
+### The boundary that keeps it from becoming a drawer
+
+The bundle holds the **why**; operational material stays with what it operates
+on:
+
+| belongs | does not |
+| --- | --- |
+| vision — what this is for | help — how do I do X |
+| principles — why it is shaped this way | guides, tutorials — walkthroughs |
+| vocabulary — what the words mean | procedures — steps to follow |
+
+**Checkable by whoever adds the ninetieth document**, which *use good judgement*
+is not. This matters because adding *"and the vision and stuff"* to a vocabulary
+bundle is exactly the move the opening of this idea warns against — the bar has
+to be a boundary rather than a judgement call.
 
 ### Defined is not present, and that has to be structural
 
