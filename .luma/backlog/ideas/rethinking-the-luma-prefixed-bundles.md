@@ -166,6 +166,10 @@ when words collide.**
 **I think vocabulary should have one place it lives. And then we can generate it
 into the places it belongs, as a pipeline. So we get the best of both.**
 
+**And we have to write it in such a way that `luma-core` understands some of
+these things won't be present. Defined vocabulary does not tell you whether
+something is present and available.**
+
 ---
 
 ## Open questions, carried deliberately
@@ -394,6 +398,44 @@ nothing reminds anyone about.
   estate has no established place for that. Probably the sharpest open question
   this design creates.
 - **A `term` type** carrying the word, the definition and the owning layer.
+
+### Defined is not present, and that has to be structural
+
+**A definition teaches a word; it says nothing about whether the thing exists
+here.** An agent that reads what a *work item* is has no way to tell whether
+`luma-backlog` is installed, and the default assumption will be that it is — so
+it reaches for a capability that is not there, or worse, describes it to a user
+as available.
+
+**The estate already has this rule one level up.** `organizing-a-bundle`:
+*"Acknowledge, do not depend. A bundle may say the changelog is owned by the
+release bundle without requiring it to be adopted. Nothing breaks if it is
+absent — a reader can tell the omission is a boundary rather than a gap."* This
+extends it from bundles to terms.
+
+**Two kinds of term, and only one is safe to state flatly:**
+
+| kind | example | what a definition claims |
+| --- | --- | --- |
+| **concept** | `adopt`, `bundle`, `consumer`, `project` | complete on its own — the word means this, always |
+| **capability** | `work item`, `chaining`, a named tool | **names something that exists in the world, not something available here** |
+
+**It has to be a field, not a phrasing habit.** A convention of writing *"may
+not be present"* erodes across a hundred entries and cannot be checked. A term
+that declares which kind it is can be rendered differently, checked
+mechanically, and cannot be forgotten by whoever writes entry ninety-seven.
+
+**And availability is genuinely checkable**, which is what makes this
+actionable rather than a warning: adopted bundles are listed in
+`.luma/bundles/MANIFEST.md`, and installed tools are on the path. So a
+capability term can carry *how to find out* rather than merely *this might not
+exist* — the difference between an agent that hedges and one that verifies.
+
+**This is the same constraint that keeps the awareness line honest.** Core is
+allowed to say other tools exist — that is what makes ecosystem discoverable —
+but **naming a capability is not claiming it.** Both the awareness line and the
+capability terms need the same discipline, and they fail the same way without
+it: an agent confidently offering something the project does not have.
 
 ### Where a shared definition goes — partly retracted
 
