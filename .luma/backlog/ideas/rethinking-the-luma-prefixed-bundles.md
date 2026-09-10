@@ -102,11 +102,27 @@ luma core, luma ecosystem, or on its own?
 maintainer's point of view. **It should be an additional layer, never a
 replacement, and it should never crash into the other `luma-` bundles.**
 
-### On types
+### On types, and the glossary
 
 `luma-types` — schemas to vendor. This should go into luma core, or be its own
 thing. I'm not sure. **I think we might want it separate only because we don't
 want core to get version noise every time a schema changes.**
+
+Where should the luma glossary live — is that luma core? Or is that the
+ecosystem? It might also go in maintainers.
+
+**Resolved in discussion: it goes with the types.** Definitions that more than
+one thing must agree on already have a home, and a glossary is the same shape as
+a schema — agreement about meaning rather than agreement about form.
+
+### On naming the definitions bundle
+
+Should `luma-types` become `luma-schemas`? Or is there a better way to say *this
+is how we shape data* that is more universal than just types?
+
+`luma-data`?
+
+**`luma-definitions` is good.** — *settled.*
 
 ---
 
@@ -116,10 +132,17 @@ want core to get version noise every time a schema changes.**
    the most sense and gives core double duty — installing *and* running.
    Explicitly deferred for later evaluation.
 2. **Where does `luma-help` live** — core, ecosystem, or its own bundle?
-3. **Is `luma-types` separate on its own merits, or only to avoid version
-   noise?**
+3. ~~**Is `luma-types` separate on its own merits, or only to avoid version
+   noise?**~~ — **settled: separate, renamed `luma-definitions`, and it takes
+   the glossary too.**
 4. **What keeps core aggressively small** once help, guides and tutorials all
    have a claim on it?
+5. **The awareness circularity.** Ecosystem's job is to make you aware the other
+   tools exist — but it is the layer *above* core, so the adopter who most needs
+   that awareness is the one who has not adopted it. **The bundle that tells you
+   the other tools exist is the one you only adopt once you know they exist.**
+   Two ways out: the capability map lives in core while integration detail lives
+   in ecosystem, or core and ecosystem merge and the question dissolves.
 
 ---
 
@@ -259,6 +282,64 @@ ecosystem."*
 one line each, and when each becomes relevant — and nothing else eager. What must
 not happen is the whole integration story going eager to buy an awareness that a
 sentence would have bought.
+
+### Where a shared definition goes — the estate had already answered this
+
+The glossary question is a special case of a general one, and the estate solves
+it once already, in the same pair of bundles:
+
+| | the definitions | the discipline for changing them |
+| --- | --- | --- |
+| **schemas** | `luma-types/_types/*` | `luma-maintainers/procedure/change-a-shared-type` |
+| **terms** | *the glossary* | *the retired-words register, and how a word is retired* |
+
+**Shared definitions are data everyone vendors; the obligation to keep them
+coherent belongs to whoever maintains the tools.** That is why the glossary is
+neither core nor ecosystem, and why the instinct toward maintainers was
+half-right — **"glossary" is two artifacts.** A *reader's glossary* is
+cross-cutting lookup and belongs with the definitions. An *author's register* —
+which word we use, which are dead — is an authoring constraint, belongs to
+maintainers, and **already exists**: six retirement records, and the catalog's
+only `matches: always`.
+
+The loading asymmetry falls out of the same split. A term you do not recognise
+prompts you to look it up, so definitions are lookup. **A dead word prompts
+nothing**, which is why the register has to be present before use — the same
+reason cross-tool awareness cannot be triggered.
+
+### Naming: not `luma-types`, not `luma-schemas`, not `luma-data`
+
+**The bundle name should not track a name being renamed downstream.**
+`type_definition` is under active debate in two ideas at once —
+[[rename-types-to-type-definitions]] wants the directory to become
+`type_definitions/`, and `classify-bundle-contents` proposes the type become
+`type_schema`. Both `luma-types` and `luma-schemas` would have to move again
+when LKF settles; a name that does not reference the format's type system does
+not.
+
+**And the bundle is no longer only about data.** With the glossary in it, any
+name built on *how we shape data* describes half the contents. What both halves
+share is narrower and more durable: **the definitions more than one thing must
+agree on** — schemas agree about form, a glossary agrees about meaning, and
+breaking either fails quietly in the same way.
+
+**`luma-data` was considered and rejected on a concrete collision.** `data` is
+already a defined term in this estate: `luma-config` gives it a specific XDG
+meaning — *things a program installs and manages* — with a section on choosing
+between config, data and state, and there is a separate `data-files` idea about
+something else again. **The bundle that holds the glossary should not be named
+with a word the estate has already defined differently.** It is also inaccurate:
+a schema is not data, it is the shape data takes.
+
+`luma-contracts` was the close runner-up, and is the author's own phrase for what
+a type definition is. Dropped for over-promising on prose — a glossary entry is
+an agreement rather than a contract — and for colliding with the licensing
+vocabulary this estate now carries.
+
+**Keep the bundle name independent of the directory inside it.** The bundle name
+answers *what is this collection*; `_types/` answers *what kind of file is this*.
+Holding them apart means the live `_types/` rename does not drag the bundle name
+with it.
 
 ### The structural risk, stated once
 
