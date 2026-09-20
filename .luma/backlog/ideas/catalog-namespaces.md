@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Catalog namespaces
 description: The prefix a catalog publishes its bundles under — why it is a name rather than an identity, when two adoptions collide, and why catalogs do not survive to session time.
 stage: draft

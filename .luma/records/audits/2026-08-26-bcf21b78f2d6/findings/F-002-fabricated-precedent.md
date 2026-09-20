@@ -1,5 +1,6 @@
 ---
 type: finding
+type_version: "0.0.1"
 title: An agent-authored assertion is replicated across three drafts and cited as a decision
 finding_id: F-002
 severity: high

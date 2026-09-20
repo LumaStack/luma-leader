@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Work modes — named postures a session holds, and something that holds it there
 created: { by: human:benlinton, at: 2026-08-31T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]

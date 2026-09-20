@@ -1,5 +1,6 @@
 ---
 type: retirement
+type_version: "0.0.1"
 retirement_id: RET-0002
 retired_at: 2026-08-26T19:26:16Z
 origin: project

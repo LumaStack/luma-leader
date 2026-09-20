@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Retiring a concept
 description: How a retired idea comes back — not from the files that still name it, but from the model about to name it again — and the framework that has to defend both directions at once.
 stage: draft

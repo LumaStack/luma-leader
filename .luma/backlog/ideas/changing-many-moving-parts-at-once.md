@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Changing many moving parts at once, without leaving the files competing
 created: { by: human:benlinton, at: 2026-08-26T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]

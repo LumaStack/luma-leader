@@ -1,5 +1,6 @@
 ---
 type: finding
+type_version: "0.0.1"
 title: DECISIONS.md cannot distinguish a decision from a position an agent recorded
 finding_id: F-003
 severity: medium

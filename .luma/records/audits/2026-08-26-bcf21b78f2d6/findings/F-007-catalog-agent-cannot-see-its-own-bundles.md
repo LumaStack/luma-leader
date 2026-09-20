@@ -1,5 +1,6 @@
 ---
 type: finding
+type_version: "0.0.1"
 title: An agent working in the catalog cannot see the bundles the catalog publishes
 finding_id: F-007
 severity: low

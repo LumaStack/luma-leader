@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: The curator
 description: What a tool that tends a catalog does — the checks only a catalog can run, why it is not foreman, and what publication turned out to be.
 stage: draft

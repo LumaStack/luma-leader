@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: A retirement framework
 description: How a retired idea comes back, and the framework that has to defend both directions — the decision that stays home, the strategy that travels, and the three tiers that decide who can detect it.
 stage: provisional

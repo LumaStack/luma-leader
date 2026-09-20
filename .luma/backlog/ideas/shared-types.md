@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Shared types
 description: Where a type used by several tools lives, why it is not a knowledge-format built-in, and how one changes without making every tool upgrade at once.
 stage: draft

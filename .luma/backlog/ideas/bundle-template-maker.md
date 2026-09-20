@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: A bundle-template-maker bundle — what a bundle template is, and what stops it rotting
 created: { by: human:benlinton, at: 2026-08-29T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]

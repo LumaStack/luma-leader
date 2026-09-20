@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: A bundle may declare that another bundle cannot be loaded beside it
 created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
