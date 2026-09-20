@@ -5,7 +5,7 @@ next unused four-digit number. **Copy the blocks, not this file**: a template
 carrying live frontmatter would be indexed and validated as a real decision.
 
 Guidance is in `../policy/decision-guidelines.md`; the field contract is in
-`../_types/decision.md`.
+`../type_definitions/decision/DEFINITION.md`.
 
 ## Frontmatter
 
@@ -14,14 +14,14 @@ Guidance is in `../policy/decision-guidelines.md`; the field contract is in
 type: decision
 title: <short decision title, active voice>
 decided: YYYY-MM-DD
-lifecycle: draft
+stage: draft
 reopen_trigger: <what would make this worth revisiting>
 ---
 ```
 
 - **`decided`** — when the position became binding, **not** when the file was
   created. They are frequently different and only one is the fact people cite.
-- **`lifecycle`** — `draft` while arguing, `provisional` once acting on
+- **`stage`** — `draft` while arguing, `provisional` once acting on
   it, `stable` when settled, `archived` when it is no longer the answer. It
   governs what you may edit; see the guidelines.
 - **`superseded_by`** — add when archiving in favour of a replacement, and

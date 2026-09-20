@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Check a bundle's ring where the bundle is written, not only where it is adopted
 created: { by: human:benlinton, at: 2026-08-28T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]

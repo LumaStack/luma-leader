@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Configuration locations
 description: Every candidate location for application, project, catalog and bundle configuration, what each costs, and where the argument lands — written to be chosen from rather than agreed with.
 stage: draft

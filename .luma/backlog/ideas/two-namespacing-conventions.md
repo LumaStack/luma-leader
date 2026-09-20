@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Two type-namespacing conventions exist and neither knows about the other
 created: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 contributors: [agent:claude-opus-5, human:benlinton]

@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Three frontmatter parsers, no reference implementation, no shared tests
 created: { by: agent:claude-opus-5, at: 2026-08-23T00:00:00Z }
 contributors: [agent:claude-opus-5, human:benlinton]

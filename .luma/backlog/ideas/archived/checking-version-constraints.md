@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Checking that a version constraint is actually satisfied
 created: { by: agent:claude-opus-5, at: 2026-08-28T00:00:00Z }
 archived: 2026-08-28

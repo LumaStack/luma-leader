@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Committed derived material has no tier, and the cache deferral asked the wrong question
 created: { by: human:benlinton, at: 2026-08-27T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]

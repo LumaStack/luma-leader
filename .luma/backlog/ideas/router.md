@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: The router — a user-authored table from what was said to where it lands
 created: { by: human:benlinton, at: 2026-09-02T00:00:00Z }
 contributors: [human:benlinton, agent:claude-fable-5]

@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Starters — named lists of bundles a new consumer begins with
 created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 archived: 2026-08-27

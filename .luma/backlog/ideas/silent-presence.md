@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Silent presence
 description: The failure where knowledge loaded correctly and was not applied — why no loading discipline fixes it, the enforcement ladder it implies, and how a snapshot taken at the moment of failure tells four causes apart.
 stage: draft

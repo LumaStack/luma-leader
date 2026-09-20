@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Loading mechanisms
 description: By what mechanism knowledge reaches a reader — the three fields an author writes and everything derived from them, the six candidates for delivering it, when the routing decision gets made, and why five of the six readers are not models.
 stage: draft

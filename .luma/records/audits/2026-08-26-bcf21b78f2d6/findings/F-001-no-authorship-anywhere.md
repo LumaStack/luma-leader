@@ -1,5 +1,6 @@
 ---
 type: finding
+type_version: "0.0.1"
 title: Nothing in the estate records whether a human or an agent wrote it
 finding_id: F-001
 severity: high

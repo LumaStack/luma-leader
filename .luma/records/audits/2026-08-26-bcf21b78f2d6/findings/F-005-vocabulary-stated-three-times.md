@@ -1,5 +1,6 @@
 ---
 type: finding
+type_version: "0.0.1"
 title: The trigger vocabulary is stated independently in three places and can drift
 finding_id: F-005
 severity: medium

@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Bundle versioning
 description: What major, minor and patch mean for a bundle whose content is prose — the test for each tier, the one part that can be checked mechanically, and why patch is the dangerous one here.
 stage: draft

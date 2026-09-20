@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: Rethinking the luma-prefixed bundles
 created: { by: human:luma-foundry, at: 2026-09-10T07:20:00Z }
 contributors: [human:luma-foundry, agent:claude-opus-5]

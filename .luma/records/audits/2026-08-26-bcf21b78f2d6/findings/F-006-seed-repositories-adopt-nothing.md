@@ -1,5 +1,6 @@
 ---
 type: finding
+type_version: "0.0.1"
 title: Two repositories in the estate have no .luma/ and are outside every check
 finding_id: F-006
 severity: low

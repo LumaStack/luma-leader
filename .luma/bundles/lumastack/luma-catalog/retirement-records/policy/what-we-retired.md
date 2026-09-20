@@ -1,8 +1,9 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: What we retired
 description: Every idea this estate has retired, one line each — what it was, what replaced it. The list an author needs before writing, not after.
-matches: always
+matches: eager
 ---
 
 # What we retired

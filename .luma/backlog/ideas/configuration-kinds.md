@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Configuration kinds
 description: Application, project, catalog and bundle configuration are four different things sharing one directory and one set of rules written for the first of them. The sketch, the open questions, and what any answer has to survive.
 stage: draft

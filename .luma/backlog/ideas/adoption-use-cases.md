@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Adoption use cases
 description: Everything somebody will try to do with bundles and catalogs, scored against the designs on the table — which option wins each axis, which lose, and what the winners still cost.
 stage: draft

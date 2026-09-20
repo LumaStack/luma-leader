@@ -1,5 +1,6 @@
 ---
 type: audit
+type_version: "0.0.1"
 title: The estate, under two lenses — unearned assertions and general quality
 audited: 2026-08-26
 commit: bcf21b78f2d6

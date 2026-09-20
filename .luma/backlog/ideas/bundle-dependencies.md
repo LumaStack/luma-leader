@@ -1,5 +1,6 @@
 ---
 type: document
+type_version: "0.0.1"
 title: Bundle dependencies
 description: How a bundle depending on another bundle should work — flat resolution, one version per project, and why context rather than convenience decides it.
 stage: draft

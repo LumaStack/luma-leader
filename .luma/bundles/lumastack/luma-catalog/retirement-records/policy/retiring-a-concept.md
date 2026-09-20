@@ -1,10 +1,9 @@
 ---
 type: policy
+type_version: "0.0.1"
 title: Retiring a concept
 description: What may be retired, how far it reaches, and why a word is the cheapest recognizer rather than the important one. Read before retiring anything.
-matches:
-  - topic: retiring an idea, a concept, a field or a word
-  - topic: deciding how widely a change should be enforced
+matches: eager
 ---
 
 # Retiring a concept
@@ -143,7 +142,7 @@ travels.
 
 | the retired idea appears in | it is |
 | --- | --- |
-| a `policy` or a `workflow` — both bind | a **finding** |
+| a `policy` or a `procedure` — both bind | a **finding** |
 | a `document` — background and drafts argue about ideas | a **notice** |
 | a `## Version` history, or a record | **exempt** — both say what was true when written |
 

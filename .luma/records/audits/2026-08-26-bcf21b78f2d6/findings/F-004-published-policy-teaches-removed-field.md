@@ -1,5 +1,6 @@
 ---
 type: finding
+type_version: "0.0.1"
 title: A published policy teaches a field the format removed two releases ago
 finding_id: F-004
 severity: high

@@ -1,5 +1,6 @@
 ---
 type: luma/idea
+type_version: "0.1.0"
 title: A human-friendly way to query frontmatter, so grep is not the interface
 created: { by: human:benlinton, at: 2026-08-23T00:00:00Z }
 contributors: [human:benlinton, agent:claude-opus-5]
