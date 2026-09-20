@@ -1,9 +1,11 @@
 ---
 type: bundle
-version: 0.3.0
-published: 2026-08-28
+type_version: "0.0.1"
+title: lumastack/luma-catalog/retirement-records
+version: 0.6.0
+published: 2026-09-19
+stage: draft
 consumers: [project, organization]
-entrypoint: policy/retiring-a-concept
 description: Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
 ---
 
@@ -51,7 +53,7 @@ ambiguous once the estate spans organizations.
 
 **Detection runs after the fact and cannot be the whole defence.** A config file
 is read by a checker and shown to nobody; the author has never seen it. That is
-why [[what-we-retired]] declares `matches: always` and is the only document here
+why [[what-we-retired]] declares `matches: eager` and is the only document here
 loaded before work starts — **it is the half that meets an author before they
 write, rather than after.**
 
@@ -65,7 +67,7 @@ notices, which disables the check everywhere.
 
 **A bundle is machinery. Records live where the project keeps records** —
 `.luma/records/` by default, or wherever it has configured them. This bundle
-holds a type, two policies, three workflows and a template, and not one
+holds a type, two policies, three procedures and a template, and not one
 retirement.
 
 **The reason is stronger than symmetry with `audit-records` and
@@ -90,6 +92,19 @@ Both levels. A project retires its own ideas and sweeps against what it adopted;
 an organization hands retirements down and needs to know which projects complied.
 
 ## Version
+
+`0.3.1` — **the manifest declares `lifecycle: draft`.** The field was absent, and
+absent reads as `unknown` — *nobody has said*. Something was known: this is
+developed by its maintainers for their own use, and its shape can reverse
+without notice.
+
+**Publication did not promote it.** Being reachable by somebody who did not
+write it makes the question live rather than answering it, and the answer here
+is *still a draft* — which is a legitimate thing to publish, and says more than
+silence did.
+
+Patch: a fact written down. Nothing an adopter is obliged to do has changed, and
+`unknown` promised nothing that `draft` withdraws.
 
 `0.3.0` — **`lifecycle_status` is now `lifecycle`.**
 
