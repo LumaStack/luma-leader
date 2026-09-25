@@ -22,12 +22,84 @@ on_violation = "allow"
 matches = ["topic:writing a finding in an audit"]
 
 [[rule]]
+bundle = "lumastack/luma-catalog/backlog"
+document = "policy/adopting-a-rule-the-corpus-does-not-meet"
+title = "Adopting a rule the corpus does not meet"
+path = ".luma/bundles/lumastack/luma-catalog/backlog/policy/adopting-a-rule-the-corpus-does-not-meet.md"
+on_violation = "allow"
+matches = ["topic:adopting a rule, tightening a policy, or changing what a record must contain"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/backlog"
+document = "policy/showing-records"
+title = "Showing records"
+path = ".luma/bundles/lumastack/luma-catalog/backlog/policy/showing-records.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/backlog"
+document = "policy/when-a-work-item-splits"
+title = "When a work item splits"
+path = ".luma/bundles/lumastack/luma-catalog/backlog/policy/when-a-work-item-splits.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
 bundle = "lumastack/luma-catalog/decision-records"
 document = "policy/decision-guidelines"
 title = "Writing a decision record"
 path = ".luma/bundles/lumastack/luma-catalog/decision-records/policy/decision-guidelines.md"
 on_violation = "allow"
 matches = ["topic:recording a decision, or deciding whether one is worth recording"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/git-workflow"
+document = "policy/merge-commits"
+title = "Integrate with merge commits"
+path = ".luma/bundles/lumastack/luma-catalog/git-workflow/policy/merge-commits.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/git-workflow"
+document = "policy/proving-work-landed"
+title = "Proving work has landed"
+path = ".luma/bundles/lumastack/luma-catalog/git-workflow/policy/proving-work-landed.md"
+on_violation = "allow"
+matches = ["topic:checking whether work has landed", "topic:finishing a piece of work"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/git-worktrees"
+document = "policy/worktree-isolation"
+title = "Worktree isolation"
+path = ".luma/bundles/lumastack/luma-catalog/git-worktrees/policy/worktree-isolation.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/github-release"
+document = "policy/changelog"
+title = "The changelog"
+path = ".luma/bundles/lumastack/luma-catalog/github-release/policy/changelog.md"
+on_violation = "allow"
+matches = ["path:CHANGELOG.md"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/github-release"
+document = "policy/release-notes"
+title = "Release titles and contents"
+path = ".luma/bundles/lumastack/luma-catalog/github-release/policy/release-notes.md"
+on_violation = "allow"
+matches = ["command:gh release create", "event:before-release"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/github-release"
+document = "policy/release-versions"
+title = "Choosing a release version"
+path = ".luma/bundles/lumastack/luma-catalog/github-release/policy/release-versions.md"
+on_violation = "allow"
+matches = ["event:before-release", "topic:choosing which part of a version to bump"]
 
 [[rule]]
 bundle = "lumastack/luma-catalog/luma-maintainers"
@@ -46,6 +118,54 @@ on_violation = "allow"
 matches = ["command:luma-foreman", "command:luma-catalog-curator", "topic:choosing which luma tool does a job"]
 
 [[rule]]
+bundle = "lumastack/luma-catalog/project-documentation"
+document = "policy/documentation-layout"
+title = "Where documentation lives"
+path = ".luma/bundles/lumastack/luma-catalog/project-documentation/policy/documentation-layout.md"
+on_violation = "allow"
+matches = ["path:docs/**", "topic:deciding where a document belongs"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/project-documentation"
+document = "policy/readme"
+title = "What a README is for"
+path = ".luma/bundles/lumastack/luma-catalog/project-documentation/policy/readme.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/project-documentation"
+document = "policy/reserved-document-names"
+title = "Reserved document names"
+path = ".luma/bundles/lumastack/luma-catalog/project-documentation/policy/reserved-document-names.md"
+on_violation = "allow"
+matches = ["topic:naming a new file at a repository root"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/project-documentation"
+document = "policy/the-project-descriptor"
+title = "The project descriptor"
+path = ".luma/bundles/lumastack/luma-catalog/project-documentation/policy/the-project-descriptor.md"
+on_violation = "allow"
+matches = ["path:.luma/PROJECT.md"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/project-documentation"
+document = "policy/which-document"
+title = "Which document to write"
+path = ".luma/bundles/lumastack/luma-catalog/project-documentation/policy/which-document.md"
+on_violation = "allow"
+matches = ["topic:deciding whether a document is worth writing"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/project-documentation"
+document = "policy/writing-style"
+title = "Writing style"
+path = ".luma/bundles/lumastack/luma-catalog/project-documentation/policy/writing-style.md"
+on_violation = "allow"
+matches = ["topic:writing or editing prose"]
+
+[[rule]]
 bundle = "lumastack/luma-catalog/retirement-records"
 document = "policy/retiring-a-concept"
 title = "Retiring a concept"
@@ -58,5 +178,13 @@ bundle = "lumastack/luma-catalog/retirement-records"
 document = "policy/what-we-retired"
 title = "What we retired"
 path = ".luma/bundles/lumastack/luma-catalog/retirement-records/policy/what-we-retired.md"
+on_violation = "allow"
+matches = ["eager"]
+
+[[rule]]
+bundle = "lumastack/luma-catalog/versioning"
+document = "policy/semantic-versioning"
+title = "Semantic versioning"
+path = ".luma/bundles/lumastack/luma-catalog/versioning/policy/semantic-versioning.md"
 on_violation = "allow"
 matches = ["eager"]

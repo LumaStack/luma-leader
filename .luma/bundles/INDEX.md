@@ -7,7 +7,13 @@ Every container has an index. This is the project's: one entry per bundle, what 
 ## Offered — open a bundle's index when its line matches the work
 
 - `lumastack/luma-catalog/audit-records` 0.11.0 — Audits as records — findings written by one party, answered by another, closed by the first. The whole exchange lives in git.
+- `lumastack/luma-catalog/backlog` 0.49.0 — The record types a luma-backlog corpus conforms to, and the procedures for the things somebody does to a backlog — what an agent needs in order to work one well.
 - `lumastack/luma-catalog/decision-records` 0.13.0 — Decisions recorded with their reasoning, deferred alternatives, and re-open triggers. Spent decisions are archived rather than deleted.
+- `lumastack/luma-catalog/git-workflow` 0.9.0 — How changes get integrated — merge commits rather than squash or rebase, the repository settings that make it true, and how to prove a change actually landed.
+- `lumastack/luma-catalog/git-worktrees` 0.9.0 — Isolated worktrees for concurrent agents in one repository — where they live, what has to be provisioned, and how to tear them down without leaving wreckage.
+- `lumastack/luma-catalog/github-release` 0.10.0 — Cutting and publishing GitHub releases — choosing the version, the changelog, release titles and contents, and the gh procedure.
 - `lumastack/luma-catalog/luma-maintainers` 0.14.0 — Working on the luma tools themselves — the repositories and the boundary each defends, publishing to the universal catalog, and changing a type without making every tool upgrade at once.
 - `lumastack/luma-catalog/luma-tools` 0.13.0 — Using the luma tools — which one does what, getting them onto a machine, standing a project up, and the get-then-apply loop that puts knowledge in front of an agent.
+- `lumastack/luma-catalog/project-documentation` 0.20.0 — The prose a repository publishes — where it lives, what a README is for, and which documents are worth having at all.
 - `lumastack/luma-catalog/retirement-records` 0.6.0 — Retiring an idea across many projects — the decision that stays home, the strategy that travels, and the recognizers that find a concept whose vocabulary survived.
+- `lumastack/luma-catalog/versioning` 0.9.0 — What a version number promises, when to bump which part, and the rules that get decided wrongly — for anything versioned, not only releases.
